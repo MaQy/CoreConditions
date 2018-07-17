@@ -1,5 +1,5 @@
 # Welcome to CoreConditions
-CoreConditions is a library that helps developers to write pre- and postcondition validations in their C# 7.0+. This is a fork of CuttingEdge.Conditions created by dotnetjunkie in order to make it compatible with .NET Core.
+CoreConditions is a library that helps developers to write pre- and postcondition validations in their .NET applications. This is a fork of [CuttingEdge.Conditions](https://github.com/dotnetjunkie/cuttingedge.conditions) created by [dotnetjunkie](https://github.com/dotnetjunkie) in order to make it compatible with .NET Core.
 
 ## Overview
 CoreConditions is build up upon the C# and VB.NET extension method mechanism and it allows you to validate arguments in a simple and fluent way. The following example gives a quick overview on the way you could write your pre- and postconditions.
