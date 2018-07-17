@@ -27,11 +27,12 @@
 // with 'Byte'.
 using System;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit; using System.ComponentModel;
+using FluentAssertions;
 
 namespace CuttingEdge.Conditions.UnitTests.CompareTests
 {
-    [TestClass]
+    
     public class CompareByteTests
     {
         private static readonly Byte One = 1;
@@ -42,16 +43,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsByteInRange
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsInRange on Byte x with 'lower bound > x < upper bound' should fail.")]
         public void IsByteInRangeTest01()
         {
             Byte a = One;
-            Condition.Requires(a).IsInRange(Two, Four);
+            Action action = () => Condition.Requires(a).IsInRange(Two, Four);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on Byte x with 'lower bound = x < upper bound' should pass.")]
         public void IsByteInRangeTest02()
         {
@@ -59,7 +61,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsInRange(Two, Four);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on Byte x with 'lower bound < x < upper bound' should pass.")]
         public void IsByteInRangeTest03()
         {
@@ -67,7 +69,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsInRange(Two, Four);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on Byte x with 'lower bound < x = upper bound' should pass.")]
         public void IsByteInRangeTest04()
         {
@@ -75,16 +77,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsInRange(Two, Four);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsInRange on Byte x with 'lower bound < x > upper bound' should fail.")]
         public void IsByteInRangeTest05()
         {
             Byte a = Five;
-            Condition.Requires(a).IsInRange(Two, Four);
+            Action action = () => Condition.Requires(a).IsInRange(Two, Four);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on Byte x with conditionDescription should pass.")]
         public void IsByteInRangeTest06()
         {
@@ -92,7 +95,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsInRange(Two, Four, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsInRange on Byte should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsByteInRangeTest07()
         {
@@ -100,15 +103,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsInRange(Two, Four, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on Byte x with 'lower bound > x < upper bound' should succeed when exceptions are suppressed.")]
         public void IsByteInRangeTest08()
         {
@@ -120,7 +123,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsByteNotInRange
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotInRange on Byte x with 'lower bound > x < upper bound' should pass.")]
         public void IsByteNotInRangeTest01()
         {
@@ -128,34 +131,37 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotInRange(Two, Four);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotInRange on Byte x with 'lower bound = x < upper bound' should fail.")]
         public void IsByteNotInRangeTest02()
         {
             Byte a = Two;
-            Condition.Requires(a).IsNotInRange(Two, Four);
+            Action action = () => Condition.Requires(a).IsNotInRange(Two, Four);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotInRange on Byte x with 'lower bound < x < upper bound' should fail.")]
         public void IsByteNotInRangeTest03()
         {
             Byte a = Three;
-            Condition.Requires(a).IsNotInRange(Two, Four);
+            Action action = () => Condition.Requires(a).IsNotInRange(Two, Four);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotInRange on Byte x with 'lower bound < x = upper bound' should fail.")]
         public void IsByteNotInRangeTest04()
         {
             Byte a = Four;
-            Condition.Requires(a).IsNotInRange(Two, Four);
+            Action action = () => Condition.Requires(a).IsNotInRange(Two, Four);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotInRange on Byte x with 'lower bound < x > upper bound' should pass.")]
         public void IsByteNotInRangeTest05()
         {
@@ -163,7 +169,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotInRange(Two, Four);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotInRange on Byte x with conditionDescription should pass.")]
         public void IsByteNotInRangeTest06()
         {
@@ -171,7 +177,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotInRange(Two, Four, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotInRange on Byte should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsByteNotInRangeTest07()
         {
@@ -179,15 +185,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotInRange(Two, Four, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotInRange on Byte x with 'lower bound = x < upper bound' should succeed when exceptions are suppressed.")]
         public void IsByteNotInRangeTest08()
         {
@@ -199,25 +205,27 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsByteGreaterThan
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsGreaterThan on Byte x with 'lower bound < x' should fail.")]
         public void IsByteGreaterThanTest01()
         {
             Byte a = One;
-            Condition.Requires(a).IsGreaterThan(Two);
+            Action action = () => Condition.Requires(a).IsGreaterThan(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsGreaterThan on Byte x with 'lower bound = x' should fail.")]
         public void IsByteGreaterThanTest02()
         {
             Byte a = Two;
-            Condition.Requires(a).IsGreaterThan(Two);
+            Action action = () => Condition.Requires(a).IsGreaterThan(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterThan on Byte x with 'lower bound < x' should pass.")]
         public void IsByteGreaterThanTest03()
         {
@@ -225,7 +233,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterThan(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterThan on Byte x with conditionDescription should pass.")]
         public void IsByteGreaterThanTest04()
         {
@@ -233,7 +241,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterThan(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsGreaterThan on Byte should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsByteGreaterThanTest05()
         {
@@ -241,15 +249,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsGreaterThan(Three, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterThan on Byte x with 'lower bound < x' should succeed when exceptions are suppressed.")]
         public void IsByteGreaterThanTest06()
         {
@@ -261,7 +269,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsByteNotGreaterThan
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterThan on Byte x with 'x < upper bound' should pass.")]
         public void IsByteNotGreaterThanTest01()
         {
@@ -269,7 +277,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterThan(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterThan on Byte x with 'x = upper bound' should pass.")]
         public void IsByteNotGreaterThanTest02()
         {
@@ -277,16 +285,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterThan(Two);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotGreaterThan on Byte x with 'x > upper bound' should fail.")]
         public void IsByteNotGreaterThanTest03()
         {
             Byte a = Three;
-            Condition.Requires(a).IsNotGreaterThan(Two);
+            Action action = () => Condition.Requires(a).IsNotGreaterThan(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterThan on Byte x with conditionDescription should pass.")]
         public void IsByteNotGreaterThanTest04()
         {
@@ -294,7 +303,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterThan(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotGreaterThan on Byte should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsByteNotGreaterThanTest05()
         {
@@ -302,15 +311,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotGreaterThan(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterThan on Byte x with 'x > upper bound' should succeed when exceptions are suppressed.")]
         public void IsByteNotGreaterThanTest06()
         {
@@ -322,16 +331,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsByteGreaterOrEqual
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsGreaterOrEqual on Byte x with 'lower bound > x' should fail.")]
         public void IsByteGreaterOrEqualTest01()
         {
             Byte a = One;
-            Condition.Requires(a).IsGreaterOrEqual(Two);
+            Action action = () => Condition.Requires(a).IsGreaterOrEqual(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterOrEqual on Byte x with 'lower bound = x' should pass.")]
         public void IsByteGreaterOrEqualTest02()
         {
@@ -339,7 +349,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterOrEqual(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterOrEqual on Byte x with 'lower bound < x' should pass.")]
         public void IsByteGreaterOrEqualTest03()
         {
@@ -347,7 +357,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterOrEqual(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterOrEqual on Byte x with conditionDescription should pass.")]
         public void IsByteGreaterOrEqualTest04()
         {
@@ -355,7 +365,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterOrEqual(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsGreaterOrEqual on Byte should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsByteGreaterOrEqualTest05()
         {
@@ -363,15 +373,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsGreaterOrEqual(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterOrEqual on Byte x with 'lower bound > x' should succeed when exceptions are suppressed.")]
         public void IsByteGreaterOrEqualTest06()
         {
@@ -383,7 +393,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsByteNotGreaterOrEqual
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterOrEqual on Byte x with 'x < upper bound' should pass.")]
         public void IsByteNotGreaterOrEqualTest01()
         {
@@ -391,25 +401,27 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterOrEqual(Two);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotGreaterOrEqual on Byte x with 'x = upper bound' should fail.")]
         public void IsByteNotGreaterOrEqualTest02()
         {
             Byte a = Two;
-            Condition.Requires(a).IsNotGreaterOrEqual(Two);
+            Action action = () => Condition.Requires(a).IsNotGreaterOrEqual(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotGreaterOrEqual on Byte x with 'x > upper bound' should fail.")]
         public void IsByteNotGreaterOrEqualTest03()
         {
             Byte a = Three;
-            Condition.Requires(a).IsNotGreaterOrEqual(Two);
+            Action action = () => Condition.Requires(a).IsNotGreaterOrEqual(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterOrEqual on Byte x with conditionDescription should pass.")]
         public void IsByteNotGreaterOrEqualTest04()
         {
@@ -417,7 +429,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterOrEqual(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotGreaterOrEqual on Byte should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsByteNotGreaterOrEqualTest05()
         {
@@ -425,15 +437,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotGreaterOrEqual(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterOrEqual on Byte x with 'x = upper bound' should succeed when exceptions are suppressed.")]
         public void IsByteNotGreaterOrEqualTest06()
         {
@@ -445,7 +457,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsByteLessThan
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessThan on Byte x with 'x < upper bound' should pass.")]
         public void IsByteLessThanTest01()
         {
@@ -453,25 +465,27 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessThan(Two);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsLessThan on Byte x with 'x = upper bound' should fail.")]
         public void IsByteLessThanTest02()
         {
             Byte a = Two;
-            Condition.Requires(a).IsLessThan(Two);
+            Action action = () => Condition.Requires(a).IsLessThan(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsLessThan on Byte x with 'x > upper bound' should fail.")]
         public void IsByteLessThanTest03()
         {
             Byte a = Three;
-            Condition.Requires(a).IsLessThan(Two);
+            Action action = () => Condition.Requires(a).IsLessThan(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessThan on Byte x with conditionDescription should pass.")]
         public void IsByteLessThanTest04()
         {
@@ -479,7 +493,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessThan(Three, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsLessThan on Byte should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsByteLessThanTest05()
         {
@@ -487,15 +501,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsLessThan(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessThan on Byte x with 'x = upper bound' should succeed when exceptions are suppressed.")]
         public void IsByteLessThanTest06()
         {
@@ -507,16 +521,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsByteNotLessThan
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotLessThan on Byte x with 'lower bound > x' should fail.")]
         public void IsByteNotLessThanTest01()
         {
             Byte a = One;
-            Condition.Requires(a).IsNotLessThan(Two);
+            Action action = () => Condition.Requires(a).IsNotLessThan(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessThan on Byte x with 'lower bound = x' should pass.")]
         public void IsByteNotLessThanTest02()
         {
@@ -524,7 +539,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessThan(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessThan on Byte x with 'lower bound < x' should pass.")]
         public void IsByteNotLessThanTest03()
         {
@@ -532,7 +547,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessThan(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessThan on Byte x with conditionDescription should pass.")]
         public void IsByteNotLessThanTest04()
         {
@@ -540,7 +555,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessThan(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotLessThan on Byte should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsByteNotLessThanTest05()
         {
@@ -548,15 +563,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotLessThan(Three, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessThan on Byte x with 'lower bound > x' should succeed when exceptions are suppressed.")]
         public void IsByteNotLessThanTest06()
         {
@@ -568,7 +583,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsByteLessOrEqual
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessOrEqual on Byte x with 'x < upper bound' should pass.")]
         public void IsByteLessOrEqualTest01()
         {
@@ -576,7 +591,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessOrEqual(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessOrEqual on Byte x with 'x = upper bound' should pass.")]
         public void IsByteLessOrEqualTest02()
         {
@@ -584,16 +599,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessOrEqual(Two);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsLessOrEqual on Byte x with 'x > upper bound' should fail.")]
         public void IsByteLessOrEqualTest03()
         {
             Byte a = Three;
-            Condition.Requires(a).IsLessOrEqual(Two);
+            Action action = () => Condition.Requires(a).IsLessOrEqual(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessOrEqual on Byte x with conditionDescription should pass.")]
         public void IsByteLessOrEqualTest04()
         {
@@ -601,7 +617,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessOrEqual(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsLessOrEqual on Byte should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsByteLessOrEqualTest05()
         {
@@ -609,15 +625,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsLessOrEqual(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessOrEqual on Byte x with 'x > upper bound' should succeed when exceptions are suppressed.")]
         public void IsByteLessOrEqualTest06()
         {
@@ -629,25 +645,27 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsByteNotLessOrEqual
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotLessOrEqual on Byte x with 'lower bound > x' should fail.")]
         public void IsByteNotLessOrEqualTest01()
         {
             Byte a = One;
-            Condition.Requires(a).IsNotLessOrEqual(Two);
+            Action action = () => Condition.Requires(a).IsNotLessOrEqual(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotLessOrEqual on Byte x with 'lower bound = x' should fail.")]
         public void IsByteNotLessOrEqualTest02()
         {
             Byte a = Two;
-            Condition.Requires(a).IsNotLessOrEqual(Two);
+            Action action = () => Condition.Requires(a).IsNotLessOrEqual(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessOrEqual on Byte x with 'lower bound < x' should pass.")]
         public void IsByteNotLessOrEqualTest03()
         {
@@ -655,7 +673,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessOrEqual(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessOrEqual on Byte x with conditionDescription should pass.")]
         public void IsByteNotLessOrEqualTest04()
         {
@@ -663,7 +681,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessOrEqual(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotLessOrEqual on Byte should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsByteNotLessOrEqualTest05()
         {
@@ -671,15 +689,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotLessOrEqual(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessOrEqual on Byte x with 'lower bound > x' should succeed when exceptions are suppressed.")]
         public void IsByteNotLessOrEqualTest06()
         {
@@ -691,16 +709,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsByteEqualTo
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsEqualTo on Byte x with 'x < other' should fail.")]
         public void IsByteEqualToTest01()
         {
             Byte a = One;
-            Condition.Requires(a).IsEqualTo(Two);
+            Action action = () => Condition.Requires(a).IsEqualTo(Two);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsEqualTo on Byte x with 'x = other' should pass.")]
         public void IsByteEqualToTest02()
         {
@@ -708,16 +727,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsEqualTo(Two);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsEqualTo on Byte x with 'x > other' should fail.")]
         public void IsByteEqualToTest03()
         {
             Byte a = Three;
-            Condition.Requires(a).IsEqualTo(Two);
+            Action action = () => Condition.Requires(a).IsEqualTo(Two);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsEqualTo on Byte x with conditionDescription should pass.")]
         public void IsByteEqualToTest04()
         {
@@ -725,7 +745,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsEqualTo(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsEqualTo on Byte should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsByteEqualToTest05()
         {
@@ -733,15 +753,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsEqualTo(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsEqualTo on Byte x with 'x < other' should succeed when exceptions are suppressed.")]
         public void IsByteEqualToTest06()
         {
@@ -753,7 +773,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsByteNotEqualTo
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEqualTo on Byte x with 'x < other' should pass.")]
         public void IsByteNotEqualToTest01()
         {
@@ -761,16 +781,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotEqualTo(Two);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotEqualTo on Byte x with 'x = other' should fail.")]
         public void IsByteNotEqualToTest02()
         {
             Byte a = Two;
-            Condition.Requires(a).IsNotEqualTo(Two);
+            Action action = () => Condition.Requires(a).IsNotEqualTo(Two);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEqualTo on Byte x with 'x > other' should pass.")]
         public void IsByteNotEqualToTest03()
         {
@@ -778,7 +799,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotEqualTo(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEqualTo on Byte x with conditionDescription should pass.")]
         public void IsByteNotEqualToTest04()
         {
@@ -786,7 +807,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotEqualTo(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotEqualTo on Byte should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsByteNotEqualToTest05()
         {
@@ -794,15 +815,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotEqualTo(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEqualTo on Byte x with 'x = other' should succeed when exceptions are suppressed.")]
         public void IsByteNotEqualToTest06()
         {

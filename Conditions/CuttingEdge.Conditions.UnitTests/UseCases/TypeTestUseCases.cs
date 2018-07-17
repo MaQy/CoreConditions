@@ -25,14 +25,14 @@
 
 using System;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit; using System.ComponentModel;
 
 namespace CuttingEdge.Conditions.UnitTests.UseCases
 {
-    [TestClass]
+    
     public class TypeTestUseCases
     {
-        [TestMethod]
+        [Fact]
         [Description("Use Case code should match with use of IsOfType.")]
         public void CheckIsOfType01()
         {
@@ -53,7 +53,7 @@ namespace CuttingEdge.Conditions.UnitTests.UseCases
             });
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Use Case code should match with use of IsNotOfType.")]
         public void CheckIsNotOfType01()
         {
@@ -74,7 +74,7 @@ namespace CuttingEdge.Conditions.UnitTests.UseCases
             });
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Use Case code should match with use of IsNotOfType.")]
         public void CheckIsNotOfType02()
         {
@@ -95,7 +95,7 @@ namespace CuttingEdge.Conditions.UnitTests.UseCases
             });
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Use Case code should match with use of IsOfType.")]
         public void CheckIsOfType02()
         {

@@ -24,18 +24,21 @@
 #endregion
 
 using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit; using System.ComponentModel;
+using FluentAssertions;
+using Xunit;
 
 namespace CuttingEdge.Conditions.UnitTests
 {
     /// <summary>
     /// Validates the SR class and the existence of string resources.
     /// </summary>
-    [TestClass]
+    
     public class StringResourcesTests
     {
         private static readonly Type SrType = (
@@ -43,11 +46,11 @@ namespace CuttingEdge.Conditions.UnitTests
             where conditionType.Name == "SR"
             select conditionType).SingleOrDefault();
 
-        [TestMethod]
+        [Fact]
         [Description("This test validates whether the defined string consts in the SR class have a value that equals it's name.")]
         public void TestMethod01()
         {
-            Assert.IsNotNull(SrType, "The type SR could not be found in the CuttingEdge.Conditions assembly.");
+            SrType.Should().NotBeNull("The type SR could not be found in the CuttingEdge.Conditions assembly.");
 
             foreach (var field in GetSrStringFields())
             {
@@ -59,11 +62,11 @@ namespace CuttingEdge.Conditions.UnitTests
                 string assertExplanation = String.Format(CultureInfo.InvariantCulture,
                     "Name of SR.{0} should match it's value", field.Name);
 
-                Assert.AreEqual(field.Name, resourceKey, assertExplanation);
+                field.Name.Should().Be(resourceKey, assertExplanation);
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("This test validates whether the const string fields of the SR class reference an existing string resource.")]
         public void TestMethod02()
         {
@@ -75,24 +78,21 @@ namespace CuttingEdge.Conditions.UnitTests
                 string assertExplanation = String.Format(CultureInfo.InvariantCulture,
                     "The resource with key '{0}' could not be found.", resourceKey);
 
-                Assert.IsTrue(!String.IsNullOrEmpty(resourceValue), assertExplanation);
+                Assert.True(!String.IsNullOrEmpty(resourceValue), assertExplanation);
             }
         }
 
         private static FieldInfo[] GetSrStringFields()
         {
-            Assert.IsNotNull(SrType, "The type SR could not be found in the CuttingEdge.Conditions assembly.");
+            SrType.Should().NotBeNull("The type SR could not be found in the CuttingEdge.Conditions assembly.");
 
             BindingFlags fieldFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
 
-            var resourceFields =
-                from field in SrType.GetFields(fieldFlags)
-                where field.FieldType == typeof(string)
-                select field;
+            var resourceFields = SrType.GetFields(fieldFlags).Where(f => f.FieldType == typeof(string)).ToArray();
 
-            Assert.AreNotEqual(0, resourceFields.Count(), "The fields of SR could not be retrieved.");
+            resourceFields.Should().NotBeEmpty("The fields of SR could not be retrieved.");
 
-            return resourceFields.ToArray();
+            return resourceFields;
         }
 
         private static string GetResourceValue(string resourceKey)
@@ -102,7 +102,7 @@ namespace CuttingEdge.Conditions.UnitTests
             var getStringMethod =
                 SrType.GetMethod("GetString", methodFlags, null, new Type[] { typeof(string) }, null);
 
-            Assert.IsNotNull(getStringMethod, "The GetString(string) method could not be found in type SR.");
+            getStringMethod.Should().NotBeNull("The GetString(string) method could not be found in type SR.");
 
             return (string)getStringMethod.Invoke(null, new object[] { resourceKey });
         }

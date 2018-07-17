@@ -26,14 +26,15 @@
 using System;
 using System.Linq.Expressions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit; using System.ComponentModel;
+using FluentAssertions;
 
 namespace CuttingEdge.Conditions.UnitTests.EvaluationTests
 {
-    [TestClass]
+    
     public class EvaluationEvaluateTests
     {
-        [TestMethod]
+        [Fact]
         [Description("Calling Evaluate on integer x with boolean 'true' should pass.")]
         public void EvaluateTest01()
         {
@@ -41,7 +42,7 @@ namespace CuttingEdge.Conditions.UnitTests.EvaluationTests
             Condition.Requires(a).Evaluate(true);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling the Evaluate overload with the description on integer x with boolean 'true' should pass.")]
         public void EvaluateTest02()
         {
@@ -49,25 +50,27 @@ namespace CuttingEdge.Conditions.UnitTests.EvaluationTests
             Condition.Requires(a).Evaluate(true, String.Empty);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling Evaluate on integer x with boolean 'false' should fail.")]
         public void EvaluateTest03()
         {
             int a = 3;
-            Condition.Requires(a).Evaluate(false);
+            Action action = () => Condition.Requires(a).Evaluate(false);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling the Evaluate overload with the description on integer x with boolean 'false' should fail.")]
         public void EvaluateTest04()
         {
             int a = 3;
-            Condition.Requires(a).Evaluate(false, String.Empty);
+            Action action = () => Condition.Requires(a).Evaluate(false, String.Empty);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling Evaluate on integer x (3) with expression '(x) => (x == 3)' should pass.")]
         public void EvaluateTest05()
         {
@@ -76,16 +79,17 @@ namespace CuttingEdge.Conditions.UnitTests.EvaluationTests
             Condition.Requires(a).Evaluate(expression);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling Evaluate on integer x (3) with expression '(x) => (x == 4)' should fail.")]
         public void EvaluateTest06()
         {
             int a = 3;
-            Condition.Requires(a).Evaluate(x => x == 4);
+            Action action = () => Condition.Requires(a).Evaluate(x => x == 4);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling Evaluate on string x (hoi) with expression '(x) => (x == hoi)' should pass.")]
         public void EvaluateTest07()
         {
@@ -93,7 +97,7 @@ namespace CuttingEdge.Conditions.UnitTests.EvaluationTests
             Condition.Requires(a).Evaluate(x => x == "hoi");
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling Evaluate on object x with expression 'x => true' should pass.")]
         public void EvaluateTest08()
         {
@@ -101,52 +105,52 @@ namespace CuttingEdge.Conditions.UnitTests.EvaluationTests
             Condition.Requires(a).Evaluate(x => true);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         [Description("Calling Evaluate on null object x with expression '(x) => (x != null)' should fail with ArgumentNullException.")]
         public void EvaluateTest09()
         {
             object a = null;
-            Condition.Requires(a).Evaluate(x => x != null);
+            Action action = () => Condition.Requires(a).Evaluate(x => x != null);
+            action.Should().Throw<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         [Description("Calling Evaluate on null object x with expression '(x) => (x == 3)' should fail with ArgumentNullException.")]
         public void EvaluateTest10()
         {
             int? a = null;
-            Condition.Requires(a).Evaluate(x => x == 3);
+            Action action = () => Condition.Requires(a).Evaluate(x => x == 3);
+            action.Should().Throw<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         [Description("Calling Evaluate on null object x with boolean 'false' should fail with ArgumentNullException.")]
         public void EvaluateTest11()
         {
             object a = null;
-            Condition.Requires(a).Evaluate(false);
+            Action action = () => Condition.Requires(a).Evaluate(false);
+            action.Should().Throw<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(System.ComponentModel.InvalidEnumArgumentException))]
+        [Fact]
         [Description("Calling Evaluate on enum x with boolean 'false' should fail with InvalidEnumArgumentException.")]
         public void EvaluateTest12()
         {
             DayOfWeek day = DayOfWeek.Thursday;
-            Condition.Requires(day).Evaluate(false);
+            Action action = () => Condition.Requires(day).Evaluate(false);
+            action.Should().Throw<InvalidEnumArgumentException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(System.ComponentModel.InvalidEnumArgumentException))]
+        [Fact]
         [Description("Calling Evaluate on enum x with expression 'x => false' should fail with InvalidEnumArgumentException.")]
         public void EvaluateTest13()
         {
             DayOfWeek day = DayOfWeek.Thursday;
-            Condition.Requires(day).Evaluate(x => false);
+            Action action = () => Condition.Requires(day).Evaluate(x => false);
+            action.Should().Throw<InvalidEnumArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling the Evaluate overload containing the description message, should result in a exception message containing that description.")]
         public void EvaluateTest14()
         {
@@ -160,11 +164,11 @@ namespace CuttingEdge.Conditions.UnitTests.EvaluationTests
             }
             catch (Exception ex)
             {
-                Assert.AreEqual(expectedMessage, ex.Message);
+                Assert.Equal(expectedMessage, ex.Message);
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling the Evaluate overload containing a invalid description message, should pass and result in a exception message containing that description.")]
         public void EvaluateTest15()
         {
@@ -178,34 +182,35 @@ namespace CuttingEdge.Conditions.UnitTests.EvaluationTests
             }
             catch (Exception ex)
             {
-                Assert.AreEqual(expectedMessage, ex.Message);
+                Assert.Equal(expectedMessage, ex.Message);
             }
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling Evaluate with lambda 'null' should fail with an ArgumentException.")]
         public void EvaluateTest16()
         {
-            Condition.Requires(3).Evaluate(null);
+            Action action = () => Condition.Requires(3).Evaluate(null);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(PostconditionException))]
+        [Fact]
         [Description("Calling Evaluate with lambda 'null' should fail with an PostconditionException.")]
         public void EvaluateTest17()
         {
-            Condition.Ensures(3).Evaluate(null);
+            Action action = () => Condition.Ensures(3).Evaluate(null);
+            action.Should().Throw<PostconditionException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling Evaluate with boolen 'false' should succeed when exceptions are suppressed.")]
         public void EvaluateTest18()
         {
             Condition.Requires(3).SuppressExceptionsForTest().Evaluate(false);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling Evaluate with lambda 'null' should succeed when exceptions are suppressed.")]
         public void EvaluateTest19()
         {

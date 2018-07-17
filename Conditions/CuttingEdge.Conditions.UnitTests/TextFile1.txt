@@ -1,0 +1,9 @@
+﻿Action a = () => Condition.Requires(list).IsLongerOrEqual(1);
+a.Should().Throw<ArgumentException>();
+
+
+Action action = () => Condition.Requires(list).IsLongerOrEqual(1);
+action.Should().Throw<ArgumentOutOfRangeException>();
+
+Action action = () => Condition.Requires(list).IsLongerOrEqual(1);
+action.Should().Throw<ArgumentOutOfRangeException>();

@@ -26,16 +26,17 @@
 using System;
 using System.Data.SqlTypes;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit; using System.ComponentModel;
+using FluentAssertions;
 
 namespace CuttingEdge.Conditions.UnitTests.CompareTests
 {
-    [TestClass]
+    
     public class CompareGenericTests
     {
         #region IsInRange
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on IComparable<T> object x with 'lower bound < x < upper bound' should pass.")]
         public void IsInRangeTest6()
         {
@@ -45,18 +46,19 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsInRange(min, max);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsInRange on IComparable<T> object x with 'lower bound > null < upper bound' should fail.")]
         public void IsInRangeTest7()
         {
             ComparableClass value = null;
             ComparableClass min = new ComparableClass(1);
             ComparableClass max = new ComparableClass(10);
-            Condition.Requires(value).IsInRange(min, max);
+            Action action = () => Condition.Requires(value).IsInRange(min, max);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on IComparable<T> object x with 'null < x < upper bound' should pass.")]
         public void IsInRangeTest8()
         {
@@ -66,18 +68,19 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsInRange(min, max);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsInRange on IComparable<T> object x with 'lower bound < x > null' should fail.")]
         public void IsInRangeTest9()
         {
             ComparableClass value = new ComparableClass(3);
             ComparableClass min = new ComparableClass(1);
             ComparableClass max = null;
-            Condition.Requires(value).IsInRange(min, max);
+            Action action = () => Condition.Requires(value).IsInRange(min, max);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on IComparable<T> object x with 'null = null < upper bound' should pass.")]
         public void IsInRangeTest10()
         {
@@ -87,7 +90,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsInRange(min, max);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on IComparable<T> object x with 'null = null = null' should pass.")]
         public void IsInRangeTest11()
         {
@@ -97,7 +100,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsInRange(min, max);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on IComparable struct x with 'lower bound < x < upper bound' should pass.")]
         public void IsInRangeTest12()
         {
@@ -108,7 +111,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsInRange(min, max);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on string x with 'lower bound < x < upper bound' should pass.")]
         public void IsInRangeTest13()
         {
@@ -118,7 +121,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsInRange(min, max);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on Nullable<int> x with 'null < x < upper bound' should pass.")]
         public void IsInRangeTest15()
         {
@@ -128,7 +131,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsInRange(min, max);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on Nullable<int> x with '(int)lower bound < x < (int)upper bound' should pass.")]
         public void IsInRangeTest16()
         {
@@ -141,7 +144,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsInRange(min, max);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on System.Enum x with 'lower bound < x < upper bound' should pass.")]
         public void IsInRangeTest17()
         {
@@ -149,19 +152,20 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(friday).IsInRange(DayOfWeek.Sunday, DayOfWeek.Saturday);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsInRange on Nullable<int> x with 'null < x > upper bound' should fail.")]
         public void IsInRangeTest18()
         {
             int? value = 10;
             int? min = null;
             int? max = 3;
-            Condition.Requires(value).IsInRange(min, max);
+            Action action = () => Condition.Requires(value).IsInRange(min, max);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsInRange on Nullable<int> x with '(int)lower bound < x > (int)upper bound' should fail.")]
         public void IsInRangeTest19()
         {
@@ -171,34 +175,37 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             // There is a special overload that takes T's instead of Nullable<T>'s, because C# type inference
             // doesn't work well with types that can implicitly be converted to types that are arguments in
             // method overloads in the candidate set.
-            Condition.Requires(value).IsInRange(min, max);
+            Action action = () => Condition.Requires(value).IsInRange(min, max);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(System.ComponentModel.InvalidEnumArgumentException))]
+        [Fact]
+        
         [Description("Calling IsInRange on System.Enum x with 'lower bound < x > upper bound' should fail with an InvalidEnumArgumentException.")]
         public void IsInRangeTest20()
         {
             DayOfWeek weekDay = DayOfWeek.Saturday;
-            Condition.Requires(weekDay).IsInRange(DayOfWeek.Monday, DayOfWeek.Friday);
+            Action a = () => Condition.Requires(weekDay).IsInRange(DayOfWeek.Monday, DayOfWeek.Friday);
+            a.Should().Throw<InvalidEnumArgumentException>();
         }
 
         #endregion // IsInRange
 
         #region IsNotInRange
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotInRange on IComparable<T> object with 'lower bound < x < upper bound' should fail.")]
         public void IsNotInRangeTest6()
         {
             ComparableClass value = new ComparableClass(3);
             ComparableClass min = new ComparableClass(1);
             ComparableClass max = new ComparableClass(10);
-            Condition.Requires(value).IsNotInRange(min, max);
+            Action a = () => Condition.Requires(value).IsNotInRange(min, max);
+            a.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotInRange on IComparable<T> object with 'lower bound > null < upper bound' should pass.")]
         public void IsNotInRangeTest7()
         {
@@ -208,18 +215,19 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsNotInRange(min, max);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotInRange on IComparable<T> object with 'null < x < upper bound' should fail.")]
         public void IsNotInRangeTest8()
         {
             ComparableClass value = new ComparableClass(3);
             ComparableClass min = null;
             ComparableClass max = new ComparableClass(10);
-            Condition.Requires(value).IsNotInRange(min, max);
+            Action a = () => Condition.Requires(value).IsNotInRange(min, max);
+            a.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotInRange on IComparable<T> object with 'lower bound < x > null' should pass.")]
         public void IsNotInRangeTest9()
         {
@@ -229,30 +237,32 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsNotInRange(min, max);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
+        
         [Description("Calling IsNotInRange on IComparable<T> object with 'null = null < upper bound' should fail.")]
         public void IsNotInRangeTest10()
         {
             ComparableClass value = null;
             ComparableClass min = null;
             ComparableClass max = new ComparableClass(10);
-            Condition.Requires(value).IsNotInRange(min, max);
+            Action a = () => Condition.Requires(value).IsNotInRange(min, max);
+            a.Should().Throw<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
+        
         [Description("Calling IsNotInRange on IComparable<T> object with 'null = null = null' should fail.")]
         public void IsNotInRangeTest11()
         {
             ComparableClass value = null;
             ComparableClass min = null;
             ComparableClass max = null;
-            Condition.Requires(value).IsNotInRange(min, max);
+            Action a = () => Condition.Requires(value).IsNotInRange(min, max);
+            a.Should().Throw<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotInRange on IComparable struct with 'lower bound < x < upper bound' should fail.")]
         public void IsNotInRangeTest12()
         {
@@ -260,32 +270,35 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             SqlInt32 value = 3;
             SqlInt32 min = 1;
             SqlInt32 max = 10;
-            Condition.Requires(value).IsNotInRange(min, max);
+            Action a = () => Condition.Requires(value).IsNotInRange(min, max);
+            a.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotInRange on string with 'lower bound < x < upper bound' should fail.")]
         public void IsNotInRangeTest13()
         {
             string value = "c";
             string min = "a";
             string max = "j";
-            Condition.Requires(value).IsNotInRange(min, max);
+            Action a = () => Condition.Requires(value).IsNotInRange(min, max);
+            a.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotInRange on Nullable<int> with 'lower bound < x < upper bound' should fail.")]
         public void IsNotInRangeTest15()
         {
             int? value = 3;
             int? min = null;
             int? max = 10;
-            Condition.Requires(value).IsNotInRange(min, max);
+            Action a = () => Condition.Requires(value).IsNotInRange(min, max);
+            a.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotInRange on Nullable<int> with '(int)lower bound > x < (int)upper bound' should pass.")]
         public void IsNotInRangeTest17()
         {
@@ -296,7 +309,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsNotInRange(min, max);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotInRange on Enum with 'lower bound < x > upper bound' should pass.")]
         public void IsNotInRangeTest18()
         {
@@ -304,7 +317,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(friday).IsNotInRange(DayOfWeek.Sunday, DayOfWeek.Thursday);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotInRange on Nullable<int> with 'lower bound < x > upper bound' should pass.")]
         public void IsNotInRangeTest19()
         {
@@ -314,17 +327,18 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsNotInRange(min, max);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(System.ComponentModel.InvalidEnumArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotInRange on Enum with 'lower bound < x > upper bound' should fail with an InvalidEnumArgumentException.")]
         public void IsNotInRangeTest20()
         {
             DayOfWeek wednesday = DayOfWeek.Wednesday;
-            Condition.Requires(wednesday).IsNotInRange(DayOfWeek.Monday, DayOfWeek.Friday);
+            Action a = () => Condition.Requires(wednesday).IsNotInRange(DayOfWeek.Monday, DayOfWeek.Friday);
+            a.Should().Throw<InvalidEnumArgumentException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotInRange on Nullable<int> with '(int)lower bound < x < (int)upper bound' should fail.")]
         public void IsNotInRangeTest21()
         {
@@ -332,14 +346,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             int min = 10; // min and max are normal integers
             int max = 100;
 
-            Condition.Requires(value).IsNotInRange(min, max);
+            Action a = () => Condition.Requires(value).IsNotInRange(min, max);
+            a.Should().Throw<ArgumentException>();
         }
 
         #endregion // IsNotInRange
 
         #region IsGreaterThan
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterThan on IComparable<T> object x with 'lower bound < x' should pass.")]
         public void IsGreaterThanTest05()
         {
@@ -348,17 +363,18 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsGreaterThan(min);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsGreaterThan on IComparable<T> object x with 'lower bound < null' should fail.")]
         public void IsGreaterThanTest06()
         {
             ComparableClass value = null;
             ComparableClass min = new ComparableClass(1);
-            Condition.Requires(value).IsGreaterThan(min);
+            Action action = () => Condition.Requires(value).IsGreaterThan(min);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterThan on IComparable<T> object x with 'null < x' should pass.")]
         public void IsGreaterThanTest07()
         {
@@ -367,26 +383,28 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsGreaterThan(min);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsGreaterThan on IComparable<T> object x with 'null = null' should fail.")]
         public void IsGreaterThanTest08()
         {
             ComparableClass value = null;
             ComparableClass min = null;
-            Condition.Requires(value).IsGreaterThan(min);
+            Action action = () => Condition.Requires(value).IsGreaterThan(min);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsGreaterThan on IComparable<T> object x with 'lower bound = x' should fail.")]
         public void IsGreaterThanTest09()
         {
             ComparableClass value = new ComparableClass(0);
-            Condition.Requires(value).IsGreaterThan(value);
+            Action action = () => Condition.Requires(value).IsGreaterThan(value);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterThan on Enum x with 'lower bound < x' should pass.")]
         public void IsGreaterThanTest10()
         {
@@ -394,7 +412,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(friday).IsGreaterThan(DayOfWeek.Sunday);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterThan on Nullable<int> x with '(int)lower bound < x' should pass.")]
         public void IsGreaterThanTest11()
         {
@@ -406,8 +424,8 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterThan(min);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsGreaterThan on Nullable<int> x with '(int)lower bound > x' should fail.")]
         public void IsGreaterThanTest12()
         {
@@ -416,10 +434,11 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             // There is a special overload that takes T's instead of Nullable<T>'s, because C# type inference
             // doesn't work well with types that can implicitly be converted to types that are arguments in
             // method overloads in the candidate set.
-            Condition.Requires(a).IsGreaterThan(min);
+            Action action = () => Condition.Requires(a).IsGreaterThan(min);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterThan on Nullable<int> x with 'lower bound < x' should pass.")]
         public void IsGreaterThanTest13()
         {
@@ -431,8 +450,8 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterThan(min);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsGreaterThan on Nullable<int> x with 'lower bound > x' should fail.")]
         public void IsGreaterThanTest14()
         {
@@ -441,23 +460,25 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             // There is a special overload that takes T's instead of Nullable<T>'s, because C# type inference
             // doesn't work well with types that can implicitly be converted to types that are arguments in
             // method overloads in the candidate set.
-            Condition.Requires(a).IsGreaterThan(min);
+            Action action = () => Condition.Requires(a).IsGreaterThan(min);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(System.ComponentModel.InvalidEnumArgumentException))]
+        [Fact]
+        
         [Description("Calling IsGreaterThan on Enum x with 'lower bound > x' should fail with an InvalidEnumArgumentException.")]
         public void IsGreaterThanTest15()
         {
             DayOfWeek friday = DayOfWeek.Friday;
-            Condition.Requires(friday).IsGreaterThan(DayOfWeek.Saturday);
+            Action a = () => Condition.Requires(friday).IsGreaterThan(DayOfWeek.Saturday);
+            a.Should().Throw<InvalidEnumArgumentException>();
         }
 
         #endregion // IsGreaterThan
 
         #region IsNotGreaterThan
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterThan on IComparable<T> object x with 'x < upper bound' should pass.")]
         public void IsNotGreaterThanTest05()
         {
@@ -466,17 +487,18 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsNotGreaterThan(min);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotGreaterThan on IComparable<T> object x with 'x > null' should fail.")]
         public void IsNotGreaterThanTest06()
         {
             ComparableClass value = new ComparableClass(3);
             ComparableClass min = null;
-            Condition.Requires(value).IsNotGreaterThan(min);
+            Action action = () => Condition.Requires(value).IsNotGreaterThan(min);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterThan on IComparable<T> object x with 'null < upper bound' should pass.")]
         public void IsNotGreaterThanTest07()
         {
@@ -485,7 +507,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsNotGreaterThan(min);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterThan on IComparable<T> object x with 'null = null' should pass.")]
         public void IsNotGreaterThanTest08()
         {
@@ -494,7 +516,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsNotGreaterThan(min);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterThan on IComparable<T> object x with 'lower bound = x' should pass.")]
         public void IsNotGreaterThanTest09()
         {
@@ -502,7 +524,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsNotGreaterThan(value);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterThan on Enum x with 'x < upper bound' should pass.")]
         public void IsNotGreaterThanTest10()
         {
@@ -510,7 +532,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(friday).IsNotGreaterThan(DayOfWeek.Saturday);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterThan on Nullable<int> x with 'x < (max)lower bound' should pass.")]
         public void IsNotGreaterThanTest11()
         {
@@ -522,8 +544,8 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterThan(max);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotGreaterThan on Nullable<int> x with 'x > (int)upper bound' should fail.")]
         public void IsNotGreaterThanTest12()
         {
@@ -532,10 +554,11 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             // There is a special overload that takes T's instead of Nullable<T>'s, because C# type inference
             // doesn't work well with types that can implicitly be converted to types that are arguments in
             // method overloads in the candidate set.
-            Condition.Requires(a).IsNotGreaterThan(max);
+            Action action = () => Condition.Requires(a).IsNotGreaterThan(max);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterThan on Nullable<int> x with 'x < upper bound' should pass.")]
         public void IsNotGreaterThanTest13()
         {
@@ -547,8 +570,8 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterThan(max);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotGreaterThan on Nullable<int> x with 'x > lower bound' should fail.")]
         public void IsNotGreaterThanTest14()
         {
@@ -557,23 +580,25 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             // There is a special overload that takes T's instead of Nullable<T>'s, because C# type inference
             // doesn't work well with types that can implicitly be converted to types that are arguments in
             // method overloads in the candidate set.
-            Condition.Requires(a).IsNotGreaterThan(max);
+            Action action = () => Condition.Requires(a).IsNotGreaterThan(max);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(System.ComponentModel.InvalidEnumArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotGreaterThan on Enum x with 'x > upper bound' should fail with an InvalidEnumArgumentException.")]
         public void IsNotGreaterThanTest15()
         {
             DayOfWeek friday = DayOfWeek.Friday;
-            Condition.Requires(friday).IsNotGreaterThan(DayOfWeek.Thursday);
+            Action a = () => Condition.Requires(friday).IsNotGreaterThan(DayOfWeek.Thursday);
+            a.Should().Throw<InvalidEnumArgumentException>();
         }
 
         #endregion // IsNotGreaterThan
 
         #region IsGreaterOrEqual
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterOrEqual on IComparable<T> object x with 'lower bound < x' should pass.")]
         public void IsGreaterOrEqualTest05()
         {
@@ -582,17 +607,18 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsGreaterOrEqual(min);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsGreaterOrEqual on IComparable<T> object x with 'lower bound > null' should fail.")]
         public void IsGreaterOrEqualTest06()
         {
             ComparableClass value = null;
             ComparableClass min = new ComparableClass(1);
-            Condition.Requires(value).IsGreaterOrEqual(min);
+            Action action = () => Condition.Requires(value).IsGreaterOrEqual(min);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterOrEqual on IComparable<T> object x with 'lower bound < x' should pass.")]
         public void IsGreaterOrEqualTest07()
         {
@@ -601,7 +627,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsGreaterOrEqual(min);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterOrEqual on IComparable<T> object x with 'null < null' should pass.")]
         public void IsGreaterOrEqualTest08()
         {
@@ -609,17 +635,18 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsGreaterOrEqual(value);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsGreaterOrEqual on IComparable<T> object x with 'lower bound > null' should fail.")]
         public void IsGreaterOrEqualTest09()
         {
             ComparableClass value = null;
             ComparableClass min = new ComparableClass(Int32.MinValue);
-            Condition.Requires(value).IsGreaterOrEqual(min);
+            Action action = () => Condition.Requires(value).IsGreaterOrEqual(min);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterOrEqual on IComparable<T> object x with 'null < x' should pass.")]
         public void IsGreaterOrEqualTest10()
         {
@@ -628,7 +655,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsGreaterOrEqual(min);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterOrEqual on IComparable<T> object x with 'lower bound = x' should pass.")]
         public void IsGreaterOrEqualTest11()
         {
@@ -636,7 +663,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsGreaterOrEqual(value);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterOrEqual on Nullable<int> x with '(int)lower bound < x' should pass.")]
         public void IsGreaterOrEqualTest12()
         {
@@ -645,17 +672,18 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterOrEqual(min);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsGreaterOrEqual on Nullable<int> x with '(int)lower bound > x' should fail.")]
         public void IsGreaterOrEqualTest13()
         {
             int? a = 2;
             int min = 3; // min is a normal integer
-            Condition.Requires(a).IsGreaterOrEqual(min);
+            Action action = () => Condition.Requires(a).IsGreaterOrEqual(min);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterOrEqual on Nullable<int> x with 'lower bound < x' should pass.")]
         public void IsGreaterOrEqualTest14()
         {
@@ -664,17 +692,18 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterOrEqual(min);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsGreaterOrEqual on Nullable<int> x with 'lower bound > x' should fail.")]
         public void IsGreaterOrEqualTest15()
         {
             int? a = 2;
             int? min = 3;
-            Condition.Requires(a).IsGreaterOrEqual(min);
+            Action action = () => Condition.Requires(a).IsGreaterOrEqual(min);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterOrEqual on Enum x with 'lower bound = x' should pass.")]
         public void IsGreaterOrEqualTest16()
         {
@@ -682,30 +711,32 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(friday).IsGreaterOrEqual(friday);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(System.ComponentModel.InvalidEnumArgumentException))]
+        [Fact]
+        
         [Description("Calling IsGreaterOrEqual on Enum x with 'lower bound < x' should fail with an InvalidEnumArgumentException.")]
         public void IsGreaterOrEqualTest17()
         {
             DayOfWeek friday = DayOfWeek.Friday;
-            Condition.Requires(friday).IsGreaterOrEqual(DayOfWeek.Saturday);
+            Action a = () => Condition.Requires(friday).IsGreaterOrEqual(DayOfWeek.Saturday);
+            a.Should().Throw<InvalidEnumArgumentException>();
         }
 
         #endregion // IsGreaterOrEqual
 
         #region IsNotGreaterOrEqual
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotGreaterOrEqual on IComparable<T> object x with 'x > upper bound' should fail.")]
         public void IsNotGreaterOrEqualTest05()
         {
             ComparableClass value = new ComparableClass(3);
             ComparableClass max = new ComparableClass(1);
-            Condition.Requires(value).IsNotGreaterOrEqual(max);
+            Action action = () => Condition.Requires(value).IsNotGreaterOrEqual(max);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterOrEqual on IComparable<T> object x with 'null < upper bound' should pass.")]
         public void IsNotGreaterOrEqualTest06()
         {
@@ -714,26 +745,28 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsNotGreaterOrEqual(max);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotGreaterOrEqual on IComparable<T> object x with 'x > null' should fail.")]
         public void IsNotGreaterOrEqualTest07()
         {
             ComparableClass value = new ComparableClass(3);
             ComparableClass max = null;
-            Condition.Requires(value).IsNotGreaterOrEqual(max);
+            Action action = () => Condition.Requires(value).IsNotGreaterOrEqual(max);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotGreaterOrEqual on IComparable<T> object x with 'null = null' should fail.")]
         public void IsNotGreaterOrEqualTest08()
         {
             ComparableClass value = null;
-            Condition.Requires(value).IsNotGreaterOrEqual(value);
+            Action action = () => Condition.Requires(value).IsNotGreaterOrEqual(value);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterOrEqual on IComparable<T> object x with 'null < upper bound' should pass.")]
         public void IsNotGreaterOrEqualTest09()
         {
@@ -742,36 +775,39 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsNotGreaterOrEqual(min);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotGreaterOrEqual on IComparable<T> object x with 'x > null' should fail.")]
         public void IsNotGreaterOrEqualTest10()
         {
             ComparableClass value = new ComparableClass(Int32.MinValue);
             ComparableClass max = null;
-            Condition.Requires(value).IsNotGreaterOrEqual(max);
+            Action action = () => Condition.Requires(value).IsNotGreaterOrEqual(max);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotGreaterOrEqual on IComparable<T> object x with 'x = upper bound' should fail.")]
         public void IsNotGreaterOrEqualTest11()
         {
             ComparableClass value = new ComparableClass(0);
-            Condition.Requires(value).IsNotGreaterOrEqual(value);
+            Action action = () => Condition.Requires(value).IsNotGreaterOrEqual(value);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotGreaterOrEqual on Nullable<int> x with 'x > (int)upper bound' should fail.")]
         public void IsNotGreaterOrEqualTest12()
         {
             int? a = 3;
             int max = 2; // max is a normal integer
-            Condition.Requires(a).IsNotGreaterOrEqual(max);
+            Action action = () => Condition.Requires(a).IsNotGreaterOrEqual(max);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterOrEqual on Nullable<int> x with 'x < (int)upper bound' should pass.")]
         public void IsNotGreaterOrEqualTest13()
         {
@@ -780,17 +816,18 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterOrEqual(max);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotGreaterOrEqual on Nullable<int> x with 'x > upper bound' should fail.")]
         public void IsNotGreaterOrEqualTest14()
         {
             int? a = 3;
             int? min = 2;
-            Condition.Requires(a).IsNotGreaterOrEqual(min);
+            Action action = () => Condition.Requires(a).IsNotGreaterOrEqual(min);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterOrEqual on Nullable<int> x with 'x < upper bound' should pass.")]
         public void IsNotGreaterOrEqualTest15()
         {
@@ -799,16 +836,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterOrEqual(max);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(System.ComponentModel.InvalidEnumArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotGreaterOrEqual on Enum x with 'x = upper bound' should fail with an InvalidEnumArgumentException.")]
         public void IsNotGreaterOrEqualTest16()
         {
             DayOfWeek friday = DayOfWeek.Friday;
-            Condition.Requires(friday).IsNotGreaterOrEqual(friday);
+            Action a = () => Condition.Requires(friday).IsNotGreaterOrEqual(friday);
+            a.Should().Throw<InvalidEnumArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterOrEqual on Enum x with 'x < upper bound' should pass.")]
         public void IsNotGreaterOrEqualTest17()
         {
@@ -820,17 +858,18 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsLessThan
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsLessThan on IComparable<T> object x with 'x > upper bound' should fail.")]
         public void IsLessThanTest05()
         {
             ComparableClass value = new ComparableClass(3);
             ComparableClass max = new ComparableClass(1);
-            Condition.Requires(value).IsLessThan(max);
+            Action action = () => Condition.Requires(value).IsLessThan(max);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessThan on IComparable<T> object x with 'null < upper bound' should pass.")]
         public void IsLessThanTest06()
         {
@@ -839,35 +878,38 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsLessThan(max);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsLessThan on IComparable<T> object x with 'x > null' should fail.")]
         public void IsLessThanTest07()
         {
             ComparableClass value = new ComparableClass(3);
             ComparableClass max = null;
-            Condition.Requires(value).IsLessThan(max);
+            Action action = () => Condition.Requires(value).IsLessThan(max);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsLessThan on IComparable<T> object x with 'null = null' should fail.")]
         public void IsLessThanTest08()
         {
             ComparableClass value = null;
-            Condition.Requires(value).IsLessThan(null);
+            Action action = () => Condition.Requires(value).IsLessThan(null);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsLessThan on IComparable<T> object x with 'x = x' should fail.")]
         public void IsLessThanTest09()
         {
             ComparableClass value = new ComparableClass(0);
-            Condition.Requires(value).IsLessThan(value);
+            Action action = () => Condition.Requires(value).IsLessThan(value);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessThan on Nullable<int> x with 'x < (int)upper bound' should pass.")]
         public void IsLessThanTest10()
         {
@@ -876,17 +918,18 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessThan(max);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsLessThan on Nullable<int> x with 'x > (int)upper bound' should fail.")]
         public void IsLessThanTest11()
         {
             int? a = 4;
             int max = 3; // max is a normal integer
-            Condition.Requires(a).IsLessThan(max);
+            Action action = () => Condition.Requires(a).IsLessThan(max);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessThan on Nullable<int> x with 'x < upper bound' should pass.")]
         public void IsLessThanTest12()
         {
@@ -895,17 +938,18 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessThan(max);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsLessThan on Nullable<int> x with 'x > upper bound' should fail.")]
         public void IsLessThanTest13()
         {
             int? a = 4;
             int? max = 3;
-            Condition.Requires(a).IsLessThan(max);
+            Action action = () =>Condition.Requires(a).IsLessThan(max);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessThan on Enum x with 'x < upper bound' should pass.")]
         public void IsLessThanTest14()
         {
@@ -913,20 +957,21 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(friday).IsLessThan(DayOfWeek.Saturday);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(System.ComponentModel.InvalidEnumArgumentException))]
+        [Fact]
+        
         [Description("Calling IsLessThan on Enum x with 'x < upper bound' should fail with an InvalidEnumArgumentException.")]
         public void IsLessThanTest15()
         {
             DayOfWeek friday = DayOfWeek.Friday;
-            Condition.Requires(friday).IsLessThan(DayOfWeek.Thursday);
+            Action a = () => Condition.Requires(friday).IsLessThan(DayOfWeek.Thursday);
+            a.Should().Throw<InvalidEnumArgumentException>();
         }
 
         #endregion // IsLessThan
 
         #region IsNotLessThan
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessThan on IComparable<T> object x with 'lower bound < x' should pass.")]
         public void IsNotLessThanTest05()
         {
@@ -935,17 +980,18 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsNotLessThan(min);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotLessThan on IComparable<T> object x with 'lower bound > null' should fail.")]
         public void IsNotLessThanTest06()
         {
             ComparableClass value = null;
             ComparableClass min = new ComparableClass(1);
-            Condition.Requires(value).IsNotLessThan(min);
+            Action action = () => Condition.Requires(value).IsNotLessThan(min);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessThan on IComparable<T> object x with 'null < x' should pass.")]
         public void IsNotLessThanTest07()
         {
@@ -954,7 +1000,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsNotLessThan(min);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessThan on IComparable<T> object x with 'null = null' should pass.")]
         public void IsNotLessThanTest08()
         {
@@ -962,7 +1008,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsNotLessThan(null);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessThan on IComparable<T> object x with 'x = x' should pass.")]
         public void IsNotLessThanTest09()
         {
@@ -970,17 +1016,18 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsNotLessThan(value);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotLessThan on Nullable<int> x with '(int)lower bound > x' should fail.")]
         public void IsNotLessThanTest10()
         {
             int? a = 3;
             int min = 4; // min is a normal integer
-            Condition.Requires(a).IsNotLessThan(min);
+            Action action = () => Condition.Requires(a).IsNotLessThan(min);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessThan on Nullable<int> x with '(int)lower bound < x' should pass.")]
         public void IsNotLessThanTest11()
         {
@@ -989,17 +1036,18 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessThan(min);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotLessThan on Nullable<int> x with 'lower bound > x' should fail.")]
         public void IsNotLessThanTest12()
         {
             int? a = 3;
             int? min = 4;
-            Condition.Requires(a).IsNotLessThan(min);
+            Action action = () => Condition.Requires(a).IsNotLessThan(min);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessThan on Nullable<int> x with 'lower bound < x' should pass.")]
         public void IsNotLessThanTest13()
         {
@@ -1008,16 +1056,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessThan(min);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(System.ComponentModel.InvalidEnumArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotLessThan on Enum x with 'lower bound > x' should fail with an InvalidEnumArgumentException.")]
         public void IsNotLessThanTest14()
         {
             DayOfWeek friday = DayOfWeek.Friday;
-            Condition.Requires(friday).IsNotLessThan(DayOfWeek.Saturday);
+            Action a = () => Condition.Requires(friday).IsNotLessThan(DayOfWeek.Saturday);
+            a.Should().Throw<InvalidEnumArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessThan on Enum x with 'lower bound < x' should pass.")]
         public void IsNotLessThanTest15()
         {
@@ -1029,17 +1078,18 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsLessOrEqual
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsLessOrEqual on IComparable<T> object x with 'x < upper bound' should fail.")]
         public void IsLessOrEqualTest04()
         {
             ComparableClass value = new ComparableClass(3);
             ComparableClass max = new ComparableClass(1);
-            Condition.Requires(value).IsLessOrEqual(max);
+            Action action = () => Condition.Requires(value).IsLessOrEqual(max);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessOrEqual on IComparable<T> object x with 'null < upper bound' should pass.")]
         public void IsLessOrEqualTest05()
         {
@@ -1048,17 +1098,18 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsLessOrEqual(max);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsLessOrEqual on IComparable<T> object x with 'x > null' should fail.")]
         public void IsLessOrEqualTest06()
         {
             ComparableClass value = new ComparableClass(3);
             ComparableClass max = null;
-            Condition.Requires(value).IsLessOrEqual(max);
+            Action action = () => Condition.Requires(value).IsLessOrEqual(max);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessOrEqual on IComparable<T> object x with 'null = null' should pass.")]
         public void IsLessOrEqualTest07()
         {
@@ -1066,7 +1117,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsLessOrEqual(value);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessOrEqual on IComparable<T> object x with 'null < upper bound' should pass.")]
         public void IsLessOrEqualTest08()
         {
@@ -1075,17 +1126,18 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsLessOrEqual(max);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsLessOrEqual on IComparable<T> object x with 'x > null' should fail.")]
         public void IsLessOrEqualTest09()
         {
             ComparableClass value = new ComparableClass(Int32.MinValue);
             ComparableClass max = null;
-            Condition.Requires(value).IsLessOrEqual(max);
+            Action action = () => Condition.Requires(value).IsLessOrEqual(max);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessOrEqual on IComparable<T> object x with 'x = upper bound' should pass.")]
         public void IsLessOrEqualTest10()
         {
@@ -1093,7 +1145,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsLessOrEqual(value);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessOrEqual on Nullable<int> x with 'x < (int)upper bound' should pass.")]
         public void IsLessOrEqualTest11()
         {
@@ -1102,17 +1154,18 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessOrEqual(max);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsLessOrEqual on Nullable<int> x with 'x > (int)upper bound' should fail.")]
         public void IsLessOrEqualTest12()
         {
             int? a = 4;
             int max = 3; // max is a normal integer
-            Condition.Requires(a).IsLessOrEqual(max);
+            Action action = () => Condition.Requires(a).IsLessOrEqual(max);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessOrEqual on Nullable<int> x with 'x < upper bound' should pass.")]
         public void IsLessOrEqualTest13()
         {
@@ -1121,17 +1174,18 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessOrEqual(max);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsLessOrEqual on Nullable<int> x with 'x > upper bound' should fail.")]
         public void IsLessOrEqualTest14()
         {
             int? a = 4;
             int? max = 3;
-            Condition.Requires(a).IsLessOrEqual(max);
+            Action action = () => Condition.Requires(a).IsLessOrEqual(max);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessOrEqual on Enum x with 'x = upper bound' should pass.")]
         public void IsLessOrEqualTest15()
         {
@@ -1139,20 +1193,21 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(friday).IsLessOrEqual(friday);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(System.ComponentModel.InvalidEnumArgumentException))]
+        [Fact]
+        
         [Description("Calling IsLessOrEqual on Enum x with 'x > upper bound' should fail with an InvalidEnumArgumentException.")]
         public void IsLessOrEqualTest16()
         {
             DayOfWeek friday = DayOfWeek.Friday;
-            Condition.Requires(friday).IsLessOrEqual(DayOfWeek.Thursday);
+            Action action = () => Condition.Requires(friday).IsLessOrEqual(DayOfWeek.Thursday);
+            action.Should().Throw<InvalidEnumArgumentException>();
         }
 
         #endregion // IsLessOrEqual
 
         #region IsNotLessOrEqual
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessOrEqual on IComparable<T> object x with 'lower bound < x' should pass.")]
         public void IsNotLessOrEqualTest04()
         {
@@ -1161,17 +1216,18 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsNotLessOrEqual(min);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotLessOrEqual on IComparable<T> object x with 'lower bound > null' should fail.")]
         public void IsNotLessOrEqualTest05()
         {
             ComparableClass value = null;
             ComparableClass min = new ComparableClass(1);
-            Condition.Requires(value).IsNotLessOrEqual(min);
+            Action action = () => Condition.Requires(value).IsNotLessOrEqual(min);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessOrEqual on IComparable<T> object x with 'null < x' should pass.")]
         public void IsNotLessOrEqualTest06()
         {
@@ -1180,26 +1236,28 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsNotLessOrEqual(min);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotLessOrEqual on IComparable<T> object x with 'null = null' should fail.")]
         public void IsNotLessOrEqualTest07()
         {
             ComparableClass value = null;
-            Condition.Requires(value).IsNotLessOrEqual(value);
+            Action action = () => Condition.Requires(value).IsNotLessOrEqual(value);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotLessOrEqual on IComparable<T> object x with 'lower bound > null' should fail.")]
         public void IsNotLessOrEqualTest08()
         {
             ComparableClass value = null;
             ComparableClass min = new ComparableClass(Int32.MinValue);
-            Condition.Requires(value).IsNotLessOrEqual(min);
+            Action action = () => Condition.Requires(value).IsNotLessOrEqual(min);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessOrEqual on IComparable<T> object x with 'null < x' should pass.")]
         public void IsNotLessOrEqualTest09()
         {
@@ -1208,26 +1266,28 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(value).IsNotLessOrEqual(min);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotLessOrEqual on IComparable<T> object x with 'lower bound = x' should fail.")]
         public void IsNotLessOrEqualTest10()
         {
             ComparableClass value = new ComparableClass(0);
-            Condition.Requires(value).IsNotLessOrEqual(value);
+            Action action = () => Condition.Requires(value).IsNotLessOrEqual(value);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotLessOrEqual on Nullable<int> x with '(int)lower bound > x' should fail.")]
         public void IsNotLessOrEqualTest11()
         {
             int? a = 3;
             int min = 4; // min is a normal integer
-            Condition.Requires(a).IsNotLessOrEqual(min);
+            Action action = () => Condition.Requires(a).IsNotLessOrEqual(min);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessOrEqual on Nullable<int> x with 'lower bound < x' should pass.")]
         public void IsNotLessOrEqualTest12()
         {
@@ -1236,17 +1296,18 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessOrEqual(min);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotLessOrEqual on Nullable<int> x with 'lower bound > x' should fail.")]
         public void IsNotLessOrEqualTest13()
         {
             int? a = 3;
             int? min = 4;
-            Condition.Requires(a).IsNotLessOrEqual(min);
+            Action action = () => Condition.Requires(a).IsNotLessOrEqual(min);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessOrEqual on Nullable<int> x with 'lower bound < x' should pass.")]
         public void IsNotLessOrEqualTest14()
         {
@@ -1255,16 +1316,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessOrEqual(min);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(System.ComponentModel.InvalidEnumArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotLessOrEqual on Enum x with 'lower bound = x' should fail with an InvalidEnumArgumentException.")]
         public void IsNotLessOrEqualTest15()
         {
             DayOfWeek friday = DayOfWeek.Friday;
-            Condition.Requires(friday).IsNotLessOrEqual(friday);
+            Action action = () => Condition.Requires(friday).IsNotLessOrEqual(friday);
+            action.Should().Throw<InvalidEnumArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessOrEqual on Enum x with 'lower bound < x' should pass.")]
         public void IsNotLessOrEqualTest16()
         {
@@ -1276,7 +1338,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsEqualTo
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsEqualTo on IComparable<T> object x with 'x = other' should pass.")]
         public void IsEqualToTest5()
         {
@@ -1284,27 +1346,29 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsEqualTo(a);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
+        
         [Description("Calling IsEqualTo on IComparable<T> object x with 'null != other' should fail.")]
         public void IsEqualToTest6()
         {
             ComparableClass a = null;
             ComparableClass b = new ComparableClass();
-            Condition.Requires(a).IsEqualTo(b);
+            Action action = () => Condition.Requires(a).IsEqualTo(b);
+            action.Should().Throw<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsEqualTo on IComparable<T> object x with 'x != null' should fail.")]
         public void IsEqualToTest7()
         {
             ComparableClass a = new ComparableClass();
             ComparableClass b = null;
-            Condition.Requires(a).IsEqualTo(b);
+            Action action = () => Condition.Requires(a).IsEqualTo(b);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsEqualTo on IComparable<T> object x with 'null = null' should pass.")]
         public void IsEqualToTest8()
         {
@@ -1313,7 +1377,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsEqualTo(b);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsEqualTo on Nullable<T> x with 'x = (int)other' should pass.")]
         public void IsEqualToTest9()
         {
@@ -1322,7 +1386,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsEqualTo(b);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsEqualTo on Enum x with 'x = other' should pass.")]
         public void IsEqualToTest10()
         {
@@ -1330,27 +1394,29 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(friday).IsEqualTo(friday);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
+        
         [Description("Calling IsEqualTo on x == null with 'x = 4' should fail with ArgumentNullException.")]
         public void IsEqualToTest11()
         {
             int? a = null;
             int b = 4; // b is a normal integer
-            Condition.Requires(a).IsEqualTo(b);
+            Action action = () => Condition.Requires(a).IsEqualTo(b);
+            action.Should().Throw<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
+        
         [Description("Calling IsEqualTo on x == null with 'x = 4' should fail with ArgumentNullException.")]
         public void IsEqualToTest12()
         {
             int? a = null;
             int? b = 4;
-            Condition.Requires(a).IsEqualTo(b);
+            Action action = () => Condition.Requires(a).IsEqualTo(b);
+            action.Should().Throw<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsEqualTo on Nullable<T> x with 'x = x' should pass.")]
         public void IsEqualToTest13()
         {
@@ -1359,29 +1425,31 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsEqualTo(b);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(System.ComponentModel.InvalidEnumArgumentException))]
+        [Fact]
+        
         [Description("Calling IsEqualTo on Enum x with 'x != other' should fail with an InvalidEnumArgumentException.")]
         public void IsEqualToTest14()
         {
             DayOfWeek friday = DayOfWeek.Friday;
-            Condition.Requires(friday).IsEqualTo(DayOfWeek.Saturday);
+            Action a = () => Condition.Requires(friday).IsEqualTo(DayOfWeek.Saturday);
+            a.Should().Throw<InvalidEnumArgumentException>();
         }
 
         #endregion // IsEqualTo
 
         #region IsNotEqualTo
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotEqualTo on IComparable<T> object x with 'x = other' should fail.")]
         public void IsNotEqualToTest5()
         {
             ComparableClass a = new ComparableClass();
-            Condition.Requires(a).IsNotEqualTo(a);
+            Action action = () => Condition.Requires(a).IsNotEqualTo(a);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEqualTo on IComparable<T> object x with 'null != other' should pass.")]
         public void IsNotEqualToTest6()
         {
@@ -1390,7 +1458,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotEqualTo(b);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEqualTo on IComparable<T> object x with 'x != null' should pass.")]
         public void IsNotEqualToTest7()
         {
@@ -1399,17 +1467,18 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotEqualTo(b);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
+        
         [Description("Calling IsNotEqualTo on IComparable<T> object x with 'null = null' should fail.")]
         public void IsNotEqualToTest8()
         {
             ComparableClass a = null;
             ComparableClass b = null;
-            Condition.Requires(a).IsNotEqualTo(b);
+            Action action = () => Condition.Requires(a).IsNotEqualTo(b);
+            action.Should().Throw<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEqualTo on Nullable<int> x with 'x != (int)other' should pass.")]
         public void IsNotEqualToTest9()
         {
@@ -1418,7 +1487,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotEqualTo(b);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEqualTo on Enum x with 'x != other' should pass.")]
         public void IsNotEqualToTest10()
         {
@@ -1426,17 +1495,18 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(friday).IsNotEqualTo(DayOfWeek.Sunday);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
+        
         [Description("Calling IsNotEqualTo on Nullable<int> x = null with 'x = x' should fail with ArgumentNullException.")]
         public void IsNotEqualToTest11()
         {
             int? a = null;
             int? b = null;
-            Condition.Requires(a).IsNotEqualTo(b);
+            Action action = () => Condition.Requires(a).IsNotEqualTo(b);
+            action.Should().Throw<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEqualTo on Nullable<int> x = null with 'x != y' should pass.")]
         public void IsNotEqualToTest12()
         {
@@ -1445,23 +1515,25 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotEqualTo(b);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotEqualTo on Nullable<int> x with 'x = (int)other' should fail.")]
         public void IsNotEqualToTest13()
         {
             int? a = 4;
             int b = 4;
-            Condition.Requires(a).IsNotEqualTo(b);
+            Action action = () => Condition.Requires(a).IsNotEqualTo(b);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(System.ComponentModel.InvalidEnumArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotEqualTo on Enum x with 'x == other' should fail with an InvalidEnumArgumentException.")]
         public void IsNotEqualToTest14()
         {
             DayOfWeek friday = DayOfWeek.Friday;
-            Condition.Requires(friday).IsNotEqualTo(friday);
+            Action a = () => Condition.Requires(friday).IsNotEqualTo(friday);
+            a.Should().Throw<InvalidEnumArgumentException>();
         }
 
         #endregion // IsNotEqualTo

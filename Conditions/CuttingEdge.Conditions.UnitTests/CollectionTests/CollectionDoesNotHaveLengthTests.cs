@@ -27,40 +27,40 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit; using System.ComponentModel;
+using FluentAssertions;
 
 namespace CuttingEdge.Conditions.UnitTests.CollectionTests
 {
     /// <summary>
     /// Tests the ValidatorExtensions.DoesNotHaveLength method.
     /// </summary>
-    [TestClass]
+    
     public class CollectionDoesNotHaveLengthTests
     {
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         [Description("Calling DoesNotHaveLength(0) with an non-generic collection containing no elements should fail.")]
         public void CollectionDoesNotHaveLengthTest01()
         {
             // Queue only implements ICollection, no generic ICollection<T>
             Queue queue = new Queue();
 
-            Condition.Requires(queue).DoesNotHaveLength(0);
+            Action a = () => Condition.Requires(queue).DoesNotHaveLength(0);
+            a.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         [Description("Calling DoesNotHaveLength(0) with an typed collection containing no elements should fail.")]
         public void CollectionDoesNotHaveLengthTest02()
         {
             // HashSet only implements generic ICollection<T>, no ICollection.
             HashSet<int> set = new HashSet<int>();
 
-            Condition.Requires(set).DoesNotHaveLength(0);
+            Action a = () => Condition.Requires(set).DoesNotHaveLength(0);
+            a.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         [Description("Calling DoesNotHaveLength(1) with an non-generic collection containing one element should fail.")]
         public void CollectionDoesNotHaveLengthTest03()
         {
@@ -68,21 +68,22 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Queue queue = new Queue();
             queue.Enqueue(1);
 
-            Condition.Requires(queue).DoesNotHaveLength(1);
+            Action a = () => Condition.Requires(queue).DoesNotHaveLength(1);
+            a.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         [Description("Calling DoesNotHaveLength(1) with an typed collection containing one element should fail.")]
         public void CollectionDoesNotHaveLengthTest04()
         {
             // HashSet only implements generic ICollection<T>, no ICollection.
             HashSet<int> set = new HashSet<int> { 1 };
 
-            Condition.Requires(set).DoesNotHaveLength(1);
+            Action a = () => Condition.Requires(set).DoesNotHaveLength(1);
+            a.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling DoesNotHaveLength(0) with a collection containing one element should pass.")]
         public void CollectionDoesNotHaveLengthTest05()
         {
@@ -92,7 +93,7 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Condition.Requires(set).DoesNotHaveLength(0);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling DoesNotHaveLength with the condtionDescription parameter should pass.")]
         public void CollectionDoesNotHaveLengthTest06()
         {
@@ -101,7 +102,7 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Condition.Requires(list).DoesNotHaveLength(1, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing DoesNotHaveLength should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void CollectionDoesNotHaveLengthTest07()
         {
@@ -112,11 +113,11 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("the given list should not have 0 elements"));
+                Assert.True(ex.Message.Contains("the given list should not have 0 elements"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling DoesNotHaveLength(0) with an non-generic collection containing no elements should succeed when exceptions are suppressed.")]
         public void CollectionDoesNotHaveLengthTest08()
         {

@@ -25,16 +25,17 @@
 
 using System;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit; using System.ComponentModel;
+using FluentAssertions;
 
 namespace CuttingEdge.Conditions.UnitTests.CompareTests
 {
-    [TestClass]
+    
     public class CompareBooleanTests
     {
         #region IsTrue
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsTrue on Boolean x with 'x == true' should pass.")]
         public void IsTrueTest01()
         {
@@ -42,16 +43,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(b).IsTrue();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsTrue on Boolean x with 'x == false' should fail.")]
         public void IsTrueTest02()
         {
             bool b = false;
-            Condition.Requires(b).IsTrue();
+            Action a = () => Condition.Requires(b).IsTrue();
+            a.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsTrue on Boolean? x with 'x == true' should pass.")]
         public void IsTrueTest03()
         {
@@ -59,25 +61,27 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(b).IsTrue();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsTrue on Boolean? x with 'x == false' should fail.")]
         public void IsTrueTest04()
         {
             bool? b = false;
-            Condition.Requires(b).IsTrue();
+            Action a = () => Condition.Requires(b).IsTrue();
+            a.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
+        
         [Description("Calling IsTrue on Boolean? x with 'x == null' should fail.")]
         public void IsTrueTest05()
         {
             bool? b = null;
-            Condition.Requires(b).IsTrue();
+            Action a = () => Condition.Requires(b).IsTrue();
+            a.Should().Throw<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsTrue on Boolean x with 'x == true' and conditionDescription should pass.")]
         public void IsTrueTest06()
         {
@@ -85,7 +89,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(b).IsTrue(string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsTrue on Boolean? x with 'x == true' and conditionDescription should pass.")]
         public void IsTrueTest07()
         {
@@ -93,7 +97,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(b).IsTrue(string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsTrue on Boolean should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsTrueTest08()
         {
@@ -101,15 +105,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(b, "b").IsTrue("qwe {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("qwe b xyz"));
+                Assert.True(ex.Message.Contains("qwe b xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsTrue on Boolean? should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsTrueTest09()
         {
@@ -117,15 +121,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(b, "b").IsTrue("qwe {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("qwe b xyz"));
+                Assert.True(ex.Message.Contains("qwe b xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsTrue on Boolean x with 'x == false' should succeed when exceptions are suppressed.")]
         public void IsTrueTest10()
         {
@@ -137,7 +141,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsFalse
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsFalse on Boolean x with 'x == false' should pass.")]
         public void IsFalseTest01()
         {
@@ -145,16 +149,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(b).IsFalse();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsFalse on Boolean x with 'x == true' should fail.")]
         public void IsFalseTest02()
         {
             bool b = true;
-            Condition.Requires(b).IsFalse();
+            Action a = () => Condition.Requires(b).IsFalse();
+            a.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsFalse on Boolean? x with 'x == false' should pass.")]
         public void IsFalseTest03()
         {
@@ -162,25 +167,27 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(b).IsFalse();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsFalse on Boolean? x with 'x == true' should fail.")]
         public void IsFalseTest04()
         {
             bool? b = true;
-            Condition.Requires(b).IsFalse();
+            Action a = () => Condition.Requires(b).IsFalse();
+            a.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
+        
         [Description("Calling IsFalse on Boolean? x with 'x == null' should fail.")]
         public void IsFalseTest05()
         {
             bool? b = null;
-            Condition.Requires(b).IsFalse();
+            Action a = () => Condition.Requires(b).IsFalse();
+            a.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsFalse on Boolean x with 'x == false' and conditionDescription should pass.")]
         public void IsFalseTest06()
         {
@@ -188,7 +195,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(b).IsFalse(string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsFalse on Boolean? x with 'x == false' and conditionDescription should pass.")]
         public void IsFalseTest07()
         {
@@ -196,7 +203,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(b).IsFalse(string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsFalse on Boolean should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsFalseTest08()
         {
@@ -204,15 +211,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(b, "b").IsFalse("qwe {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("qwe b xyz"));
+                Assert.True(ex.Message.Contains("qwe b xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsFalse on Boolean? should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsFalseTest09()
         {
@@ -220,15 +227,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(b, "b").IsFalse("qwe {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("qwe b xyz"));
+                Assert.True(ex.Message.Contains("qwe b xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsFalse on Boolean x with 'x == true' should succeed when exceptions are suppressed.")]
         public void IsFalseTest10()
         {

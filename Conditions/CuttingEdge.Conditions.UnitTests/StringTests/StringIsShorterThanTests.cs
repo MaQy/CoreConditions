@@ -25,17 +25,18 @@
 
 using System;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit; using System.ComponentModel;
+using FluentAssertions;
 
 namespace CuttingEdge.Conditions.UnitTests.StringTests
 {
     /// <summary>
     /// Tests the ValidatorExtensions.IsShorterThan method.
     /// </summary>
-    [TestClass]
+    
     public class StringIsShorterThanTests
     {
-        [TestMethod]
+        [Fact]
         [Description("Calling IsShorterThan on string x with 'x.Length < upped bound' should pass.")]
         public void IsShorterThan01()
         {
@@ -43,16 +44,16 @@ namespace CuttingEdge.Conditions.UnitTests.StringTests
             Condition.Requires(a).IsShorterThan(5);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         [Description("Calling IsShorterThan on string x with 'x.Length = upped bound' should fail.")]
         public void IsShorterThan02()
         {
             string a = "test";
-            Condition.Requires(a).IsShorterThan(4);
+            Action action = () => Condition.Requires(a).IsShorterThan(4);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsShorterThan on string x with 'x.Length > upped bound' should fail.")]
         public void IsShorterThan03()
         {
@@ -60,16 +61,16 @@ namespace CuttingEdge.Conditions.UnitTests.StringTests
             Condition.Requires(a).IsShorterThan(1);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         [Description("Calling IsShorterThan on string x with 'x.Length > upped bound' should fail.")]
         public void IsShorterThan04()
         {
             string a = String.Empty;
-            Condition.Requires(a).IsShorterThan(0);
+            Action action = () => Condition.Requires(a).IsShorterThan(0);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsShorterThan on string x with 'null < upped bound' should pass.")]
         public void IsShorterThan05()
         {
@@ -77,17 +78,17 @@ namespace CuttingEdge.Conditions.UnitTests.StringTests
             Condition.Requires(a).IsShorterThan(1);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         [Description("Calling IsShorterThan on string x with 'null = upped bound' should fail.")]
         public void IsShorterThan06()
         {
             string a = null;
             // A null string is considered to have a length of 0.
-            Condition.Requires(a).IsShorterThan(0);
+            Action action = () => Condition.Requires(a).IsShorterThan(0);
+            action.Should().Throw<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsShorterThan with conditionDescription parameter should pass.")]
         public void IsShorterThan07()
         {
@@ -95,7 +96,7 @@ namespace CuttingEdge.Conditions.UnitTests.StringTests
             Condition.Requires(a).IsShorterThan(1, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsShorterThan should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsShorterThan08()
         {
@@ -103,15 +104,15 @@ namespace CuttingEdge.Conditions.UnitTests.StringTests
             try
             {
                 Condition.Requires(a, "a").IsShorterThan(1, "qwe {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("qwe a xyz"));
+                Assert.True(ex.Message.Contains("qwe a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsShorterThan on string x with 'x.Length = upped bound' should succeed when exceptions are suppressed.")]
         public void IsShorterThan09()
         {

@@ -25,26 +25,27 @@
 
 using System;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit; using System.ComponentModel;
+using FluentAssertions;
 
 namespace CuttingEdge.Conditions.UnitTests.EntryPointTests
 {
     /// <summary>
     /// Tests the Condition.Requires method.
     /// </summary>
-    [TestClass]
+    
     public class EntryPointRequiresTests
     {
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         [Description("Checks whether the validator returned from Requires() will fail with an ArgumentException.")]
         public void RequiresTest01()
         {
             int a = 3;
-            Condition.Requires(a).IsEqualTo(4);
+            Action action = () => Condition.Requires(a).IsEqualTo(4);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Checks whether the parameterName on the Requires() will be used.")]
         public void RequiresTest02()
         {
@@ -55,11 +56,11 @@ namespace CuttingEdge.Conditions.UnitTests.EntryPointTests
             }
             catch (Exception ex)
             {
-                Assert.AreEqual(true, ex.Message.Contains("foobar"));
+                Assert.Equal(true, ex.Message.Contains("foobar"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Checks whether supplying an invalid ConstraintViolationType results in the return of the default exception.")]
         public void RequiresTest03()
         {
@@ -72,20 +73,10 @@ namespace CuttingEdge.Conditions.UnitTests.EntryPointTests
             const string AssertMessage = "RequiresValidator.ThrowException should throw an " +
                 "ArgumentException when an invalid ConstraintViolationType is supplied.";
 
-            try
-            {
-                requiresValidator.ThrowException(ValidCondition, ValidAdditionalMessage,
-                    InvalidConstraintViolationType);
+            Action action = () => requiresValidator.ThrowException(ValidCondition, ValidAdditionalMessage,
+                InvalidConstraintViolationType);
 
-                Assert.Fail(AssertMessage);
-            }
-            catch (Exception ex)
-            {
-                Assert.AreEqual(typeof(ArgumentException), ex.GetType(), AssertMessage);
-
-                Assert.IsTrue(ex.Message.Contains(ValidCondition),
-                    "The exception message does not contain the condition.");
-            }
+            action.Should().Throw<ArgumentException>(AssertMessage).Which.Message.Should().Contain(ValidCondition, "The exception message does not contain the condition.");
         }
     }
 }

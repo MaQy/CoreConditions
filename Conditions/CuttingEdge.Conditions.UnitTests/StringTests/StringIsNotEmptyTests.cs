@@ -25,26 +25,27 @@
 
 using System;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit; using System.ComponentModel;
+using FluentAssertions;
 
 namespace CuttingEdge.Conditions.UnitTests.StringTests
 {
     /// <summary>
     /// Tests the ValidatorExtensions.IsNotEmpty method.
     /// </summary>
-    [TestClass]
+    
     public class StringIsNotEmptyTests
     {
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         [Description("Calling IsNotEmpty on string x with 'x == String.Empty' should fail.")]
         public void IsStringNotEmptyTest1()
         {
             string s = String.Empty;
-            Condition.Requires(s).IsNotEmpty();
+            Action action = () => Condition.Requires(s).IsNotEmpty();
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEmpty on string x with 'x != String.Empty' should pass.")]
         public void IsStringNotEmptyTest2()
         {
@@ -52,7 +53,7 @@ namespace CuttingEdge.Conditions.UnitTests.StringTests
             Condition.Requires(s).IsNotEmpty();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEmpty on string x with 'x != String.Empty' should pass.")]
         public void IsStringNotEmptyTest3()
         {
@@ -60,7 +61,7 @@ namespace CuttingEdge.Conditions.UnitTests.StringTests
             Condition.Requires(s).IsNotEmpty();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEmpty with conditionDescription parameter should pass.")]
         public void IsStringNotEmptyTest4()
         {
@@ -68,7 +69,7 @@ namespace CuttingEdge.Conditions.UnitTests.StringTests
             Condition.Requires(a).IsNotEmpty(string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotEmpty should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsStringNotEmptyTest5()
         {
@@ -76,15 +77,15 @@ namespace CuttingEdge.Conditions.UnitTests.StringTests
             try
             {
                 Condition.Requires(a, "a").IsNotEmpty("qwe {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("qwe a xyz"));
+                Assert.True(ex.Message.Contains("qwe a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEmpty on string x with 'x == String.Empty' should succeed when exceptions are suppressed.")]
         public void IsStringNotEmptyTest6()
         {

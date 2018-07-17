@@ -25,17 +25,18 @@
 
 using System;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit; using System.ComponentModel;
+using FluentAssertions;
 
 namespace CuttingEdge.Conditions.UnitTests.StringTests
 {
     /// <summary>
     /// Tests the ValidatorExtensions.HasLength method.
     /// </summary>
-    [TestClass]
+    
     public class StringHasLengthTests
     {
-        [TestMethod]
+        [Fact]
         [Description("Calling HasLength on string x with 'x.Length = expected length' should pass.")]
         public void HasLengthTest01()
         {
@@ -43,16 +44,16 @@ namespace CuttingEdge.Conditions.UnitTests.StringTests
             Condition.Requires(a).HasLength(4);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         [Description("Calling HasLength on string x with 'x.Length != expected length' should fail.")]
         public void HasLengthTest02()
         {
             string a = "test";
-            Condition.Requires(a).HasLength(3);
+            Action action = () => Condition.Requires(a).HasLength(3);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling HasLength on string x with 'x.Length = expected length' should pass.")]
         public void HasLengthTest03()
         {
@@ -60,16 +61,16 @@ namespace CuttingEdge.Conditions.UnitTests.StringTests
             Condition.Requires(a).HasLength(0);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         [Description("Calling HasLength on string x with 'x.Length != expected length' should fail.")]
         public void HasLengthTest04()
         {
             string a = String.Empty;
-            Condition.Requires(a).HasLength(1);
+            Action action = () => Condition.Requires(a).HasLength(1);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling HasLength on string x with 'null = expected length' should pass.")]
         public void HasLengthTest05()
         {
@@ -78,17 +79,17 @@ namespace CuttingEdge.Conditions.UnitTests.StringTests
             Condition.Requires(a).HasLength(0);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         [Description("Calling HasLength on string x with 'null != expected length' should fail.")]
         public void HasLengthTest06()
         {
             string a = null;
             // A null value will never be found
-            Condition.Requires(a).HasLength(1);
+            Action action = () => Condition.Requires(a).HasLength(1);
+            action.Should().Throw<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling HasLength with conditionDescription parameter should pass.")]
         public void HasLengthTest07()
         {
@@ -96,7 +97,7 @@ namespace CuttingEdge.Conditions.UnitTests.StringTests
             Condition.Requires(a).HasLength(0, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing HasLength should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void HasLengthTest08()
         {
@@ -104,15 +105,15 @@ namespace CuttingEdge.Conditions.UnitTests.StringTests
             try
             {
                 Condition.Requires(a, "a").HasLength(1, "qwe {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("qwe a xyz"));
+                Assert.True(ex.Message.Contains("qwe a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling HasLength on string x with 'x.Length != expected length' should succeed when exceptions are suppressed.")]
         public void HasLengthTest09()
         {

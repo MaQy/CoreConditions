@@ -27,14 +27,14 @@
 // with 'XXX'.
 using System;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit; using System.ComponentModel;
 
 namespace CuttingEdge.Conditions.UnitTests.CompareTests
 {
-    [TestClass]
+    
     public class CompareXXXTests
     {
-        private static readonly XXX One = 1;
+        /* private static readonly XXX One = 1;
         private static readonly XXX Two = 2;
         private static readonly XXX Three = 3;
         private static readonly XXX Four = 4;
@@ -42,7 +42,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsXXXInRange
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         [Description("Calling IsInRange on XXX x with 'lower bound > x < upper bound' should fail.")]
         public void IsXXXInRangeTest01()
@@ -51,7 +51,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsInRange(Two, Four);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on XXX x with 'lower bound = x < upper bound' should pass.")]
         public void IsXXXInRangeTest02()
         {
@@ -59,7 +59,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsInRange(Two, Four);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on XXX x with 'lower bound < x < upper bound' should pass.")]
         public void IsXXXInRangeTest03()
         {
@@ -67,7 +67,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsInRange(Two, Four);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on XXX x with 'lower bound < x = upper bound' should pass.")]
         public void IsXXXInRangeTest04()
         {
@@ -75,7 +75,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsInRange(Two, Four);
         }
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         [Description("Calling IsInRange on XXX x with 'lower bound < x > upper bound' should fail.")]
         public void IsXXXInRangeTest05()
@@ -84,7 +84,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsInRange(Two, Four);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on XXX x with conditionDescription should pass.")]
         public void IsXXXInRangeTest06()
         {
@@ -92,7 +92,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsInRange(Two, Four, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsInRange on XXX should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsXXXInRangeTest07()
         {
@@ -100,15 +100,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsInRange(Two, Four, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on XXX x with 'lower bound > x < upper bound' should succeed when exceptions are suppressed.")]
         public void IsXXXInRangeTest08()
         {
@@ -120,7 +120,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsXXXNotInRange
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotInRange on XXX x with 'lower bound > x < upper bound' should pass.")]
         public void IsXXXNotInRangeTest01()
         {
@@ -128,7 +128,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotInRange(Two, Four);
         }
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentException))]
         [Description("Calling IsNotInRange on XXX x with 'lower bound = x < upper bound' should fail.")]
         public void IsXXXNotInRangeTest02()
@@ -137,7 +137,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotInRange(Two, Four);
         }
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentException))]
         [Description("Calling IsNotInRange on XXX x with 'lower bound < x < upper bound' should fail.")]
         public void IsXXXNotInRangeTest03()
@@ -146,7 +146,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotInRange(Two, Four);
         }
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentException))]
         [Description("Calling IsNotInRange on XXX x with 'lower bound < x = upper bound' should fail.")]
         public void IsXXXNotInRangeTest04()
@@ -155,7 +155,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotInRange(Two, Four);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotInRange on XXX x with 'lower bound < x > upper bound' should pass.")]
         public void IsXXXNotInRangeTest05()
         {
@@ -163,7 +163,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotInRange(Two, Four);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotInRange on XXX x with conditionDescription should pass.")]
         public void IsXXXNotInRangeTest06()
         {
@@ -171,7 +171,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotInRange(Two, Four, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotInRange on XXX should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsXXXNotInRangeTest07()
         {
@@ -179,15 +179,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotInRange(Two, Four, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotInRange on XXX x with 'lower bound = x < upper bound' should succeed when exceptions are suppressed.")]
         public void IsXXXNotInRangeTest08()
         {
@@ -199,7 +199,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsXXXGreaterThan
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         [Description("Calling IsGreaterThan on XXX x with 'lower bound < x' should fail.")]
         public void IsXXXGreaterThanTest01()
@@ -208,7 +208,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterThan(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         [Description("Calling IsGreaterThan on XXX x with 'lower bound = x' should fail.")]
         public void IsXXXGreaterThanTest02()
@@ -217,7 +217,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterThan(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterThan on XXX x with 'lower bound < x' should pass.")]
         public void IsXXXGreaterThanTest03()
         {
@@ -225,7 +225,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterThan(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterThan on XXX x with conditionDescription should pass.")]
         public void IsXXXGreaterThanTest04()
         {
@@ -233,7 +233,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterThan(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsGreaterThan on XXX should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsXXXGreaterThanTest05()
         {
@@ -241,15 +241,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsGreaterThan(Three, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterThan on XXX x with 'lower bound < x' should succeed when exceptions are suppressed.")]
         public void IsXXXGreaterThanTest06()
         {
@@ -261,7 +261,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsXXXNotGreaterThan
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterThan on XXX x with 'x < upper bound' should pass.")]
         public void IsXXXNotGreaterThanTest01()
         {
@@ -269,7 +269,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterThan(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterThan on XXX x with 'x = upper bound' should pass.")]
         public void IsXXXNotGreaterThanTest02()
         {
@@ -277,7 +277,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterThan(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         [Description("Calling IsNotGreaterThan on XXX x with 'x > upper bound' should fail.")]
         public void IsXXXNotGreaterThanTest03()
@@ -286,7 +286,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterThan(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterThan on XXX x with conditionDescription should pass.")]
         public void IsXXXNotGreaterThanTest04()
         {
@@ -294,7 +294,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterThan(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotGreaterThan on XXX should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsXXXNotGreaterThanTest05()
         {
@@ -302,15 +302,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotGreaterThan(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterThan on XXX x with 'x > upper bound' should succeed when exceptions are suppressed.")]
         public void IsXXXNotGreaterThanTest06()
         {
@@ -322,7 +322,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsXXXGreaterOrEqual
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         [Description("Calling IsGreaterOrEqual on XXX x with 'lower bound > x' should fail.")]
         public void IsXXXGreaterOrEqualTest01()
@@ -331,7 +331,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterOrEqual(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterOrEqual on XXX x with 'lower bound = x' should pass.")]
         public void IsXXXGreaterOrEqualTest02()
         {
@@ -339,7 +339,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterOrEqual(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterOrEqual on XXX x with 'lower bound < x' should pass.")]
         public void IsXXXGreaterOrEqualTest03()
         {
@@ -347,7 +347,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterOrEqual(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterOrEqual on XXX x with conditionDescription should pass.")]
         public void IsXXXGreaterOrEqualTest04()
         {
@@ -355,7 +355,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterOrEqual(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsGreaterOrEqual on XXX should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsXXXGreaterOrEqualTest05()
         {
@@ -363,15 +363,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsGreaterOrEqual(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterOrEqual on XXX x with 'lower bound > x' should succeed when exceptions are suppressed.")]
         public void IsXXXGreaterOrEqualTest06()
         {
@@ -383,7 +383,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsXXXNotGreaterOrEqual
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterOrEqual on XXX x with 'x < upper bound' should pass.")]
         public void IsXXXNotGreaterOrEqualTest01()
         {
@@ -391,7 +391,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterOrEqual(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         [Description("Calling IsNotGreaterOrEqual on XXX x with 'x = upper bound' should fail.")]
         public void IsXXXNotGreaterOrEqualTest02()
@@ -400,7 +400,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterOrEqual(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         [Description("Calling IsNotGreaterOrEqual on XXX x with 'x > upper bound' should fail.")]
         public void IsXXXNotGreaterOrEqualTest03()
@@ -409,7 +409,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterOrEqual(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterOrEqual on XXX x with conditionDescription should pass.")]
         public void IsXXXNotGreaterOrEqualTest04()
         {
@@ -417,7 +417,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterOrEqual(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotGreaterOrEqual on XXX should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsXXXNotGreaterOrEqualTest05()
         {
@@ -425,15 +425,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotGreaterOrEqual(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterOrEqual on XXX x with 'x = upper bound' should succeed when exceptions are suppressed.")]
         public void IsXXXNotGreaterOrEqualTest06()
         {
@@ -445,7 +445,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsXXXLessThan
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessThan on XXX x with 'x < upper bound' should pass.")]
         public void IsXXXLessThanTest01()
         {
@@ -453,7 +453,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessThan(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         [Description("Calling IsLessThan on XXX x with 'x = upper bound' should fail.")]
         public void IsXXXLessThanTest02()
@@ -462,7 +462,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessThan(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         [Description("Calling IsLessThan on XXX x with 'x > upper bound' should fail.")]
         public void IsXXXLessThanTest03()
@@ -471,7 +471,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessThan(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessThan on XXX x with conditionDescription should pass.")]
         public void IsXXXLessThanTest04()
         {
@@ -479,7 +479,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessThan(Three, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsLessThan on XXX should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsXXXLessThanTest05()
         {
@@ -487,15 +487,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsLessThan(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessThan on XXX x with 'x = upper bound' should succeed when exceptions are suppressed.")]
         public void IsXXXLessThanTest06()
         {
@@ -507,7 +507,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsXXXNotLessThan
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         [Description("Calling IsNotLessThan on XXX x with 'lower bound > x' should fail.")]
         public void IsXXXNotLessThanTest01()
@@ -516,7 +516,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessThan(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessThan on XXX x with 'lower bound = x' should pass.")]
         public void IsXXXNotLessThanTest02()
         {
@@ -524,7 +524,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessThan(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessThan on XXX x with 'lower bound < x' should pass.")]
         public void IsXXXNotLessThanTest03()
         {
@@ -532,7 +532,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessThan(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessThan on XXX x with conditionDescription should pass.")]
         public void IsXXXNotLessThanTest04()
         {
@@ -540,7 +540,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessThan(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotLessThan on XXX should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsXXXNotLessThanTest05()
         {
@@ -548,15 +548,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotLessThan(Three, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessThan on XXX x with 'lower bound > x' should succeed when exceptions are suppressed.")]
         public void IsXXXNotLessThanTest06()
         {
@@ -568,7 +568,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsXXXLessOrEqual
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessOrEqual on XXX x with 'x < upper bound' should pass.")]
         public void IsXXXLessOrEqualTest01()
         {
@@ -576,7 +576,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessOrEqual(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessOrEqual on XXX x with 'x = upper bound' should pass.")]
         public void IsXXXLessOrEqualTest02()
         {
@@ -584,7 +584,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessOrEqual(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         [Description("Calling IsLessOrEqual on XXX x with 'x > upper bound' should fail.")]
         public void IsXXXLessOrEqualTest03()
@@ -593,7 +593,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessOrEqual(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessOrEqual on XXX x with conditionDescription should pass.")]
         public void IsXXXLessOrEqualTest04()
         {
@@ -601,7 +601,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessOrEqual(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsLessOrEqual on XXX should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsXXXLessOrEqualTest05()
         {
@@ -609,15 +609,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsLessOrEqual(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessOrEqual on XXX x with 'x > upper bound' should succeed when exceptions are suppressed.")]
         public void IsXXXLessOrEqualTest06()
         {
@@ -629,7 +629,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsXXXNotLessOrEqual
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         [Description("Calling IsNotLessOrEqual on XXX x with 'lower bound > x' should fail.")]
         public void IsXXXNotLessOrEqualTest01()
@@ -638,7 +638,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessOrEqual(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         [Description("Calling IsNotLessOrEqual on XXX x with 'lower bound = x' should fail.")]
         public void IsXXXNotLessOrEqualTest02()
@@ -647,7 +647,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessOrEqual(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessOrEqual on XXX x with 'lower bound < x' should pass.")]
         public void IsXXXNotLessOrEqualTest03()
         {
@@ -655,7 +655,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessOrEqual(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessOrEqual on XXX x with conditionDescription should pass.")]
         public void IsXXXNotLessOrEqualTest04()
         {
@@ -663,7 +663,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessOrEqual(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotLessOrEqual on XXX should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsXXXNotLessOrEqualTest05()
         {
@@ -671,15 +671,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotLessOrEqual(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessOrEqual on XXX x with 'lower bound > x' should succeed when exceptions are suppressed.")]
         public void IsXXXNotLessOrEqualTest06()
         {
@@ -691,7 +691,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsXXXEqualTo
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentException))]
         [Description("Calling IsEqualTo on XXX x with 'x < other' should fail.")]
         public void IsXXXEqualToTest01()
@@ -700,7 +700,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsEqualTo(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsEqualTo on XXX x with 'x = other' should pass.")]
         public void IsXXXEqualToTest02()
         {
@@ -708,7 +708,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsEqualTo(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentException))]
         [Description("Calling IsEqualTo on XXX x with 'x > other' should fail.")]
         public void IsXXXEqualToTest03()
@@ -717,7 +717,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsEqualTo(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsEqualTo on XXX x with conditionDescription should pass.")]
         public void IsXXXEqualToTest04()
         {
@@ -725,7 +725,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsEqualTo(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsEqualTo on XXX should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsXXXEqualToTest05()
         {
@@ -733,15 +733,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsEqualTo(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsEqualTo on XXX x with 'x < other' should succeed when exceptions are suppressed.")]
         public void IsXXXEqualToTest06()
         {
@@ -753,7 +753,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsXXXNotEqualTo
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEqualTo on XXX x with 'x < other' should pass.")]
         public void IsXXXNotEqualToTest01()
         {
@@ -761,7 +761,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotEqualTo(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [ExpectedException(typeof(ArgumentException))]
         [Description("Calling IsNotEqualTo on XXX x with 'x = other' should fail.")]
         public void IsXXXNotEqualToTest02()
@@ -770,7 +770,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotEqualTo(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEqualTo on XXX x with 'x > other' should pass.")]
         public void IsXXXNotEqualToTest03()
         {
@@ -778,7 +778,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotEqualTo(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEqualTo on XXX x with conditionDescription should pass.")]
         public void IsXXXNotEqualToTest04()
         {
@@ -786,7 +786,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotEqualTo(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotEqualTo on XXX should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsXXXNotEqualToTest05()
         {
@@ -794,15 +794,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotEqualTo(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEqualTo on XXX x with 'x = other' should succeed when exceptions are suppressed.")]
         public void IsXXXNotEqualToTest06()
         {
@@ -810,6 +810,6 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).SuppressExceptionsForTest().IsNotEqualTo(Two);
         }
 
-        #endregion // IsXXXNotEqualTo
+        #endregion // IsXXXNotEqualTo*/
     }
 }

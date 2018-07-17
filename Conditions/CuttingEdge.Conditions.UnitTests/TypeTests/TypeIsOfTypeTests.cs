@@ -27,27 +27,28 @@ using System;
 using System.Collections;
 using System.Collections.ObjectModel;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit; using System.ComponentModel;
+using FluentAssertions;
 
 namespace CuttingEdge.Conditions.UnitTests.TypeTests
 {
     /// <summary>
     /// Tests the ValidatorExtensions.IsOfType method.
     /// </summary>
-    [TestClass]
+    
     public class TypeIsOfTypeTests
     {
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         [Description("Calling IsOfType on null reference should fail.")]
         public void IsOfTypeTest00()
         {
             object o = null;
 
-            Condition.Requires(o).IsOfType(typeof(EventArgs));
+            Action action = () => Condition.Requires(o).IsOfType(typeof(EventArgs));
+            action.Should().Throw<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsOfType on a down-casted object tested to be the down-casted type should pass.")]
         public void IsOfTypeTest01()
         {
@@ -56,7 +57,7 @@ namespace CuttingEdge.Conditions.UnitTests.TypeTests
             Condition.Requires(o).IsOfType(typeof(object));
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsOfType on a down-casted object tested to be the real type should pass.")]
         public void IsOfTypeTest02()
         {
@@ -65,7 +66,7 @@ namespace CuttingEdge.Conditions.UnitTests.TypeTests
             Condition.Requires(o).IsOfType(typeof(string));
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsOfType on a object tested to be it's parent type should pass.")]
         public void IsOfTypeTest03()
         {
@@ -74,7 +75,7 @@ namespace CuttingEdge.Conditions.UnitTests.TypeTests
             Condition.Requires(s).IsOfType(typeof(object));
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsOfType on a object tested to be it's own type should pass.")]
         public void IsOfTypeTest04()
         {
@@ -83,7 +84,7 @@ namespace CuttingEdge.Conditions.UnitTests.TypeTests
             Condition.Requires(s).IsOfType(typeof(string));
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsOfType on a System.Object tested to be System.Object should pass.")]
         public void IsOfTypeTest05()
         {
@@ -92,27 +93,29 @@ namespace CuttingEdge.Conditions.UnitTests.TypeTests
             Condition.Requires(o).IsOfType(typeof(object));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsOfType on a down-casted object tested to be a non comparable type should fail.")]
         public void IsOfTypeTest06()
         {
             object o = "String";
 
-            Condition.Requires(o).IsOfType(typeof(EventArgs));
+            Action action = () => Condition.Requires(o).IsOfType(typeof(EventArgs));
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsOfType on a object tested to be a non comparable type should fail.")]
         public void IsOfTypeTest07()
         {
             string s = "String";
 
-            Condition.Requires(s).IsOfType(typeof(EventArgs));
+            Action action = () => Condition.Requires(s).IsOfType(typeof(EventArgs));
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsOfType on an object implementing ICollection tested to implement ICollection should pass.")]
         public void IsOfTypeTest08()
         {
@@ -121,17 +124,18 @@ namespace CuttingEdge.Conditions.UnitTests.TypeTests
             Condition.Requires(o).IsOfType(typeof(ICollection));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsOfType on an enum tested to implement ICollection should fail with an ArgumentException.")]
         public void IsOfTypeTest09()
         {
             object day = DayOfWeek.Monday;
 
-            Condition.Requires(day).IsOfType(typeof(ICollection));
+            Action action = () => Condition.Requires(day).IsOfType(typeof(ICollection));
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsOfType on null reference should succeed when exceptions are suppressed.")]
         public void IsOfTypeTest10()
         {

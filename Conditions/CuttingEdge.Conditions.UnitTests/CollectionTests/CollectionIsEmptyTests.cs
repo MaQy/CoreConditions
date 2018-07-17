@@ -27,17 +27,18 @@ using System;
 using System.Collections;
 using System.Collections.ObjectModel;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit; using System.ComponentModel;
+using FluentAssertions;
 
 namespace CuttingEdge.Conditions.UnitTests.CollectionTests
 {
     /// <summary>
     /// Tests the ValidatorExtensions.IsEmpty method.
     /// </summary>
-    [TestClass]
+    
     public class CollectionIsEmptyTests
     {
-        [TestMethod]
+        [Fact]
         [Description("Calling IsEmpty on a null reference to ICollection should pass.")]
         public void IsEmptyTest01()
         {
@@ -45,7 +46,7 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Condition.Requires(c).IsEmpty();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsEmpty on an empty collection should pass.")]
         public void IsEmptyTest02()
         {
@@ -53,7 +54,7 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Condition.Requires(c).IsEmpty();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsEmpty on a null reference to IEnumerable should pass.")]
         public void IsEmptyTest03()
         {
@@ -61,7 +62,7 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Condition.Requires(c).IsEmpty();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsEmpty on an empty IEnumerable should pass.")]
         public void IsEmptyTest04()
         {
@@ -69,25 +70,25 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Condition.Requires(c).IsEmpty();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         [Description("Calling IsEmpty on an non empty ICollection should fail.")]
         public void IsEmptyTest05()
         {
             Collection<int> c = new Collection<int> { 1 };
-            Condition.Requires(c).IsEmpty();
+            Action a = () => Condition.Requires(c).IsEmpty();
+            a.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         [Description("Calling IsEmpty on an non empty IEnumerable should fail.")]
         public void IsEmptyTest06()
         {
             NonEmptyTestEnumerable c = new NonEmptyTestEnumerable();
-            Condition.Requires(c).IsEmpty();
+            Action a = () => Condition.Requires(c).IsEmpty();
+            a.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsEmpty with the conditionDescription argument should pass.")]
         public void IsEmptyTest07()
         {
@@ -95,7 +96,7 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Condition.Requires(c).IsEmpty("condition should hold");
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsEmpty with a non generic collection should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsEmptyTest08()
         {
@@ -106,11 +107,11 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("c should have one, two or at least some elements :-)"));
+                Assert.True(ex.Message.Contains("c should have one, two or at least some elements :-)"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsEmpty on an non empty IEnumerable should succeed when exceptions are suppressed.")]
         public void IsEmptyTest09()
         {

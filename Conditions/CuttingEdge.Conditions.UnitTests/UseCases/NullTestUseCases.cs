@@ -25,14 +25,14 @@
 
 using System;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit; using System.ComponentModel;
 
 namespace CuttingEdge.Conditions.UnitTests.UseCases
 {
-    [TestClass]
+    
     public class NullTestUseCases
     {
-        [TestMethod]
+        [Fact]
         [Description("Use Case code should match with use of IsNotNull.")]
         public void CheckIsNotNull01()
         {
@@ -53,7 +53,7 @@ namespace CuttingEdge.Conditions.UnitTests.UseCases
             });
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Use Case code should match with use of IsNotNull.")]
         public void CheckIsNotNull02()
         {
@@ -74,7 +74,7 @@ namespace CuttingEdge.Conditions.UnitTests.UseCases
             });
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Use Case code should match with use of IsNull.")]
         public void CheckIsNull01()
         {
@@ -95,7 +95,7 @@ namespace CuttingEdge.Conditions.UnitTests.UseCases
             });
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Use Case code should match with use of IsNull.")]
         public void CheckIsNull02()
         {

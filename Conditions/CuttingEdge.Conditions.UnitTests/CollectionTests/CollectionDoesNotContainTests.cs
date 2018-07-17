@@ -28,14 +28,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit; using System.ComponentModel;
+using FluentAssertions;
 
 namespace CuttingEdge.Conditions.UnitTests.CollectionTests
 {
     /// <summary>
     /// Tests the ValidatorExtensions.DoesNotContain method.
     /// </summary>
-    [TestClass]
+    
     public class CollectionDoesNotContainTests
     {
         // Calling DoesNotContain on an array should compile.
@@ -59,7 +60,7 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Condition.Requires(c).DoesNotContain(1);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling DoesNotContain on null reference should pass.")]
         public void CollectionDoesNotContainTest01()
         {
@@ -67,7 +68,7 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Condition.Requires(c).DoesNotContain(1);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling DoesNotContain on an empty collection should pass.")]
         public void CollectionDoesNotContainTest02()
         {
@@ -75,16 +76,16 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Condition.Requires(c).DoesNotContain(1);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         [Description("Calling DoesNotContain on an Collection that contains the tested value should fail.")]
         public void CollectionDoesNotContainTest03()
         {
             Collection<int> c = new Collection<int> { 1 };
-            Condition.Requires(c).DoesNotContain(1);
+            Action a = () => Condition.Requires(c).DoesNotContain(1);
+            a.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling DoesNotContain on an ArrayList that does not contain the tested value should pass.")]
         public void CollectionDoesNotContainTest04()
         {
@@ -92,16 +93,16 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Condition.Requires(c).DoesNotContain((object)5);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         [Description("Calling DoesNotContain on an ArrayList that contains the tested value should fail.")]
         public void CollectionDoesNotContainTest05()
         {
             ArrayList c = new ArrayList { 1, 2, 3, 4 };
-            Condition.Requires(c).DoesNotContain((object)4);
+            Action a = () => Condition.Requires(c).DoesNotContain((object)4);
+            a.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling the generic DoesNotContain with an optional condition description parameter should pass.")]
         public void CollectionDoesNotContainTest06()
         {
@@ -109,7 +110,7 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Condition.Requires(c).DoesNotContain(1, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing generic DoesNotContain should throw an exception with an exception message containing the supplied parameterized condition description.")]
         public void CollectionDoesNotContainTest07()
         {
@@ -120,11 +121,11 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("c contains the value 1 while it shouldn't"));
+                Assert.True(ex.Message.Contains("c contains the value 1 while it shouldn't"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling the non-generic DoesNotContain with an optional condition description parameter should pass.")]
         public void CollectionDoesNotContainTest08()
         {
@@ -132,7 +133,7 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Condition.Requires(c).DoesNotContain((object)5, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing non-generic DoesNotContain should throw an exception with an exception message containing the supplied parameterized condition description.")]
         public void CollectionDoesNotContainTest09()
         {
@@ -143,11 +144,11 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("c contains the value 1 while it shouldn't"));
+                Assert.True(ex.Message.Contains("c contains the value 1 while it shouldn't"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling the generic DoesNotContain with an element that's not in the list while enumerating it, should fail.")]
         public void CollectionDoesNotContainTest10()
         {
@@ -155,17 +156,17 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             HashSet<int> set = new HashSet<int>(new[] { 1, 3 }, new OddEqualityComparer());
 
             // Because of the use of OddEqualityComparer, the collection only contains the value 1.
-            Assert.IsTrue(set.Count == 1);
+            Assert.True(set.Count == 1);
             // Because of the use of OddEqualityComparer, the set contains both 1 and 3.
-            Assert.IsTrue(set.Contains(1), "OddEqualityComparer is implemented incorrectly.");
-            Assert.IsTrue(set.Contains(3), "OddEqualityComparer is implemented incorrectly.");
+            Assert.True(set.Contains(1), "OddEqualityComparer is implemented incorrectly.");
+            Assert.True(set.Contains(3), "OddEqualityComparer is implemented incorrectly.");
 
             // DoesNotContain should succeed, because 3 should not be in the list while iterating over it.
             // Call the generic DoesNotContain<T>(Validator<T>, T) overload.
             Condition.Requires(set).DoesNotContain(3);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling the non-generic DoesNotContain with an element that's not in the list while enumerating it, should fail.")]
         public void CollectionDoesNotContainTest11()
         {
@@ -173,17 +174,17 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             HashSet<int> set = new HashSet<int>(new[] { 1, 3 }, new OddEqualityComparer());
 
             // Because of the use of OddEqualityComparer, the collection only contains the value 1.
-            Assert.IsTrue(set.Count == 1);
+            Assert.True(set.Count == 1);
             // Because of the use of OddEqualityComparer, the set contains both 1 and 3.
-            Assert.IsTrue(set.Contains(1), "OddEqualityComparer is implemented incorrectly.");
-            Assert.IsTrue(set.Contains(3), "OddEqualityComparer is implemented incorrectly.");
+            Assert.True(set.Contains(1), "OddEqualityComparer is implemented incorrectly.");
+            Assert.True(set.Contains(3), "OddEqualityComparer is implemented incorrectly.");
 
             // DoesNotContain should succeed, because 3 should not be in the list while iterating over it.
             // Call the non-generic DoesNotContain<T>(Validator<T>, object) overload.
             Condition.Requires(set).DoesNotContain((object)3);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling DoesNotContain on an Collection that contains the tested value should succeed when exceptions are suppressed.")]
         public void CollectionDoesNotContainTest12()
         {

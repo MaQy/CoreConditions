@@ -25,17 +25,18 @@
 
 using System;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit; using System.ComponentModel;
+using FluentAssertions;
 
 namespace CuttingEdge.Conditions.UnitTests.StringTests
 {
     /// <summary>
     /// Tests the ValidatorExtensions.Contains method.
     /// </summary>
-    [TestClass]
+    
     public class StringContainsTests
     {
-        [TestMethod]
+        [Fact]
         [Description("Calling Contains on string x with 'x Contains x' should pass.")]
         public void ContainsTest01()
         {
@@ -43,7 +44,7 @@ namespace CuttingEdge.Conditions.UnitTests.StringTests
             Condition.Requires(a).Contains(a);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling Contains on string x (\"test\") with 'x Contains \"es\"' should pass.")]
         public void ContainsTest02()
         {
@@ -51,17 +52,17 @@ namespace CuttingEdge.Conditions.UnitTests.StringTests
             Condition.Requires(a).Contains("es");
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         [Description("Calling Contains on string x (\"test\") with 'x Contains null' should fail.")]
         public void ContainsTest03()
         {
             string a = "test";
             // A null value will never be found
-            Condition.Requires(a).Contains(null);
+            Action action = () => Condition.Requires(a).Contains(null);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling Contains on string x (\"test\") with 'x Contains \"\"' should pass.")]
         public void ContainsTest04()
         {
@@ -70,17 +71,17 @@ namespace CuttingEdge.Conditions.UnitTests.StringTests
             Condition.Requires(a).Contains(String.Empty);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         [Description("Calling Contains on string x (null) with 'x Contains \"\"' should fail.")]
         public void ContainsTest05()
         {
             string a = null;
             // A null string only contains other null strings.
-            Condition.Requires(a).Contains(String.Empty);
+            Action action = () => Condition.Requires(a).Contains(String.Empty);
+            action.Should().Throw<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling Contains on string x (null) with 'x Contains null' should pass.")]
         public void ContainsTest06()
         {
@@ -88,16 +89,16 @@ namespace CuttingEdge.Conditions.UnitTests.StringTests
             Condition.Requires(a).Contains(null);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         [Description("Calling Contains on string x (\"test\") with 'x Contains \"test me\"' should fail.")]
         public void ContainsTest07()
         {
             string a = "test";
-            Condition.Requires(a).Contains("test me");
+            Action action = () => Condition.Requires(a).Contains("test me");
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling Contains on string x (\"test\") with 'x Contains \"test me\"' should fail with a correct exception message.")]
         public void ContainsTest08()
         {
@@ -112,11 +113,11 @@ namespace CuttingEdge.Conditions.UnitTests.StringTests
             }
             catch (Exception ex)
             {
-                Assert.AreEqual(expectedMessage, ex.Message);
+                Assert.Equal(expectedMessage, ex.Message);
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling Contains with conditionDescription parameter should pass.")]
         public void ContainsTest09()
         {
@@ -124,7 +125,7 @@ namespace CuttingEdge.Conditions.UnitTests.StringTests
             Condition.Requires(a).Contains(null, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing Contains should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void ContainsTest10()
         {
@@ -132,15 +133,15 @@ namespace CuttingEdge.Conditions.UnitTests.StringTests
             try
             {
                 Condition.Requires(a, "a").Contains("test me", "qwe {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("qwe a xyz"));
+                Assert.True(ex.Message.Contains("qwe a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling Contains on string x (\"test\") with 'x Contains null' should succeed when exceptions are suppressed.")]
         public void ContainsTest11()
         {

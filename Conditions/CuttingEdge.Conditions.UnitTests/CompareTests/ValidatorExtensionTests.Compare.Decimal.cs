@@ -27,11 +27,12 @@
 // with 'Decimal'.
 using System;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit; using System.ComponentModel;
+using FluentAssertions;
 
 namespace CuttingEdge.Conditions.UnitTests.CompareTests
 {
-    [TestClass]
+    
     public class CompareDecimalTests
     {
         private static readonly Decimal One = 1;
@@ -42,16 +43,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsDecimalInRange
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsInRange on Decimal x with 'lower bound > x < upper bound' should fail.")]
         public void IsDecimalInRangeTest01()
         {
             Decimal a = One;
-            Condition.Requires(a).IsInRange(Two, Four);
+            Action action = () => Condition.Requires(a).IsInRange(Two, Four);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on Decimal x with 'lower bound = x < upper bound' should pass.")]
         public void IsDecimalInRangeTest02()
         {
@@ -59,7 +61,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsInRange(Two, Four);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on Decimal x with 'lower bound < x < upper bound' should pass.")]
         public void IsDecimalInRangeTest03()
         {
@@ -67,7 +69,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsInRange(Two, Four);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on Decimal x with 'lower bound < x = upper bound' should pass.")]
         public void IsDecimalInRangeTest04()
         {
@@ -75,16 +77,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsInRange(Two, Four);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsInRange on Decimal x with 'lower bound < x > upper bound' should fail.")]
         public void IsDecimalInRangeTest05()
         {
             Decimal a = Five;
-            Condition.Requires(a).IsInRange(Two, Four);
+            Action action = () => Condition.Requires(a).IsInRange(Two, Four);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on Decimal x with conditionDescription should pass.")]
         public void IsDecimalInRangeTest06()
         {
@@ -92,7 +95,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsInRange(Two, Four, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsInRange on Decimal should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsDecimalInRangeTest07()
         {
@@ -100,15 +103,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsInRange(Two, Four, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on Decimal x with 'lower bound > x < upper bound' should succeed when exceptions are suppressed.")]
         public void IsDecimalInRangeTest08()
         {
@@ -120,7 +123,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsDecimalNotInRange
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotInRange on Decimal x with 'lower bound > x < upper bound' should pass.")]
         public void IsDecimalNotInRangeTest01()
         {
@@ -128,34 +131,37 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotInRange(Two, Four);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotInRange on Decimal x with 'lower bound = x < upper bound' should fail.")]
         public void IsDecimalNotInRangeTest02()
         {
             Decimal a = Two;
-            Condition.Requires(a).IsNotInRange(Two, Four);
+            Action action = () => Condition.Requires(a).IsNotInRange(Two, Four);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotInRange on Decimal x with 'lower bound < x < upper bound' should fail.")]
         public void IsDecimalNotInRangeTest03()
         {
             Decimal a = Three;
-            Condition.Requires(a).IsNotInRange(Two, Four);
+            Action action = () => Condition.Requires(a).IsNotInRange(Two, Four);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotInRange on Decimal x with 'lower bound < x = upper bound' should fail.")]
         public void IsDecimalNotInRangeTest04()
         {
             Decimal a = Four;
-            Condition.Requires(a).IsNotInRange(Two, Four);
+            Action action = () => Condition.Requires(a).IsNotInRange(Two, Four);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotInRange on Decimal x with 'lower bound < x > upper bound' should pass.")]
         public void IsDecimalNotInRangeTest05()
         {
@@ -163,7 +169,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotInRange(Two, Four);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotInRange on Decimal x with conditionDescription should pass.")]
         public void IsDecimalNotInRangeTest06()
         {
@@ -171,7 +177,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotInRange(Two, Four, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotInRange on Decimal should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsDecimalNotInRangeTest07()
         {
@@ -179,15 +185,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotInRange(Two, Four, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotInRange on Decimal x with 'lower bound = x < upper bound' should succeed when exceptions are suppressed.")]
         public void IsDecimalNotInRangeTest08()
         {
@@ -199,25 +205,27 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsDecimalGreaterThan
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsGreaterThan on Decimal x with 'lower bound < x' should fail.")]
         public void IsDecimalGreaterThanTest01()
         {
             Decimal a = One;
-            Condition.Requires(a).IsGreaterThan(Two);
+            Action action = () => Condition.Requires(a).IsGreaterThan(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsGreaterThan on Decimal x with 'lower bound = x' should fail.")]
         public void IsDecimalGreaterThanTest02()
         {
             Decimal a = Two;
-            Condition.Requires(a).IsGreaterThan(Two);
+            Action action = () => Condition.Requires(a).IsGreaterThan(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterThan on Decimal x with 'lower bound < x' should pass.")]
         public void IsDecimalGreaterThanTest03()
         {
@@ -225,7 +233,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterThan(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterThan on Decimal x with conditionDescription should pass.")]
         public void IsDecimalGreaterThanTest04()
         {
@@ -233,7 +241,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterThan(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsGreaterThan on Decimal should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsDecimalGreaterThanTest05()
         {
@@ -241,15 +249,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsGreaterThan(Three, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterThan on Decimal x with 'lower bound < x' should succeed when exceptions are suppressed.")]
         public void IsDecimalGreaterThanTest06()
         {
@@ -261,7 +269,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsDecimalNotGreaterThan
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterThan on Decimal x with 'x < upper bound' should pass.")]
         public void IsDecimalNotGreaterThanTest01()
         {
@@ -269,7 +277,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterThan(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterThan on Decimal x with 'x = upper bound' should pass.")]
         public void IsDecimalNotGreaterThanTest02()
         {
@@ -277,16 +285,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterThan(Two);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotGreaterThan on Decimal x with 'x > upper bound' should fail.")]
         public void IsDecimalNotGreaterThanTest03()
         {
             Decimal a = Three;
-            Condition.Requires(a).IsNotGreaterThan(Two);
+            Action action = () => Condition.Requires(a).IsNotGreaterThan(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterThan on Decimal x with conditionDescription should pass.")]
         public void IsDecimalNotGreaterThanTest04()
         {
@@ -294,7 +303,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterThan(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotGreaterThan on Decimal should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsDecimalNotGreaterThanTest05()
         {
@@ -302,15 +311,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotGreaterThan(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterThan on Decimal x with 'x > upper bound' should succeed when exceptions are suppressed.")]
         public void IsDecimalNotGreaterThanTest06()
         {
@@ -322,16 +331,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsDecimalGreaterOrEqual
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsGreaterOrEqual on Decimal x with 'lower bound > x' should fail.")]
         public void IsDecimalGreaterOrEqualTest01()
         {
             Decimal a = One;
-            Condition.Requires(a).IsGreaterOrEqual(Two);
+            Action action = () => Condition.Requires(a).IsGreaterOrEqual(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterOrEqual on Decimal x with 'lower bound = x' should pass.")]
         public void IsDecimalGreaterOrEqualTest02()
         {
@@ -339,7 +349,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterOrEqual(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterOrEqual on Decimal x with 'lower bound < x' should pass.")]
         public void IsDecimalGreaterOrEqualTest03()
         {
@@ -347,7 +357,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterOrEqual(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterOrEqual on Decimal x with conditionDescription should pass.")]
         public void IsDecimalGreaterOrEqualTest04()
         {
@@ -355,7 +365,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterOrEqual(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsGreaterOrEqual on Decimal should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsDecimalGreaterOrEqualTest05()
         {
@@ -363,15 +373,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsGreaterOrEqual(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterOrEqual on Decimal x with 'lower bound > x' should succeed when exceptions are suppressed.")]
         public void IsDecimalGreaterOrEqualTest06()
         {
@@ -383,7 +393,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsDecimalNotGreaterOrEqual
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterOrEqual on Decimal x with 'x < upper bound' should pass.")]
         public void IsDecimalNotGreaterOrEqualTest01()
         {
@@ -391,25 +401,27 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterOrEqual(Two);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotGreaterOrEqual on Decimal x with 'x = upper bound' should fail.")]
         public void IsDecimalNotGreaterOrEqualTest02()
         {
             Decimal a = Two;
-            Condition.Requires(a).IsNotGreaterOrEqual(Two);
+            Action action = () => Condition.Requires(a).IsNotGreaterOrEqual(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotGreaterOrEqual on Decimal x with 'x > upper bound' should fail.")]
         public void IsDecimalNotGreaterOrEqualTest03()
         {
             Decimal a = Three;
-            Condition.Requires(a).IsNotGreaterOrEqual(Two);
+            Action action = () => Condition.Requires(a).IsNotGreaterOrEqual(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterOrEqual on Decimal x with conditionDescription should pass.")]
         public void IsDecimalNotGreaterOrEqualTest04()
         {
@@ -417,7 +429,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterOrEqual(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotGreaterOrEqual on Decimal should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsDecimalNotGreaterOrEqualTest05()
         {
@@ -425,15 +437,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotGreaterOrEqual(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterOrEqual on Decimal x with 'x = upper bound' should succeed when exceptions are suppressed.")]
         public void IsDecimalNotGreaterOrEqualTest06()
         {
@@ -445,7 +457,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsDecimalLessThan
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessThan on Decimal x with 'x < upper bound' should pass.")]
         public void IsDecimalLessThanTest01()
         {
@@ -453,25 +465,27 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessThan(Two);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsLessThan on Decimal x with 'x = upper bound' should fail.")]
         public void IsDecimalLessThanTest02()
         {
             Decimal a = Two;
-            Condition.Requires(a).IsLessThan(Two);
+            Action action = () => Condition.Requires(a).IsLessThan(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsLessThan on Decimal x with 'x > upper bound' should fail.")]
         public void IsDecimalLessThanTest03()
         {
             Decimal a = Three;
-            Condition.Requires(a).IsLessThan(Two);
+            Action action = () => Condition.Requires(a).IsLessThan(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessThan on Decimal x with conditionDescription should pass.")]
         public void IsDecimalLessThanTest04()
         {
@@ -479,7 +493,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessThan(Three, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsLessThan on Decimal should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsDecimalLessThanTest05()
         {
@@ -487,15 +501,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsLessThan(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessThan on Decimal x with 'x = upper bound' should succeed when exceptions are suppressed.")]
         public void IsDecimalLessThanTest06()
         {
@@ -507,16 +521,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsDecimalNotLessThan
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotLessThan on Decimal x with 'lower bound > x' should fail.")]
         public void IsDecimalNotLessThanTest01()
         {
             Decimal a = One;
-            Condition.Requires(a).IsNotLessThan(Two);
+            Action action = () => Condition.Requires(a).IsNotLessThan(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessThan on Decimal x with 'lower bound = x' should pass.")]
         public void IsDecimalNotLessThanTest02()
         {
@@ -524,7 +539,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessThan(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessThan on Decimal x with 'lower bound < x' should pass.")]
         public void IsDecimalNotLessThanTest03()
         {
@@ -532,7 +547,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessThan(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessThan on Decimal x with conditionDescription should pass.")]
         public void IsDecimalNotLessThanTest04()
         {
@@ -540,7 +555,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessThan(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotLessThan on Decimal should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsDecimalNotLessThanTest05()
         {
@@ -548,15 +563,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotLessThan(Three, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessThan on Decimal x with 'lower bound > x' should succeed when exceptions are suppressed.")]
         public void IsDecimalNotLessThanTest06()
         {
@@ -568,7 +583,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsDecimalLessOrEqual
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessOrEqual on Decimal x with 'x < upper bound' should pass.")]
         public void IsDecimalLessOrEqualTest01()
         {
@@ -576,7 +591,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessOrEqual(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessOrEqual on Decimal x with 'x = upper bound' should pass.")]
         public void IsDecimalLessOrEqualTest02()
         {
@@ -584,16 +599,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessOrEqual(Two);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsLessOrEqual on Decimal x with 'x > upper bound' should fail.")]
         public void IsDecimalLessOrEqualTest03()
         {
             Decimal a = Three;
-            Condition.Requires(a).IsLessOrEqual(Two);
+            Action action = () => Condition.Requires(a).IsLessOrEqual(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessOrEqual on Decimal x with conditionDescription should pass.")]
         public void IsDecimalLessOrEqualTest04()
         {
@@ -601,7 +617,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessOrEqual(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsLessOrEqual on Decimal should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsDecimalLessOrEqualTest05()
         {
@@ -609,15 +625,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsLessOrEqual(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessOrEqual on Decimal x with 'x > upper bound' should succeed when exceptions are suppressed.")]
         public void IsDecimalLessOrEqualTest06()
         {
@@ -629,25 +645,27 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsDecimalNotLessOrEqual
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotLessOrEqual on Decimal x with 'lower bound > x' should fail.")]
         public void IsDecimalNotLessOrEqualTest01()
         {
             Decimal a = One;
-            Condition.Requires(a).IsNotLessOrEqual(Two);
+            Action action = () => Condition.Requires(a).IsNotLessOrEqual(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotLessOrEqual on Decimal x with 'lower bound = x' should fail.")]
         public void IsDecimalNotLessOrEqualTest02()
         {
             Decimal a = Two;
-            Condition.Requires(a).IsNotLessOrEqual(Two);
+            Action action = () => Condition.Requires(a).IsNotLessOrEqual(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessOrEqual on Decimal x with 'lower bound < x' should pass.")]
         public void IsDecimalNotLessOrEqualTest03()
         {
@@ -655,7 +673,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessOrEqual(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessOrEqual on Decimal x with conditionDescription should pass.")]
         public void IsDecimalNotLessOrEqualTest04()
         {
@@ -663,7 +681,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessOrEqual(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotLessOrEqual on Decimal should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsDecimalNotLessOrEqualTest05()
         {
@@ -671,15 +689,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotLessOrEqual(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessOrEqual on Decimal x with 'lower bound > x' should succeed when exceptions are suppressed.")]
         public void IsDecimalNotLessOrEqualTest06()
         {
@@ -691,16 +709,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsDecimalEqualTo
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsEqualTo on Decimal x with 'x < other' should fail.")]
         public void IsDecimalEqualToTest01()
         {
             Decimal a = One;
-            Condition.Requires(a).IsEqualTo(Two);
+            Action action = () => Condition.Requires(a).IsEqualTo(Two);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsEqualTo on Decimal x with 'x = other' should pass.")]
         public void IsDecimalEqualToTest02()
         {
@@ -708,16 +727,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsEqualTo(Two);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsEqualTo on Decimal x with 'x > other' should fail.")]
         public void IsDecimalEqualToTest03()
         {
             Decimal a = Three;
-            Condition.Requires(a).IsEqualTo(Two);
+            Action action = () => Condition.Requires(a).IsEqualTo(Two);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsEqualTo on Decimal x with conditionDescription should pass.")]
         public void IsDecimalEqualToTest04()
         {
@@ -725,7 +745,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsEqualTo(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsEqualTo on Decimal should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsDecimalEqualToTest05()
         {
@@ -733,15 +753,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsEqualTo(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsEqualTo on Decimal x with 'x < other' should succeed when exceptions are suppressed.")]
         public void IsDecimalEqualToTest06()
         {
@@ -753,7 +773,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsDecimalNotEqualTo
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEqualTo on Decimal x with 'x < other' should pass.")]
         public void IsDecimalNotEqualToTest01()
         {
@@ -761,16 +781,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotEqualTo(Two);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotEqualTo on Decimal x with 'x = other' should fail.")]
         public void IsDecimalNotEqualToTest02()
         {
             Decimal a = Two;
-            Condition.Requires(a).IsNotEqualTo(Two);
+            Action action = () => Condition.Requires(a).IsNotEqualTo(Two);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEqualTo on Decimal x with 'x > other' should pass.")]
         public void IsDecimalNotEqualToTest03()
         {
@@ -778,7 +799,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotEqualTo(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEqualTo on Decimal x with conditionDescription should pass.")]
         public void IsDecimalNotEqualToTest04()
         {
@@ -786,7 +807,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotEqualTo(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotEqualTo on Decimal should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsDecimalNotEqualToTest05()
         {
@@ -794,15 +815,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotEqualTo(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEqualTo on Decimal x with 'x = other' should succeed when exceptions are suppressed.")]
         public void IsDecimalNotEqualToTest06()
         {

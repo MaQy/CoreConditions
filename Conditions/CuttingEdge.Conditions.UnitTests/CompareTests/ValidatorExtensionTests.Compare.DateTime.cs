@@ -27,11 +27,12 @@
 // with 'DateTime'.
 using System;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit; using System.ComponentModel;
+using FluentAssertions;
 
 namespace CuttingEdge.Conditions.UnitTests.CompareTests
 {
-    [TestClass]
+    
     public class CompareDateTimeTests
     {
         private static readonly DateTime One = new DateTime(2000, 1, 1);
@@ -42,16 +43,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsDateTimeInRange
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsInRange on DateTime x with 'lower bound > x < upper bound' should fail.")]
         public void IsDateTimeInRangeTest01()
         {
             DateTime a = One;
-            Condition.Requires(a).IsInRange(Two, Four);
+            Action action = () => Condition.Requires(a).IsInRange(Two, Four);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on DateTime x with 'lower bound = x < upper bound' should pass.")]
         public void IsDateTimeInRangeTest02()
         {
@@ -59,7 +61,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsInRange(Two, Four);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on DateTime x with 'lower bound < x < upper bound' should pass.")]
         public void IsDateTimeInRangeTest03()
         {
@@ -67,7 +69,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsInRange(Two, Four);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on DateTime x with 'lower bound < x = upper bound' should pass.")]
         public void IsDateTimeInRangeTest04()
         {
@@ -75,16 +77,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsInRange(Two, Four);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsInRange on DateTime x with 'lower bound < x > upper bound' should fail.")]
         public void IsDateTimeInRangeTest05()
         {
             DateTime a = Five;
-            Condition.Requires(a).IsInRange(Two, Four);
+            Action action = () => Condition.Requires(a).IsInRange(Two, Four);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on DateTime x with conditionDescription should pass.")]
         public void IsDateTimeInRangeTest06()
         {
@@ -92,7 +95,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsInRange(Two, Four, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsInRange on DateTime should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsDateTimeInRangeTest07()
         {
@@ -100,15 +103,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsInRange(Two, Four, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on DateTime x with 'lower bound > x < upper bound' should succeed when exceptions are suppressed.")]
         public void IsDateTimeInRangeTest08()
         {
@@ -120,7 +123,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsDateTimeNotInRange
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotInRange on DateTime x with 'lower bound > x < upper bound' should pass.")]
         public void IsDateTimeNotInRangeTest01()
         {
@@ -128,34 +131,38 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotInRange(Two, Four);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotInRange on DateTime x with 'lower bound = x < upper bound' should fail.")]
         public void IsDateTimeNotInRangeTest02()
         {
             DateTime a = Two;
-            Condition.Requires(a).IsNotInRange(Two, Four);
+            Action action = () => Condition.Requires(a).IsNotInRange(Two, Four);
+            action.Should().Throw<ArgumentException>();
+
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotInRange on DateTime x with 'lower bound < x < upper bound' should fail.")]
         public void IsDateTimeNotInRangeTest03()
         {
             DateTime a = Three;
-            Condition.Requires(a).IsNotInRange(Two, Four);
+            Action action = () => Condition.Requires(a).IsNotInRange(Two, Four);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotInRange on DateTime x with 'lower bound < x = upper bound' should fail.")]
         public void IsDateTimeNotInRangeTest04()
         {
             DateTime a = Four;
-            Condition.Requires(a).IsNotInRange(Two, Four);
+            Action action = () => Condition.Requires(a).IsNotInRange(Two, Four);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotInRange on DateTime x with 'lower bound < x > upper bound' should pass.")]
         public void IsDateTimeNotInRangeTest05()
         {
@@ -163,7 +170,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotInRange(Two, Four);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotInRange on DateTime x with conditionDescription should pass.")]
         public void IsDateTimeNotInRangeTest06()
         {
@@ -171,7 +178,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotInRange(Two, Four, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotInRange on DateTime should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsDateTimeNotInRangeTest07()
         {
@@ -179,15 +186,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotInRange(Two, Four, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotInRange on DateTime x with 'lower bound = x < upper bound' should succeed when exceptions are suppressed.")]
         public void IsDateTimeNotInRangeTest08()
         {
@@ -199,25 +206,27 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsDateTimeGreaterThan
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsGreaterThan on DateTime x with 'lower bound < x' should fail.")]
         public void IsDateTimeGreaterThanTest01()
         {
             DateTime a = One;
-            Condition.Requires(a).IsGreaterThan(Two);
+            Action action = () => Condition.Requires(a).IsGreaterThan(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsGreaterThan on DateTime x with 'lower bound = x' should fail.")]
         public void IsDateTimeGreaterThanTest02()
         {
             DateTime a = Two;
-            Condition.Requires(a).IsGreaterThan(Two);
+            Action action = () => Condition.Requires(a).IsGreaterThan(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterThan on DateTime x with 'lower bound < x' should pass.")]
         public void IsDateTimeGreaterThanTest03()
         {
@@ -225,7 +234,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterThan(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterThan on DateTime x with conditionDescription should pass.")]
         public void IsDateTimeGreaterThanTest04()
         {
@@ -233,7 +242,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterThan(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsGreaterThan on DateTime should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsDateTimeGreaterThanTest05()
         {
@@ -241,15 +250,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsGreaterThan(Three, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterThan on DateTime x with 'lower bound < x' should succeed when exceptions are suppressed.")]
         public void IsDateTimeGreaterThanTest06()
         {
@@ -261,7 +270,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsDateTimeNotGreaterThan
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterThan on DateTime x with 'x < upper bound' should pass.")]
         public void IsDateTimeNotGreaterThanTest01()
         {
@@ -269,7 +278,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterThan(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterThan on DateTime x with 'x = upper bound' should pass.")]
         public void IsDateTimeNotGreaterThanTest02()
         {
@@ -277,16 +286,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterThan(Two);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotGreaterThan on DateTime x with 'x > upper bound' should fail.")]
         public void IsDateTimeNotGreaterThanTest03()
         {
             DateTime a = Three;
-            Condition.Requires(a).IsNotGreaterThan(Two);
+            Action action = () => Condition.Requires(a).IsNotGreaterThan(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterThan on DateTime x with conditionDescription should pass.")]
         public void IsDateTimeNotGreaterThanTest04()
         {
@@ -294,7 +304,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterThan(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotGreaterThan on DateTime should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsDateTimeNotGreaterThanTest05()
         {
@@ -302,15 +312,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotGreaterThan(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterThan on DateTime x with 'x > upper bound' should succeed when exceptions are suppressed.")]
         public void IsDateTimeNotGreaterThanTest06()
         {
@@ -322,16 +332,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsDateTimeGreaterOrEqual
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsGreaterOrEqual on DateTime x with 'lower bound > x' should fail.")]
         public void IsDateTimeGreaterOrEqualTest01()
         {
             DateTime a = One;
-            Condition.Requires(a).IsGreaterOrEqual(Two);
+            Action action = () => Condition.Requires(a).IsGreaterOrEqual(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterOrEqual on DateTime x with 'lower bound = x' should pass.")]
         public void IsDateTimeGreaterOrEqualTest02()
         {
@@ -339,7 +350,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterOrEqual(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterOrEqual on DateTime x with 'lower bound < x' should pass.")]
         public void IsDateTimeGreaterOrEqualTest03()
         {
@@ -347,7 +358,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterOrEqual(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterOrEqual on DateTime x with conditionDescription should pass.")]
         public void IsDateTimeGreaterOrEqualTest04()
         {
@@ -355,7 +366,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterOrEqual(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsGreaterOrEqual on DateTime should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsDateTimeGreaterOrEqualTest05()
         {
@@ -363,15 +374,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsGreaterOrEqual(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterOrEqual on DateTime x with 'lower bound > x' should succeed when exceptions are suppressed.")]
         public void IsDateTimeGreaterOrEqualTest06()
         {
@@ -383,7 +394,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsDateTimeNotGreaterOrEqual
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterOrEqual on DateTime x with 'x < upper bound' should pass.")]
         public void IsDateTimeNotGreaterOrEqualTest01()
         {
@@ -391,25 +402,27 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterOrEqual(Two);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotGreaterOrEqual on DateTime x with 'x = upper bound' should fail.")]
         public void IsDateTimeNotGreaterOrEqualTest02()
         {
             DateTime a = Two;
-            Condition.Requires(a).IsNotGreaterOrEqual(Two);
+            Action action = () => Condition.Requires(a).IsNotGreaterOrEqual(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotGreaterOrEqual on DateTime x with 'x > upper bound' should fail.")]
         public void IsDateTimeNotGreaterOrEqualTest03()
         {
             DateTime a = Three;
-            Condition.Requires(a).IsNotGreaterOrEqual(Two);
+            Action action = () => Condition.Requires(a).IsNotGreaterOrEqual(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterOrEqual on DateTime x with conditionDescription should pass.")]
         public void IsDateTimeNotGreaterOrEqualTest04()
         {
@@ -417,7 +430,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterOrEqual(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotGreaterOrEqual on DateTime should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsDateTimeNotGreaterOrEqualTest05()
         {
@@ -425,15 +438,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotGreaterOrEqual(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterOrEqual on DateTime x with 'x = upper bound' should succeed when exceptions are suppressed.")]
         public void IsDateTimeNotGreaterOrEqualTest06()
         {
@@ -445,7 +458,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsDateTimeLessThan
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessThan on DateTime x with 'x < upper bound' should pass.")]
         public void IsDateTimeLessThanTest01()
         {
@@ -453,25 +466,27 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessThan(Two);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsLessThan on DateTime x with 'x = upper bound' should fail.")]
         public void IsDateTimeLessThanTest02()
         {
             DateTime a = Two;
-            Condition.Requires(a).IsLessThan(Two);
+            Action action = () => Condition.Requires(a).IsLessThan(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsLessThan on DateTime x with 'x > upper bound' should fail.")]
         public void IsDateTimeLessThanTest03()
         {
             DateTime a = Three;
-            Condition.Requires(a).IsLessThan(Two);
+            Action action = () => Condition.Requires(a).IsLessThan(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessThan on DateTime x with conditionDescription should pass.")]
         public void IsDateTimeLessThanTest04()
         {
@@ -479,7 +494,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessThan(Three, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsLessThan on DateTime should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsDateTimeLessThanTest05()
         {
@@ -487,15 +502,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsLessThan(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessThan on DateTime x with 'x = upper bound' should succeed when exceptions are suppressed.")]
         public void IsDateTimeLessThanTest06()
         {
@@ -507,16 +522,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsDateTimeNotLessThan
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotLessThan on DateTime x with 'lower bound > x' should fail.")]
         public void IsDateTimeNotLessThanTest01()
         {
             DateTime a = One;
-            Condition.Requires(a).IsNotLessThan(Two);
+            Action action = () => Condition.Requires(a).IsNotLessThan(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessThan on DateTime x with 'lower bound = x' should pass.")]
         public void IsDateTimeNotLessThanTest02()
         {
@@ -524,7 +540,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessThan(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessThan on DateTime x with 'lower bound < x' should pass.")]
         public void IsDateTimeNotLessThanTest03()
         {
@@ -532,7 +548,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessThan(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessThan on DateTime x with conditionDescription should pass.")]
         public void IsDateTimeNotLessThanTest04()
         {
@@ -540,7 +556,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessThan(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotLessThan on DateTime should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsDateTimeNotLessThanTest05()
         {
@@ -548,15 +564,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotLessThan(Three, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessThan on DateTime x with 'lower bound > x' should succeed when exceptions are suppressed.")]
         public void IsDateTimeNotLessThanTest06()
         {
@@ -568,7 +584,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsDateTimeLessOrEqual
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessOrEqual on DateTime x with 'x < upper bound' should pass.")]
         public void IsDateTimeLessOrEqualTest01()
         {
@@ -576,7 +592,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessOrEqual(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessOrEqual on DateTime x with 'x = upper bound' should pass.")]
         public void IsDateTimeLessOrEqualTest02()
         {
@@ -584,16 +600,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessOrEqual(Two);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsLessOrEqual on DateTime x with 'x > upper bound' should fail.")]
         public void IsDateTimeLessOrEqualTest03()
         {
             DateTime a = Three;
-            Condition.Requires(a).IsLessOrEqual(Two);
+            Action action = () => Condition.Requires(a).IsLessOrEqual(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessOrEqual on DateTime x with conditionDescription should pass.")]
         public void IsDateTimeLessOrEqualTest04()
         {
@@ -601,7 +618,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessOrEqual(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsLessOrEqual on DateTime should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsDateTimeLessOrEqualTest05()
         {
@@ -609,15 +626,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsLessOrEqual(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessOrEqual on DateTime x with 'x > upper bound' should succeed when exceptions are suppressed.")]
         public void IsDateTimeLessOrEqualTest06()
         {
@@ -629,25 +646,27 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsDateTimeNotLessOrEqual
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotLessOrEqual on DateTime x with 'lower bound > x' should fail.")]
         public void IsDateTimeNotLessOrEqualTest01()
         {
             DateTime a = One;
-            Condition.Requires(a).IsNotLessOrEqual(Two);
+            Action action = () => Condition.Requires(a).IsNotLessOrEqual(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotLessOrEqual on DateTime x with 'lower bound = x' should fail.")]
         public void IsDateTimeNotLessOrEqualTest02()
         {
             DateTime a = Two;
-            Condition.Requires(a).IsNotLessOrEqual(Two);
+            Action action = () => Condition.Requires(a).IsNotLessOrEqual(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessOrEqual on DateTime x with 'lower bound < x' should pass.")]
         public void IsDateTimeNotLessOrEqualTest03()
         {
@@ -655,7 +674,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessOrEqual(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessOrEqual on DateTime x with conditionDescription should pass.")]
         public void IsDateTimeNotLessOrEqualTest04()
         {
@@ -663,7 +682,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessOrEqual(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotLessOrEqual on DateTime should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsDateTimeNotLessOrEqualTest05()
         {
@@ -671,15 +690,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotLessOrEqual(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessOrEqual on DateTime x with 'lower bound > x' should succeed when exceptions are suppressed.")]
         public void IsDateTimeNotLessOrEqualTest06()
         {
@@ -691,16 +710,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsDateTimeEqualTo
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsEqualTo on DateTime x with 'x < other' should fail.")]
         public void IsDateTimeEqualToTest01()
         {
             DateTime a = One;
-            Condition.Requires(a).IsEqualTo(Two);
+            Action action = () => Condition.Requires(a).IsEqualTo(Two);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsEqualTo on DateTime x with 'x = other' should pass.")]
         public void IsDateTimeEqualToTest02()
         {
@@ -708,16 +728,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsEqualTo(Two);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsEqualTo on DateTime x with 'x > other' should fail.")]
         public void IsDateTimeEqualToTest03()
         {
             DateTime a = Three;
-            Condition.Requires(a).IsEqualTo(Two);
+            Action action = () => Condition.Requires(a).IsEqualTo(Two);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsEqualTo on DateTime x with conditionDescription should pass.")]
         public void IsDateTimeEqualToTest04()
         {
@@ -725,7 +746,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsEqualTo(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsEqualTo on DateTime should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsDateTimeEqualToTest05()
         {
@@ -733,15 +754,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsEqualTo(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsEqualTo on DateTime x with 'x < other' should succeed when exceptions are suppressed.")]
         public void IsDateTimeEqualToTest06()
         {
@@ -753,7 +774,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsDateTimeNotEqualTo
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEqualTo on DateTime x with 'x < other' should pass.")]
         public void IsDateTimeNotEqualToTest01()
         {
@@ -761,16 +782,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotEqualTo(Two);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotEqualTo on DateTime x with 'x = other' should fail.")]
         public void IsDateTimeNotEqualToTest02()
         {
             DateTime a = Two;
-            Condition.Requires(a).IsNotEqualTo(Two);
+            Action action = () => Condition.Requires(a).IsNotEqualTo(Two);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEqualTo on DateTime x with 'x > other' should pass.")]
         public void IsDateTimeNotEqualToTest03()
         {
@@ -778,7 +800,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotEqualTo(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEqualTo on DateTime x with conditionDescription should pass.")]
         public void IsDateTimeNotEqualToTest04()
         {
@@ -786,7 +808,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotEqualTo(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotEqualTo on DateTime should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsDateTimeNotEqualToTest05()
         {
@@ -794,15 +816,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotEqualTo(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEqualTo on DateTime x with 'x = other' should succeed when exceptions are suppressed.")]
         public void IsDateTimeNotEqualToTest06()
         {

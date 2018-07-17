@@ -25,26 +25,28 @@
 
 using System;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit; using System.ComponentModel;
+using FluentAssertions;
 
 namespace CuttingEdge.Conditions.UnitTests.NullTests
 {
     /// <summary>
     /// Tests the ValidatorExtensions.IsNotNull method.
     /// </summary>
-    [TestClass]
+    
     public class NullIsNotNullTests
     {
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
+        
         [Description("Calling IsNotNull on null should fail.")]
         public void IsNotNullTest1()
         {
             object o = null;
-            Condition.Requires(o).IsNotNull();
+            Action action = () => Condition.Requires(o).IsNotNull();
+            action.Should().Throw<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotNull on a reference should pass.")]
         public void IsNotNullTest2()
         {
@@ -52,16 +54,17 @@ namespace CuttingEdge.Conditions.UnitTests.NullTests
             Condition.Requires(o).IsNotNull();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
+        
         [Description("Calling IsNotNull on a null Nullable<T> should fail.")]
         public void IsNotNullTest3()
         {
             int? i = null;
-            Condition.Requires(i).IsNotNull();
+            Action action = () => Condition.Requires(i).IsNotNull();
+            action.Should().Throw<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotNull on a set Nullable<T> should pass.")]
         public void IsNotNullTest4()
         {
@@ -69,7 +72,7 @@ namespace CuttingEdge.Conditions.UnitTests.NullTests
             Condition.Requires(i).IsNotNull();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotNull with conditionDescription parameter should pass.")]
         public void IsNotNullTest5()
         {
@@ -77,7 +80,7 @@ namespace CuttingEdge.Conditions.UnitTests.NullTests
             Condition.Requires(o).IsNotNull(string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotNull should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsNotNullTest6()
         {
@@ -85,15 +88,15 @@ namespace CuttingEdge.Conditions.UnitTests.NullTests
             try
             {
                 Condition.Requires(o, "o").IsNotNull("qwe {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("qwe o xyz"));
+                Assert.True(ex.Message.Contains("qwe o xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotNull on Nullable<T> with conditionDescription parameter should pass.")]
         public void IsNotNullTest7()
         {
@@ -101,7 +104,7 @@ namespace CuttingEdge.Conditions.UnitTests.NullTests
             Condition.Requires(i).IsNotNull(string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotNull on Nullable<T> should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsNotNullTest8()
         {
@@ -109,15 +112,15 @@ namespace CuttingEdge.Conditions.UnitTests.NullTests
             try
             {
                 Condition.Requires(i, "i").IsNotNull("qwe {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("qwe i xyz"));
+                Assert.True(ex.Message.Contains("qwe i xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotNull on null should succeed when exceptions are suppressed.")]
         public void IsNotNullTest9()
         {

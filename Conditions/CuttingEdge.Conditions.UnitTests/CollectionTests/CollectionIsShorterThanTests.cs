@@ -27,17 +27,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit; using System.ComponentModel;
+using FluentAssertions;
 
 namespace CuttingEdge.Conditions.UnitTests.CollectionTests
 {
     /// <summary>
     /// Tests the ValidatorExtensions.IsShorterThan method.
     /// </summary>
-    [TestClass]
+    
     public class CollectionIsShorterThanTests
     {
-        [TestMethod]
+        [Fact]
         [Description("Calling IsShorterThan(1) with a collection containing no elements should pass.")]
         public void CollectionIsShorterThanTest01()
         {
@@ -47,29 +48,31 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Condition.Requires(set).IsShorterThan(1);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsShorterThan(0) with a collection containing no elements should fail.")]
         public void CollectionIsShorterThanTest02()
         {
             // HashSet only implements generic ICollection<T>, no ICollection.
             HashSet<int> set = new HashSet<int>();
 
-            Condition.Requires(set).IsShorterThan(0);
+            Action a = () => Condition.Requires(set).IsShorterThan(0);
+            a.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsShorterThan(-1) with a collection containing no elements should fail.")]
         public void CollectionIsShorterThanTest03()
         {
             // HashSet only implements generic ICollection<T>, no ICollection.
             HashSet<int> set = new HashSet<int>();
 
-            Condition.Requires(set).IsShorterThan(-1);
+            Action a = () => Condition.Requires(set).IsShorterThan(-1);
+            a.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsShorterThan(2) with a collection containing one element should pass.")]
         public void CollectionIsShorterThanTest04()
         {
@@ -79,29 +82,31 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Condition.Requires(set).IsShorterThan(2);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsShorterThan(1) with a collection containing one element should fail.")]
         public void CollectionIsShorterThanTest05()
         {
             // HashSet only implements generic ICollection<T>, no ICollection.
             HashSet<int> set = new HashSet<int> { 1 };
 
-            Condition.Requires(set).IsShorterThan(1);
+            Action a = () => Condition.Requires(set).IsShorterThan(1);
+            a.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsShorterThan(1) with an ArrayList containing one element should fail.")]
         public void CollectionIsShorterThanTest06()
         {
             // ArrayList implements ICollection.
             ArrayList list = new ArrayList { 1 };
 
-            Condition.Requires(list).IsShorterThan(1);
+            Action a = () => Condition.Requires(list).IsShorterThan(1);
+            a.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsShorterThan(1) with an ArrayList containing no elements should pass.")]
         public void CollectionIsShorterThanTest07()
         {
@@ -111,7 +116,7 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Condition.Requires(list).IsShorterThan(1);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsShorterThan(1) on a null reference should pass.")]
         public void CollectionIsShorterThanTest08()
         {
@@ -120,17 +125,17 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Condition.Requires(list).IsShorterThan(1);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
+        
         [Description("Calling IsShorterThan(0) on a null reference should fail.")]
         public void CollectionIsShorterThanTest09()
         {
             IEnumerable list = null;
 
-            Condition.Requires(list).IsShorterThan(0);
+            Action a = () => Condition.Requires(list).IsShorterThan(0);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsShorterThan with the condtionDescription parameter should pass.")]
         public void CollectionIsShorterThanTest10()
         {
@@ -139,7 +144,7 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Condition.Requires(list).IsShorterThan(1, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsShorterThan should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void CollectionIsShorterThanTest11()
         {
@@ -150,11 +155,11 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc list def"));
+                Assert.True(ex.Message.Contains("abc list def"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsShorterThan(0) with a collection containing no elements should succeed when exceptions are suppressed.")]
         public void CollectionIsShorterThanTest12()
         {
