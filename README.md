@@ -95,7 +95,7 @@ The previous example showed some important features of the library. The example 
 **Note:** _A particular validation is executed immediately when it's method is called, and therefore all checks are executed in the order in which they are written._
 
 ## Getting started
-CuttingEdge Conditions is [available as NuGet package](https://www.nuget.org/packages/CoreConditions/). 
+CoreConditions is [available as NuGet package](https://www.nuget.org/packages/CoreConditions/). 
 
 ## More information
 For more information on this project please visit the following blog post or wiki page:
