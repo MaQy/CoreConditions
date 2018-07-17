@@ -11,13 +11,14 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>CoreConditions</PackageId>
     <Authors>CoreConditions</Authors>
-    <Version>2.0.0-dev01</Version>
+    <Version>2.0.0-dev02</Version>
     <PackageProjectUrl>https://github.com/MaQy/CoreConditions</PackageProjectUrl>
     <RepositoryUrl></RepositoryUrl>
     <PackageTags>conditions, postconditions, prerequisites</PackageTags>
-    <PackageReleaseNotes>2.0.0 - July 17th 2018
+    <PackageReleaseNotes>2.0.0
 
 - Initial version</PackageReleaseNotes>
+    <PackageIconUrl>https://raw.githubusercontent.com/MaQy/CoreConditions/develop/icon.svg</PackageIconUrl>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
