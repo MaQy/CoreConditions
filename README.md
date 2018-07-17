@@ -96,13 +96,3 @@ The previous example showed some important features of the library. The example 
 
 ## Getting started
 CoreConditions is [available as NuGet package](https://www.nuget.org/packages/CoreConditions/). 
-
-## More information
-For more information on this project please visit the following blog post or wiki page:
-* [.NET Junkie's blog - Introducing CuttingEdge.Conditions](http://www.cuttingedge.it/blogs/steven/pivot/entry.php?id=38) or jump directly to the [Designed Behavior](http://www.cuttingedge.it/blogs/steven/pivot/entry.php?id=38#Designed_Behavior) section of the post to find out more about design choices that might affect you.
-* [Wiki: Extending CuttingEdge.Conditions](https://github.com/dotnetjunkie/cuttingedge.conditions/wiki/Extending-CuttingEdge.Conditions)
-There are some interesting discussions about CuttingEdge.Conditions here:
-* [The Code Project - CuttingEdge.Conditions - Discussions](http://www.codeproject.com/KB/library/conditions.aspx#_comments)
-* or you can start a new discussion in the [Discussions](http://conditions.codeplex.com/Thread/List.aspx) tab.
-You can download the library documentation from the [Downloads](http://conditions.codeplex.com/Release/ProjectReleases.aspx) tab or browse it online here:
-* [CuttingEdge.Conditions - Reference Library](http://conditions.cuttingedge.it/ReferenceLibrary/)
