@@ -1,6 +1,6 @@
 MIT License
 
-Copyright for portions of project CoreConditions are held by [dotnetjunkie](https://github.com/dotnetjunkie/cuttingedge.conditions) as part of project [CuttingEdge.Conditions](https://github.com/dotnetjunkie/cuttingedge.conditions). All other copyright for project CoreConditions are held by MaQy (2018).
+Copyright for portions of project CoreConditions are held by [dotnetjunkie](https://github.com/dotnetjunkie/cuttingedge.conditions) as part of project [CuttingEdge.Conditions](https://github.com/dotnetjunkie/cuttingedge.conditions). Package icon made by [Google](https://www.flaticon.com/authors/google) is licensed by [Creative Commons BY 3.0](http://creativecommons.org/licenses/by/3.0/). All other copyright for project CoreConditions are held by [MaQy](https://github.com/MaQy) (2018).
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
