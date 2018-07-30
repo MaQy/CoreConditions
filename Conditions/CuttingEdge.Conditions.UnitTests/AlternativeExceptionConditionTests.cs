@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit; using System.ComponentModel;
+using FluentAssertions;
 
 namespace CuttingEdge.Conditions.UnitTests
 {
-    [TestClass]
+    
     public class AlternativeExceptionConditionTests
     {
-        [TestMethod]
+        [Fact]
         [Description("WithExceptionOnFailure called with a valid exception type does not return null.")]
         public void WithExceptionOnFailure_WithValidExceptionType_ReturnsAnInstance()
         {
@@ -16,11 +17,10 @@ namespace CuttingEdge.Conditions.UnitTests
             var condition = Condition.WithExceptionOnFailure<InvalidOperationException>();
 
             // Assert
-            Assert.IsNotNull(condition);
+            Assert.NotNull(condition);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ObjectDisposedException))]
+        [Fact]
         [Description("WithExceptionOnFailure called with a valid exception throws that same type in case of a validation failure.")]
         public void WithExceptionOnFailure_WithValidExceptionType1_ThrowsSpecifiedExceptionOnValidationFailure()
         {
@@ -28,11 +28,13 @@ namespace CuttingEdge.Conditions.UnitTests
             string value = null;
 
             // Act
-            Condition.WithExceptionOnFailure<ObjectDisposedException>().Requires(value).IsNotNull();
+            Action a = () => Condition.WithExceptionOnFailure<ObjectDisposedException>().Requires(value).IsNotNull();
+
+            // Assert
+            a.Should().Throw<ObjectDisposedException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ApplicationException))]
+        [Fact]
         [Description("WithExceptionOnFailure called with a valid exception throws that same type in case of a validation failure.")]
         public void WithExceptionOnFailure_WithValidExceptionType2_ThrowsSpecifiedExceptionOnValidationFailure()
         {
@@ -43,10 +45,13 @@ namespace CuttingEdge.Conditions.UnitTests
             Condition.WithExceptionOnFailure<KeyNotFoundException>();
 
             // Act 
-            Condition.WithExceptionOnFailure<ApplicationException>().Requires(value).IsNotNull();
+            Action a = () => Condition.WithExceptionOnFailure<ApplicationException>().Requires(value).IsNotNull();
+
+            // Assert
+            a.Should().Throw<ApplicationException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("WithExceptionOnFailure called with an invalid exception throws an exception with the expected message.")]
         public void WithExceptionOnFailure_WithInvalidExceptionType_ThrowsExceptionWithExpectedMessage()
         {
@@ -54,51 +59,39 @@ namespace CuttingEdge.Conditions.UnitTests
             string expectedMessage = 
                 "The type must be concrete and have a public constructor with a single string argument.";
 
-            try
-            {
-                // Act
-                Condition.WithExceptionOnFailure<NoValidConstructorException>();
+            // Act
+            Action a = () => Condition.WithExceptionOnFailure<NoValidConstructorException>();
 
-                // Assert
-                Assert.Fail("Exception was expected.");
-            }
-            catch (ArgumentException ex)
-            {
-                Assert.IsTrue(ex.Message.Contains(expectedMessage), "Invalid exception message: " + ex.Message);
-            }
+            // Assert
+            a.Should().Throw<ArgumentException>().Which.Message.Contains(expectedMessage);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("WithExceptionOnFailure called with an invalid exception throws an exception with the expected parameter name.")]
         public void WithExceptionOnFailure_WithInvalidExceptionType_ThrowsExceptionWithExpectedParamName()
         {
             // Arrange
             string expectedParamName = "TException";
 
-            try
-            {
-                // Act
-                Condition.WithExceptionOnFailure<NoValidConstructorException>();
+            // Act
+            Action a = () => Condition.WithExceptionOnFailure<NoValidConstructorException>();
 
-                // Assert
-                Assert.Fail("Exception was expected.");
-            }
-            catch (ArgumentException ex)
-            {
-                Assert.AreEqual(expectedParamName, ex.ParamName, "Invalid ParamName.");
-            }
+            // Assert
+            a.Should().Throw<ArgumentException>().Which.ParamName.Should().Be(expectedParamName, "Invalid ParamName.");
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         [Description("WithExceptionOnFailure called with an abstract exception type throws an exception of type ArgumentException.")]
         public void WithExceptionOnFailure_WithAbstractExceptionType_ThrowsExpectedExceptionType()
         {
             // Act
-            Condition.WithExceptionOnFailure<AbstractException>();
+            Action a = () => Condition.WithExceptionOnFailure<AbstractException>();
+
+            // Assert
+            a.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("WithExceptionOnFailure called multiple times with the same exception type, always returns the same instance.")]
         public void WithExceptionOnFailure_CalledMultipleTimesWithTheSameExceptionType_ReturnsTheSameInstance()
         {
@@ -110,11 +103,10 @@ namespace CuttingEdge.Conditions.UnitTests
             string assertMessage = "Two calls to WithExceptionOnFailure for the same exception type are " +
                 "expected to return the same instance for performance reasons.";
 
-            Assert.AreEqual(condition1, condition2, 
-                assertMessage);
+            condition1.Should().Be(condition2, assertMessage);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("WithExceptionOnFailure called multiple times with the different exception type, always returns different instances.")]
         public void WithExceptionOnFailure_CalledWithDifferentExceptionType_ReturnsDifferentInstances()
         {
@@ -126,17 +118,17 @@ namespace CuttingEdge.Conditions.UnitTests
             string assertMessage = "Two calls to WithExceptionOnFailure for different exception type are " +
                 "expected to return different instances, because each type will get its own condition type.";
 
-            Assert.AreNotEqual(condition1, condition2, assertMessage);
+            condition1.Should().NotBe(condition2, assertMessage);
         }
 
-        public class NoValidConstructorException : Exception
+        protected class NoValidConstructorException : Exception
         {
             public NoValidConstructorException() 
             { 
             }
         }
 
-        public abstract class AbstractException : Exception
+        protected abstract class AbstractException : Exception
         {
             public AbstractException(string message)
             {

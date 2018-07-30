@@ -27,14 +27,14 @@ using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit; using System.ComponentModel;
 
 namespace CuttingEdge.Conditions.UnitTests
 {
-    [TestClass]
+    
     public sealed class PostConditionExceptionTests
     {
-        [TestMethod]
+        [Fact]
         [Description("Checks whether the postcondition exception is serializable")]
         public void PostConditionExceptionTest01()
         {
@@ -57,13 +57,13 @@ namespace CuttingEdge.Conditions.UnitTests
                     {
                         PostconditionException pex2 = (PostconditionException)formatter.Deserialize(stream2);
 
-                        Assert.IsNotNull(pex2);
+                        Assert.NotNull(pex2);
                     }
                 } 
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Checks whether the default constructor of the PostconditionException constructs the expected exception message.")]
         public void PostConditionExceptionTest02()
         {
@@ -73,22 +73,7 @@ namespace CuttingEdge.Conditions.UnitTests
             }
             catch (PostconditionException pex)
             {
-                Assert.AreEqual("Postcondition failed.", pex.Message);
-            }
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(PostconditionException))]
-        [Description("Okay, I admit: This test is simply to get 100% code coverage :-). This method should fail.")]
-        public void PostConditionExceptionTest03()
-        {
-            try
-            {
-                throw new Exception();
-            }
-            catch (Exception ex)
-            {
-                throw new PostconditionException(String.Empty, ex);
+                Assert.Equal("Postcondition failed.", pex.Message);
             }
         }
     }

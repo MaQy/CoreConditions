@@ -1,7 +1,8 @@
 ﻿Please see the license.txt for the license.
 
-This project contains the CuttingEdge.Conditions library. It enables developers to validate pre- and 
-postconditions in a fluent manner. Following blog posts describe more about the library:
+This project contains the CoreConditions library. It enables developers to validate pre- and 
+postconditions in a fluent manner. It is a fork of CuttingEdge.Conditions in order to make it compatible with .NET Core.
+Following blog posts describe more about the library:
 	Introduction to CuttingEdge.Conditions: http://www.cuttingedge.it/blogs/steven/pivot/entry.php?id=38
 	Requirements and Design decisions: http://www.cuttingedge.it/blogs/steven/pivot/entry.php?id=36
 	Extending CuttingEdge.Conditions: http://conditions.codeplex.com/Wiki/View.aspx?title=extending
@@ -30,13 +31,3 @@ Notes:
 	Comparing Nullable<T>
 		Because Nullable<T> doesn't implement IComparable there are special overloads of all the compare
 		methods that have a Validator<Nullable<T>> validator argument.
-
-Optimizations:
-	New in the beta 2 release are a lot of overloads for primitive types (like, int, double, etc). While
-	they won't enrich the API, they will improve performance cases where those primitive types are used
-	in compare validations. The primitive overloads are much faster than the generic 'where T : ICompare'
-	compare methods.	
-	
-	While the beta 1 release tried to optimize the library in such a way that many methods could become a
-	candidate for inlining, this had no effect. The comments and unit tests that indicate that methods could
-	be inlinable are removed from the beta 2 release.

@@ -1,9 +1,13 @@
 ﻿Version [Version Number] ([Friendly Version Number]) [Release Date]
 
-Version vNext
+Version 2.0.0
 	General description:
+		Conversion to netstandard 2.0 project.
 	
 	Code Changes:
+		- All tests now use xunit and Fluent Assertions rather than MSTest.
+		- Updated framework version to 4.6.2.
+		- Included NuGet package generation in the solution.
 
 
 Version 1.2.0.11174 (v1.2) 2011-06-23

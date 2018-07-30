@@ -27,53 +27,58 @@ using System;
 using System.Collections;
 using System.Collections.ObjectModel;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit; using System.ComponentModel;
+using FluentAssertions;
 
 namespace CuttingEdge.Conditions.UnitTests.CollectionTests
 {
     /// <summary>
     /// Tests the ValidatorExtensions.IsNotEmpty method.
     /// </summary>
-    [TestClass]
+    
     public class CollectionIsNotEmptyTests
     {
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
+        
         [Description("Calling IsNotEmpty on null reference should fail.")]
         public void IsNotEmptyTest1()
         {
             ICollection c = null;
-            Condition.Requires(c).IsNotEmpty();
+            Action action = () => Condition.Requires(c).IsNotEmpty();
+            action.Should().Throw<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotEmpty on an empty ICollection should fail.")]
         public void IsNotEmptyTest2()
         {
             Collection<int> c = new Collection<int>();
-            Condition.Requires(c).IsNotEmpty();
+            Action action = () => Condition.Requires(c).IsNotEmpty();
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
+        
         [Description("Calling IsNotEmpty on null reference should fail.")]
         public void IsNotEmptyTest3()
         {
             IEnumerable c = null;
-            Condition.Requires(c).IsNotEmpty();
+            Action action = () => Condition.Requires(c).IsNotEmpty();
+            action.Should().Throw<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotEmpty on an not empty IEnumerable should fail.")]
         public void IsNotEmptyTest4()
         {
             EmptyTestEnumerable c = new EmptyTestEnumerable();
-            Condition.Requires(c).IsNotEmpty();
+            Action action = () => Condition.Requires(c).IsNotEmpty();
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEmpty on an not empty ICollection should pass.")]
         public void IsNotEmptyTest5()
         {
@@ -81,7 +86,7 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Condition.Requires(c).IsNotEmpty();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEmpty on an not empty IEnumerable should pass.")]
         public void IsNotEmptyTest6()
         {
@@ -89,7 +94,7 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Condition.Requires(c).IsNotEmpty();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEmpty with conditional description parameter on an not empty ICollection should pass.")]
         public void IsNotEmptyTest7()
         {
@@ -97,7 +102,7 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Condition.Requires(c).IsNotEmpty("conditionDescription");
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotEmpty with a non generic collection should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsNotEmptyTest8()
         {
@@ -108,11 +113,11 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("c should have no elements what so ever"));
+                Assert.True(ex.Message.Contains("c should have no elements what so ever"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEmpty on null reference should succeed when exceptions are suppressed.")]
         public void IsNotEmptyTest9()
         {

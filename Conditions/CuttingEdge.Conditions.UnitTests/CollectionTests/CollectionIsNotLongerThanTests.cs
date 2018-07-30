@@ -27,17 +27,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit; using System.ComponentModel;
+using FluentAssertions;
 
 namespace CuttingEdge.Conditions.UnitTests.CollectionTests
 {
     /// <summary>
     /// Tests the ValidatorExtensions.IsNotLongerThan method.
     /// </summary>
-    [TestClass]
+    
     public class CollectionIsNotLongerThanTests
     {
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLongerThan(1) with a collection containing no elements should pass.")]
         public void CollectionIsNotLongerThanTest01()
         {
@@ -47,7 +48,7 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Condition.Requires(set).IsNotLongerThan(1);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLongerThan(0) with a collection containing no elements should pass.")]
         public void CollectionIsNotLongerThanTest02()
         {
@@ -57,29 +58,31 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Condition.Requires(set).IsNotLongerThan(0);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotLongerThan(-1) with a collection containing no elements should fail.")]
         public void CollectionIsNotLongerThanTest03()
         {
             // HashSet only implements generic ICollection<T>, no ICollection.
             HashSet<int> set = new HashSet<int>();
 
-            Condition.Requires(set).IsNotLongerThan(-1);
+            Action a = () => Condition.Requires(set).IsNotLongerThan(-1);
+            a.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotLongerThan(1) with a collection containing two element should fail.")]
         public void CollectionIsNotLongerThanTest04()
         {
             // HashSet only implements generic ICollection<T>, no ICollection.
             HashSet<int> set = new HashSet<int> { 1, 2 };
 
-            Condition.Requires(set).IsNotLongerThan(1);
+            Action a = () => Condition.Requires(set).IsNotLongerThan(1);
+            a.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLongerThan(2) with a collection containing two elements should pass.")]
         public void CollectionIsNotLongerThanTest05()
         {
@@ -89,7 +92,7 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Condition.Requires(set).IsNotLongerThan(2);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLongerThan(1) with an ArrayList containing one element should pass.")]
         public void CollectionIsNotLongerThanTest06()
         {
@@ -99,18 +102,19 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Condition.Requires(list).IsNotLongerThan(1);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotLongerThan(0) with an ArrayList containing one element should fail.")]
         public void CollectionIsNotLongerThanTest07()
         {
             // ArrayList implements ICollection.
             ArrayList list = new ArrayList { 1 };
 
-            Condition.Requires(list).IsNotLongerThan(0);
+            Action a = () => Condition.Requires(list).IsNotLongerThan(0);
+            a.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLongerThan(0) on a null reference should pass.")]
         public void CollectionIsNotLongerThanTest08()
         {
@@ -119,17 +123,18 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Condition.Requires(list).IsNotLongerThan(0);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
+        
         [Description("Calling IsNotLongerThan(-1) on a null reference should fail.")]
         public void CollectionIsNotLongerThanTest09()
         {
             IEnumerable list = null;
 
-            Condition.Requires(list).IsNotLongerThan(-1);
+            Action a = () => Condition.Requires(list).IsNotLongerThan(-1);
+            a.Should().Throw<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLongerThan with the condtionDescription parameter should pass.")]
         public void CollectionIsNotLongerThanTest10()
         {
@@ -138,7 +143,7 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Condition.Requires(list).IsNotLongerThan(1, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotLongerThan should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void CollectionIsNotLongerThanTest11()
         {
@@ -149,11 +154,11 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc list def"));
+                Assert.True(ex.Message.Contains("abc list def"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLongerThan(-1) with a collection containing no elements should succeed when exceptions are suppressed.")]
         public void CollectionIsNotLongerThanTest12()
         {

@@ -27,28 +27,30 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit; using System.ComponentModel;
+using FluentAssertions;
 
 namespace CuttingEdge.Conditions.UnitTests.CollectionTests
 {
     /// <summary>
     /// Tests the ValidatorExtensions.IsLongerOrEqual method.
     /// </summary>
-    [TestClass]
+    
     public class CollectionIsLongerOrEqualTests
     {
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsLongerOrEqual(1) with a collection containing no elements should fail.")]
         public void CollectionIsLongerOrEqualTest01()
         {
             // HashSet only implements generic ICollection<T>, no ICollection.
             HashSet<int> set = new HashSet<int>();
 
-            Condition.Requires(set).IsLongerOrEqual(1);
+            Action a = () => Condition.Requires(set).IsLongerOrEqual(1);
+            a.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLongerOrEqual(0) with a collection containing no elements should pass.")]
         public void CollectionIsLongerOrEqualTest02()
         {
@@ -58,7 +60,7 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Condition.Requires(set).IsLongerOrEqual(0);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLongerOrEqual(-1) with a collection containing no elements should pass.")]
         public void CollectionIsLongerOrEqualTest03()
         {
@@ -68,7 +70,7 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Condition.Requires(set).IsLongerOrEqual(-1);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLongerOrEqual(1) with a collection containing one element should pass.")]
         public void CollectionIsLongerOrEqualTest04()
         {
@@ -78,7 +80,7 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Condition.Requires(set).IsLongerOrEqual(1);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLongerOrEqual(0) with a collection containing one element should pass.")]
         public void CollectionIsLongerOrEqualTest05()
         {
@@ -88,7 +90,7 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Condition.Requires(set).IsLongerOrEqual(0);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLongerOrEqual(1) with an ArrayList containing one element should pass.")]
         public void CollectionIsLongerOrEqualTest06()
         {
@@ -98,18 +100,19 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Condition.Requires(list).IsLongerOrEqual(1);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsLongerOrEqual(2) with an ArrayList containing one element should fail.")]
         public void CollectionIsLongerOrEqualTest07()
         {
             // ArrayList implements ICollection.
             ArrayList list = new ArrayList { 1 };
 
-            Condition.Requires(list).IsLongerOrEqual(2);
+            Action a = () => Condition.Requires(list).IsLongerOrEqual(2);
+            a.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLongerOrEqual(0) on a null reference should pass.")]
         public void CollectionIsLongerOrEqualTest08()
         {
@@ -118,17 +121,18 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Condition.Requires(list).IsLongerOrEqual(0);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
+        
         [Description("Calling IsLongerOrEqual(1) on a null reference should fail.")]
         public void CollectionIsLongerOrEqualTest09()
         {
             IEnumerable list = null;
 
-            Condition.Requires(list).IsLongerOrEqual(1);
+            Action a = () => Condition.Requires(list).IsLongerOrEqual(1);
+            a.Should().Throw<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLongerOrEqual with the condtionDescription parameter should pass.")]
         public void CollectionIsLongerOrEqualTest10()
         {
@@ -137,7 +141,7 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             Condition.Requires(list).IsLongerOrEqual(0, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsLongerOrEqual should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void CollectionIsLongerOrEqualTest11()
         {
@@ -148,11 +152,11 @@ namespace CuttingEdge.Conditions.UnitTests.CollectionTests
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc list def"));
+                Assert.True(ex.Message.Contains("abc list def"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLongerOrEqual(1) with a collection containing no elements should succeed when exceptions are suppressed.")]
         public void CollectionIsLongerOrEqualTest12()
         {

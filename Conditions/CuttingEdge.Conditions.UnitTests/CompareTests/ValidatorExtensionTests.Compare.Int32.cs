@@ -27,11 +27,12 @@
 // with 'Int32'.
 using System;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit; using System.ComponentModel;
+using FluentAssertions;
 
 namespace CuttingEdge.Conditions.UnitTests.CompareTests
 {
-    [TestClass]
+    
     public class CompareInt32Tests
     {
         private static readonly Int32 One = 1;
@@ -42,16 +43,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsInt32InRange
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsInRange on Int32 x with 'lower bound > x < upper bound' should fail.")]
         public void IsInt32InRangeTest01()
         {
             Int32 a = One;
-            Condition.Requires(a).IsInRange(Two, Four);
+            Action action = () => Condition.Requires(a).IsInRange(Two, Four);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on Int32 x with 'lower bound = x < upper bound' should pass.")]
         public void IsInt32InRangeTest02()
         {
@@ -59,7 +61,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsInRange(Two, Four);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on Int32 x with 'lower bound < x < upper bound' should pass.")]
         public void IsInt32InRangeTest03()
         {
@@ -67,7 +69,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsInRange(Two, Four);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on Int32 x with 'lower bound < x = upper bound' should pass.")]
         public void IsInt32InRangeTest04()
         {
@@ -75,16 +77,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsInRange(Two, Four);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsInRange on Int32 x with 'lower bound < x > upper bound' should fail.")]
         public void IsInt32InRangeTest05()
         {
             Int32 a = Five;
-            Condition.Requires(a).IsInRange(Two, Four);
+            Action action = () => Condition.Requires(a).IsInRange(Two, Four);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on Int32 x with conditionDescription should pass.")]
         public void IsInt32InRangeTest06()
         {
@@ -92,7 +95,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsInRange(Two, Four, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsInRange on Int32 should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsInt32InRangeTest07()
         {
@@ -100,15 +103,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsInRange(Two, Four, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on Int32 x with 'lower bound > x < upper bound' should succeed when exceptions are suppressed.")]
         public void IsInt32InRangeTest08()
         {
@@ -120,7 +123,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsInt32NotInRange
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotInRange on Int32 x with 'lower bound > x < upper bound' should pass.")]
         public void IsInt32NotInRangeTest01()
         {
@@ -128,34 +131,34 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotInRange(Two, Four);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         [Description("Calling IsNotInRange on Int32 x with 'lower bound = x < upper bound' should fail.")]
         public void IsInt32NotInRangeTest02()
         {
             Int32 a = Two;
-            Condition.Requires(a).IsNotInRange(Two, Four);
+            Action action = () => Condition.Requires(a).IsNotInRange(Two, Four);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         [Description("Calling IsNotInRange on Int32 x with 'lower bound < x < upper bound' should fail.")]
         public void IsInt32NotInRangeTest03()
         {
             Int32 a = Three;
-            Condition.Requires(a).IsNotInRange(Two, Four);
+            Action action = () => Condition.Requires(a).IsNotInRange(Two, Four);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         [Description("Calling IsNotInRange on Int32 x with 'lower bound < x = upper bound' should fail.")]
         public void IsInt32NotInRangeTest04()
         {
             Int32 a = Four;
-            Condition.Requires(a).IsNotInRange(Two, Four);
+            Action action = () => Condition.Requires(a).IsNotInRange(Two, Four);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotInRange on Int32 x with 'lower bound < x > upper bound' should pass.")]
         public void IsInt32NotInRangeTest05()
         {
@@ -163,7 +166,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotInRange(Two, Four);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotInRange on Int32 x with conditionDescription should pass.")]
         public void IsInt32NotInRangeTest06()
         {
@@ -171,7 +174,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotInRange(Two, Four, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotInRange on Int32 should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsInt32NotInRangeTest07()
         {
@@ -179,15 +182,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotInRange(Two, Four, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotInRange on Int32 x with 'lower bound = x < upper bound' should succeed when exceptions are suppressed.")]
         public void IsInt32NotInRangeTest08()
         {
@@ -199,25 +202,27 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsInt32GreaterThan
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsGreaterThan on Int32 x with 'lower bound < x' should fail.")]
         public void IsInt32GreaterThanTest01()
         {
             Int32 a = One;
-            Condition.Requires(a).IsGreaterThan(Two);
+            Action action = () => Condition.Requires(a).IsGreaterThan(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsGreaterThan on Int32 x with 'lower bound = x' should fail.")]
         public void IsInt32GreaterThanTest02()
         {
             Int32 a = Two;
-            Condition.Requires(a).IsGreaterThan(Two);
+            Action action = () => Condition.Requires(a).IsGreaterThan(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterThan on Int32 x with 'lower bound < x' should pass.")]
         public void IsInt32GreaterThanTest03()
         {
@@ -225,7 +230,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterThan(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterThan on Int32 x with conditionDescription should pass.")]
         public void IsInt32GreaterThanTest04()
         {
@@ -233,7 +238,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterThan(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsGreaterThan on Int32 should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsInt32GreaterThanTest05()
         {
@@ -241,15 +246,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsGreaterThan(Three, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterThan on Int32 x with 'lower bound < x' should succeed when exceptions are suppressed.")]
         public void IsInt32GreaterThanTest06()
         {
@@ -261,7 +266,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsInt32NotGreaterThan
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterThan on Int32 x with 'x < upper bound' should pass.")]
         public void IsInt32NotGreaterThanTest01()
         {
@@ -269,7 +274,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterThan(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterThan on Int32 x with 'x = upper bound' should pass.")]
         public void IsInt32NotGreaterThanTest02()
         {
@@ -277,16 +282,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterThan(Two);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotGreaterThan on Int32 x with 'x > upper bound' should fail.")]
         public void IsInt32NotGreaterThanTest03()
         {
             Int32 a = Three;
-            Condition.Requires(a).IsNotGreaterThan(Two);
+            Action action = () => Condition.Requires(a).IsNotGreaterThan(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterThan on Int32 x with conditionDescription should pass.")]
         public void IsInt32NotGreaterThanTest04()
         {
@@ -294,7 +300,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterThan(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotGreaterThan on Int32 should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsInt32NotGreaterThanTest05()
         {
@@ -302,15 +308,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotGreaterThan(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterThan on Int32 x with 'x > upper bound' should succeed when exceptions are suppressed.")]
         public void IsInt32NotGreaterThanTest06()
         {
@@ -322,16 +328,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsInt32GreaterOrEqual
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsGreaterOrEqual on Int32 x with 'lower bound > x' should fail.")]
         public void IsInt32GreaterOrEqualTest01()
         {
             Int32 a = One;
-            Condition.Requires(a).IsGreaterOrEqual(Two);
+            Action action = () => Condition.Requires(a).IsGreaterOrEqual(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterOrEqual on Int32 x with 'lower bound = x' should pass.")]
         public void IsInt32GreaterOrEqualTest02()
         {
@@ -339,7 +346,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterOrEqual(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterOrEqual on Int32 x with 'lower bound < x' should pass.")]
         public void IsInt32GreaterOrEqualTest03()
         {
@@ -347,7 +354,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterOrEqual(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterOrEqual on Int32 x with conditionDescription should pass.")]
         public void IsInt32GreaterOrEqualTest04()
         {
@@ -355,7 +362,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterOrEqual(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsGreaterOrEqual on Int32 should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsInt32GreaterOrEqualTest05()
         {
@@ -363,15 +370,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsGreaterOrEqual(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterOrEqual on Int32 x with 'lower bound > x' should succeed when exceptions are suppressed.")]
         public void IsInt32GreaterOrEqualTest06()
         {
@@ -383,7 +390,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsInt32NotGreaterOrEqual
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterOrEqual on Int32 x with 'x < upper bound' should pass.")]
         public void IsInt32NotGreaterOrEqualTest01()
         {
@@ -391,25 +398,27 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterOrEqual(Two);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotGreaterOrEqual on Int32 x with 'x = upper bound' should fail.")]
         public void IsInt32NotGreaterOrEqualTest02()
         {
             Int32 a = Two;
-            Condition.Requires(a).IsNotGreaterOrEqual(Two);
+            Action action = () => Condition.Requires(a).IsNotGreaterOrEqual(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotGreaterOrEqual on Int32 x with 'x > upper bound' should fail.")]
         public void IsInt32NotGreaterOrEqualTest03()
         {
             Int32 a = Three;
-            Condition.Requires(a).IsNotGreaterOrEqual(Two);
+            Action action = () => Condition.Requires(a).IsNotGreaterOrEqual(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterOrEqual on Int32 x with conditionDescription should pass.")]
         public void IsInt32NotGreaterOrEqualTest04()
         {
@@ -417,7 +426,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterOrEqual(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotGreaterOrEqual on Int32 should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsInt32NotGreaterOrEqualTest05()
         {
@@ -425,15 +434,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotGreaterOrEqual(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterOrEqual on Int32 x with 'x = upper bound' should succeed when exceptions are suppressed.")]
         public void IsInt32NotGreaterOrEqualTest06()
         {
@@ -445,7 +454,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsInt32LessThan
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessThan on Int32 x with 'x < upper bound' should pass.")]
         public void IsInt32LessThanTest01()
         {
@@ -453,25 +462,27 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessThan(Two);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsLessThan on Int32 x with 'x = upper bound' should fail.")]
         public void IsInt32LessThanTest02()
         {
             Int32 a = Two;
-            Condition.Requires(a).IsLessThan(Two);
+            Action action = () => Condition.Requires(a).IsLessThan(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsLessThan on Int32 x with 'x > upper bound' should fail.")]
         public void IsInt32LessThanTest03()
         {
             Int32 a = Three;
-            Condition.Requires(a).IsLessThan(Two);
+            Action action = () => Condition.Requires(a).IsLessThan(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessThan on Int32 x with conditionDescription should pass.")]
         public void IsInt32LessThanTest04()
         {
@@ -479,7 +490,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessThan(Three, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsLessThan on Int32 should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsInt32LessThanTest05()
         {
@@ -487,15 +498,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsLessThan(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessThan on Int32 x with 'x = upper bound' should succeed when exceptions are suppressed.")]
         public void IsInt32LessThanTest06()
         {
@@ -507,16 +518,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsInt32NotLessThan
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotLessThan on Int32 x with 'lower bound > x' should fail.")]
         public void IsInt32NotLessThanTest01()
         {
             Int32 a = One;
-            Condition.Requires(a).IsNotLessThan(Two);
+            Action action = () => Condition.Requires(a).IsNotLessThan(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessThan on Int32 x with 'lower bound = x' should pass.")]
         public void IsInt32NotLessThanTest02()
         {
@@ -524,7 +536,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessThan(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessThan on Int32 x with 'lower bound < x' should pass.")]
         public void IsInt32NotLessThanTest03()
         {
@@ -532,7 +544,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessThan(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessThan on Int32 x with conditionDescription should pass.")]
         public void IsInt32NotLessThanTest04()
         {
@@ -540,7 +552,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessThan(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotLessThan on Int32 should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsInt32NotLessThanTest05()
         {
@@ -548,15 +560,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotLessThan(Three, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessThan on Int32 x with 'lower bound > x' should succeed when exceptions are suppressed.")]
         public void IsInt32NotLessThanTest06()
         {
@@ -568,7 +580,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsInt32LessOrEqual
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessOrEqual on Int32 x with 'x < upper bound' should pass.")]
         public void IsInt32LessOrEqualTest01()
         {
@@ -576,7 +588,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessOrEqual(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessOrEqual on Int32 x with 'x = upper bound' should pass.")]
         public void IsInt32LessOrEqualTest02()
         {
@@ -584,16 +596,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessOrEqual(Two);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsLessOrEqual on Int32 x with 'x > upper bound' should fail.")]
         public void IsInt32LessOrEqualTest03()
         {
             Int32 a = Three;
-            Condition.Requires(a).IsLessOrEqual(Two);
+            Action action = () => Condition.Requires(a).IsLessOrEqual(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessOrEqual on Int32 x with conditionDescription should pass.")]
         public void IsInt32LessOrEqualTest04()
         {
@@ -601,7 +614,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessOrEqual(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsLessOrEqual on Int32 should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsInt32LessOrEqualTest05()
         {
@@ -609,15 +622,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsLessOrEqual(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessOrEqual on Int32 x with 'x > upper bound' should succeed when exceptions are suppressed.")]
         public void IsInt32LessOrEqualTest06()
         {
@@ -629,25 +642,27 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsInt32NotLessOrEqual
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotLessOrEqual on Int32 x with 'lower bound > x' should fail.")]
         public void IsInt32NotLessOrEqualTest01()
         {
             Int32 a = One;
-            Condition.Requires(a).IsNotLessOrEqual(Two);
+            Action action = () => Condition.Requires(a).IsNotLessOrEqual(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotLessOrEqual on Int32 x with 'lower bound = x' should fail.")]
         public void IsInt32NotLessOrEqualTest02()
         {
             Int32 a = Two;
-            Condition.Requires(a).IsNotLessOrEqual(Two);
+            Action action = () => Condition.Requires(a).IsNotLessOrEqual(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessOrEqual on Int32 x with 'lower bound < x' should pass.")]
         public void IsInt32NotLessOrEqualTest03()
         {
@@ -655,7 +670,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessOrEqual(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessOrEqual on Int32 x with conditionDescription should pass.")]
         public void IsInt32NotLessOrEqualTest04()
         {
@@ -663,7 +678,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessOrEqual(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotLessOrEqual on Int32 should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsInt32NotLessOrEqualTest05()
         {
@@ -671,15 +686,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotLessOrEqual(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessOrEqual on Int32 x with 'lower bound > x' should succeed when exceptions are suppressed.")]
         public void IsInt32NotLessOrEqualTest06()
         {
@@ -691,16 +706,16 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsInt32EqualTo
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         [Description("Calling IsEqualTo on Int32 x with 'x < other' should fail.")]
         public void IsInt32EqualToTest01()
         {
             Int32 a = One;
-            Condition.Requires(a).IsEqualTo(Two);
+            Action action = () => Condition.Requires(a).IsEqualTo(Two);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsEqualTo on Int32 x with 'x = other' should pass.")]
         public void IsInt32EqualToTest02()
         {
@@ -708,16 +723,16 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsEqualTo(Two);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         [Description("Calling IsEqualTo on Int32 x with 'x > other' should fail.")]
         public void IsInt32EqualToTest03()
         {
             Int32 a = Three;
-            Condition.Requires(a).IsEqualTo(Two);
+            Action action = () => Condition.Requires(a).IsEqualTo(Two);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsEqualTo on Int32 x with conditionDescription should pass.")]
         public void IsInt32EqualToTest04()
         {
@@ -725,7 +740,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsEqualTo(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsEqualTo on Int32 should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsInt32EqualToTest05()
         {
@@ -733,15 +748,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsEqualTo(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsEqualTo on Int32 x with 'x < other' should succeed when exceptions are suppressed.")]
         public void IsInt32EqualToTest06()
         {
@@ -753,7 +768,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsInt32NotEqualTo
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEqualTo on Int32 x with 'x < other' should pass.")]
         public void IsInt32NotEqualToTest01()
         {
@@ -761,16 +776,16 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotEqualTo(Two);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         [Description("Calling IsNotEqualTo on Int32 x with 'x = other' should fail.")]
         public void IsInt32NotEqualToTest02()
         {
             Int32 a = Two;
-            Condition.Requires(a).IsNotEqualTo(Two);
+            Action action = () => Condition.Requires(a).IsNotEqualTo(Two);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEqualTo on Int32 x with 'x > other' should pass.")]
         public void IsInt32NotEqualToTest03()
         {
@@ -778,7 +793,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotEqualTo(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEqualTo on Int32 x with conditionDescription should pass.")]
         public void IsInt32NotEqualToTest04()
         {
@@ -786,7 +801,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotEqualTo(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotEqualTo on Int32 should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsInt32NotEqualToTest05()
         {
@@ -794,15 +809,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotEqualTo(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEqualTo on Int32 x with 'x = other' should succeed when exceptions are suppressed.")]
         public void IsInt32NotEqualToTest06()
         {

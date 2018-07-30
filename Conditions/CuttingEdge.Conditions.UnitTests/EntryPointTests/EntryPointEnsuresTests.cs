@@ -25,26 +25,27 @@
 
 using System;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit; using System.ComponentModel;
+using FluentAssertions;
 
 namespace CuttingEdge.Conditions.UnitTests.EntryPointTests
 {
     /// <summary>
     /// Tests the Condition.Ensures method.
     /// </summary>
-    [TestClass]
+    
     public class EntryPointEnsuresTests
     {
-        [TestMethod]
-        [ExpectedException(typeof(PostconditionException))]
+        [Fact]
         [Description("Checks whether the validator returned from Ensures() will fail with an PostconditionException.")]
         public void EnsuresTest01()
         {
             int a = 3;
-            Condition.Ensures(a).IsEqualTo(4);
+            Action action = () => Condition.Ensures(a).IsEqualTo(4);
+            action.Should().Throw<PostconditionException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Checks whether the parameterName on the Ensures() will be used.")]
         public void EnsuresTest02()
         {
@@ -55,11 +56,11 @@ namespace CuttingEdge.Conditions.UnitTests.EntryPointTests
             }
             catch (Exception ex)
             {
-                Assert.AreEqual(true, ex.Message.Contains("foobar"));
+                Assert.Equal(true, ex.Message.Contains("foobar"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Checks whether supplying an invalid ConstraintViolationType results in the return of the default exception.")]
         public void EnsuresTest03()
         {
@@ -72,20 +73,10 @@ namespace CuttingEdge.Conditions.UnitTests.EntryPointTests
             const string AssertMessage = "EnsuresValidator.ThrowException should throw an " +
                 "ArgumentException when an invalid ConstraintViolationType is supplied.";
 
-            try
-            {
-                ensuresValidator.ThrowException(ValidCondition, ValidAdditionalMessage,
-                    InvalidConstraintViolationType);
+            Action action = () => ensuresValidator.ThrowException(ValidCondition, ValidAdditionalMessage,
+                InvalidConstraintViolationType);
 
-                Assert.Fail(AssertMessage);
-            }
-            catch (Exception ex)
-            {
-                Assert.AreEqual(typeof(PostconditionException), ex.GetType(), AssertMessage);
-
-                Assert.IsTrue(ex.Message.Contains(ValidCondition),
-                    "The exception message does not contain the condition.");
-            }
+            action.Should().Throw<PostconditionException>(AssertMessage).Which.Message.Should().Contain(ValidCondition, "The exception message does not contain the condition.");
         }
     }
 }

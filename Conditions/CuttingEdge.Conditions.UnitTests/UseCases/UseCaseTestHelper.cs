@@ -24,8 +24,7 @@
 #endregion
 
 using System;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FluentAssertions;
 
 namespace CuttingEdge.Conditions.UnitTests.UseCases
 {
@@ -51,24 +50,16 @@ namespace CuttingEdge.Conditions.UnitTests.UseCases
 
             if (useCaseException != null && conditionsException != null)
             {
-                if (useCaseException.GetType() == conditionsException.GetType())
-                {
-                    return;
-                }
-                
-                Assert.Fail(string.Format("Both cases throw a different type of exception. " +
-                    "The use case threw a {0} and conditions threw a {1}.", useCaseException.GetType().Name,
-                    conditionsException.GetType().Name));
+                useCaseException.Should().BeOfType(
+                    conditionsException.GetType(),
+                    "Both cases throw a different type of exception. " +
+                    $"The use case threw a {useCaseException.GetType().Name} and conditions threw a {conditionsException.GetType().Name}.");
+
+                return;
             }
 
-            if (useCaseException == null)
-            {
-                Assert.Fail("The use case action didn't throw an exception, while the conditions action did.");
-            }
-            else
-            {
-                Assert.Fail("The use case action threw an exception, while the conditions action didn't.");
-            }
+            useCaseException.Should().NotBeNull("The use case action didn't throw an exception, while the conditions action did.");
+            conditionsException.Should().NotBeNull("The use case action threw an exception, while the conditions action didn't.");
         }
 
         private static Exception ReturnExceptionOrNull(Action action)

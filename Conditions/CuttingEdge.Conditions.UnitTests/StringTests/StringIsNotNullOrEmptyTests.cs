@@ -25,17 +25,18 @@
 
 using System;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit; using System.ComponentModel;
+using FluentAssertions;
 
 namespace CuttingEdge.Conditions.UnitTests.StringTests
 {
     /// <summary>
     /// Tests the ValidatorExtensions.IsNotNullOrEmpty method.
     /// </summary>
-    [TestClass]
+    
     public class StringIsNotNullOrEmptyTests
     {
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNullOrEmpty on string x with 'x.Length > 0' should pass.")]
         public void IsNotNullOrEmptyTest1()
         {
@@ -43,26 +44,26 @@ namespace CuttingEdge.Conditions.UnitTests.StringTests
             Condition.Requires(a).IsNotNullOrEmpty();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         [Description("Calling IsNullOrEmpty on string (\"\") should fail.")]
         public void IsNotNullOrEmptyTest2()
         {
             string a = String.Empty;
-            Condition.Requires(a).IsNotNullOrEmpty();
+            Action action = () => Condition.Requires(a).IsNotNullOrEmpty();
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         [Description("Calling IsNullOrEmpty on string (null) should fail.")]
         public void IsNotNullOrEmptyTest3()
         {
             string a = null;
             // A null value will never be found
-            Condition.Requires(a).IsNotNullOrEmpty();
+            Action action = () => Condition.Requires(a).IsNotNullOrEmpty();
+            action.Should().Throw<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotNullOrEmpty with conditionDescription parameter should pass.")]
         public void IsNotNullOrEmptyTest4()
         {
@@ -70,7 +71,7 @@ namespace CuttingEdge.Conditions.UnitTests.StringTests
             Condition.Requires(a).IsNotNullOrEmpty(string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotNullOrEmpty should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsNotNullOrEmptyTest5()
         {
@@ -78,15 +79,15 @@ namespace CuttingEdge.Conditions.UnitTests.StringTests
             try
             {
                 Condition.Requires(a, "a").IsNotNullOrEmpty("qwe {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("qwe a xyz"));
+                Assert.True(ex.Message.Contains("qwe a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNullOrEmpty on string (\"\") should succeed when exceptions are suppressed.")]
         public void IsNotNullOrEmptyTest6()
         {

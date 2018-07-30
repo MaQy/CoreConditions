@@ -27,11 +27,12 @@
 // with 'Int64'.
 using System;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit; using System.ComponentModel;
+using FluentAssertions;
 
 namespace CuttingEdge.Conditions.UnitTests.CompareTests
 {
-    [TestClass]
+    
     public class CompareInt64Tests
     {
         private static readonly Int64 One = 1;
@@ -42,16 +43,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsInt64InRange
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsInRange on Int64 x with 'lower bound > x < upper bound' should fail.")]
         public void IsInt64InRangeTest01()
         {
             Int64 a = One;
-            Condition.Requires(a).IsInRange(Two, Four);
+            Action action = () => Condition.Requires(a).IsInRange(Two, Four);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on Int64 x with 'lower bound = x < upper bound' should pass.")]
         public void IsInt64InRangeTest02()
         {
@@ -59,7 +61,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsInRange(Two, Four);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on Int64 x with 'lower bound < x < upper bound' should pass.")]
         public void IsInt64InRangeTest03()
         {
@@ -67,7 +69,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsInRange(Two, Four);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on Int64 x with 'lower bound < x = upper bound' should pass.")]
         public void IsInt64InRangeTest04()
         {
@@ -75,16 +77,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsInRange(Two, Four);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsInRange on Int64 x with 'lower bound < x > upper bound' should fail.")]
         public void IsInt64InRangeTest05()
         {
             Int64 a = Five;
-            Condition.Requires(a).IsInRange(Two, Four);
+            Action action = () => Condition.Requires(a).IsInRange(Two, Four);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on Int64 x with conditionDescription should pass.")]
         public void IsInt64InRangeTest06()
         {
@@ -92,7 +95,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsInRange(Two, Four, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsInRange on Int64 should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsInt64InRangeTest07()
         {
@@ -100,15 +103,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsInRange(Two, Four, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsInRange on Int64 x with 'lower bound > x < upper bound' should succeed when exceptions are suppressed.")]
         public void IsInt64InRangeTest08()
         {
@@ -120,7 +123,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsInt64NotInRange
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotInRange on Int64 x with 'lower bound > x < upper bound' should pass.")]
         public void IsInt64NotInRangeTest01()
         {
@@ -128,34 +131,37 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotInRange(Two, Four);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotInRange on Int64 x with 'lower bound = x < upper bound' should fail.")]
         public void IsInt64NotInRangeTest02()
         {
             Int64 a = Two;
-            Condition.Requires(a).IsNotInRange(Two, Four);
+            Action action = () => Condition.Requires(a).IsNotInRange(Two, Four);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotInRange on Int64 x with 'lower bound < x < upper bound' should fail.")]
         public void IsInt64NotInRangeTest03()
         {
             Int64 a = Three;
-            Condition.Requires(a).IsNotInRange(Two, Four);
+            Action action = () => Condition.Requires(a).IsNotInRange(Two, Four);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotInRange on Int64 x with 'lower bound < x = upper bound' should fail.")]
         public void IsInt64NotInRangeTest04()
         {
             Int64 a = Four;
-            Condition.Requires(a).IsNotInRange(Two, Four);
+            Action action = () => Condition.Requires(a).IsNotInRange(Two, Four);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotInRange on Int64 x with 'lower bound < x > upper bound' should pass.")]
         public void IsInt64NotInRangeTest05()
         {
@@ -163,7 +169,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotInRange(Two, Four);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotInRange on Int64 x with conditionDescription should pass.")]
         public void IsInt64NotInRangeTest06()
         {
@@ -171,7 +177,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotInRange(Two, Four, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotInRange on Int64 should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsInt64NotInRangeTest07()
         {
@@ -179,15 +185,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotInRange(Two, Four, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotInRange on Int64 x with 'lower bound = x < upper bound' should succeed when exceptions are suppressed.")]
         public void IsInt64NotInRangeTest08()
         {
@@ -199,25 +205,27 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsInt64GreaterThan
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsGreaterThan on Int64 x with 'lower bound < x' should fail.")]
         public void IsInt64GreaterThanTest01()
         {
             Int64 a = One;
-            Condition.Requires(a).IsGreaterThan(Two);
+            Action action = () => Condition.Requires(a).IsGreaterThan(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsGreaterThan on Int64 x with 'lower bound = x' should fail.")]
         public void IsInt64GreaterThanTest02()
         {
             Int64 a = Two;
-            Condition.Requires(a).IsGreaterThan(Two);
+            Action action = () => Condition.Requires(a).IsGreaterThan(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterThan on Int64 x with 'lower bound < x' should pass.")]
         public void IsInt64GreaterThanTest03()
         {
@@ -225,7 +233,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterThan(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterThan on Int64 x with conditionDescription should pass.")]
         public void IsInt64GreaterThanTest04()
         {
@@ -233,7 +241,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterThan(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsGreaterThan on Int64 should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsInt64GreaterThanTest05()
         {
@@ -241,15 +249,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsGreaterThan(Three, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterThan on Int64 x with 'lower bound < x' should succeed when exceptions are suppressed.")]
         public void IsInt64GreaterThanTest06()
         {
@@ -261,7 +269,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsInt64NotGreaterThan
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterThan on Int64 x with 'x < upper bound' should pass.")]
         public void IsInt64NotGreaterThanTest01()
         {
@@ -269,7 +277,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterThan(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterThan on Int64 x with 'x = upper bound' should pass.")]
         public void IsInt64NotGreaterThanTest02()
         {
@@ -277,16 +285,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterThan(Two);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotGreaterThan on Int64 x with 'x > upper bound' should fail.")]
         public void IsInt64NotGreaterThanTest03()
         {
             Int64 a = Three;
-            Condition.Requires(a).IsNotGreaterThan(Two);
+            Action action = () => Condition.Requires(a).IsNotGreaterThan(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterThan on Int64 x with conditionDescription should pass.")]
         public void IsInt64NotGreaterThanTest04()
         {
@@ -294,7 +303,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterThan(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotGreaterThan on Int64 should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsInt64NotGreaterThanTest05()
         {
@@ -302,15 +311,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotGreaterThan(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterThan on Int64 x with 'x > upper bound' should succeed when exceptions are suppressed.")]
         public void IsInt64NotGreaterThanTest06()
         {
@@ -322,16 +331,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsInt64GreaterOrEqual
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsGreaterOrEqual on Int64 x with 'lower bound > x' should fail.")]
         public void IsInt64GreaterOrEqualTest01()
         {
             Int64 a = One;
-            Condition.Requires(a).IsGreaterOrEqual(Two);
+            Action action = () => Condition.Requires(a).IsGreaterOrEqual(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterOrEqual on Int64 x with 'lower bound = x' should pass.")]
         public void IsInt64GreaterOrEqualTest02()
         {
@@ -339,7 +349,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterOrEqual(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterOrEqual on Int64 x with 'lower bound < x' should pass.")]
         public void IsInt64GreaterOrEqualTest03()
         {
@@ -347,7 +357,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterOrEqual(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterOrEqual on Int64 x with conditionDescription should pass.")]
         public void IsInt64GreaterOrEqualTest04()
         {
@@ -355,7 +365,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsGreaterOrEqual(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsGreaterOrEqual on Int64 should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsInt64GreaterOrEqualTest05()
         {
@@ -363,15 +373,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsGreaterOrEqual(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsGreaterOrEqual on Int64 x with 'lower bound > x' should succeed when exceptions are suppressed.")]
         public void IsInt64GreaterOrEqualTest06()
         {
@@ -383,7 +393,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsInt64NotGreaterOrEqual
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterOrEqual on Int64 x with 'x < upper bound' should pass.")]
         public void IsInt64NotGreaterOrEqualTest01()
         {
@@ -391,25 +401,27 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterOrEqual(Two);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotGreaterOrEqual on Int64 x with 'x = upper bound' should fail.")]
         public void IsInt64NotGreaterOrEqualTest02()
         {
             Int64 a = Two;
-            Condition.Requires(a).IsNotGreaterOrEqual(Two);
+            Action action = () => Condition.Requires(a).IsNotGreaterOrEqual(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotGreaterOrEqual on Int64 x with 'x > upper bound' should fail.")]
         public void IsInt64NotGreaterOrEqualTest03()
         {
             Int64 a = Three;
-            Condition.Requires(a).IsNotGreaterOrEqual(Two);
+            Action action = () => Condition.Requires(a).IsNotGreaterOrEqual(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterOrEqual on Int64 x with conditionDescription should pass.")]
         public void IsInt64NotGreaterOrEqualTest04()
         {
@@ -417,7 +429,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotGreaterOrEqual(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotGreaterOrEqual on Int64 should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsInt64NotGreaterOrEqualTest05()
         {
@@ -425,15 +437,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotGreaterOrEqual(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotGreaterOrEqual on Int64 x with 'x = upper bound' should succeed when exceptions are suppressed.")]
         public void IsInt64NotGreaterOrEqualTest06()
         {
@@ -445,7 +457,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsInt64LessThan
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessThan on Int64 x with 'x < upper bound' should pass.")]
         public void IsInt64LessThanTest01()
         {
@@ -453,25 +465,27 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessThan(Two);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsLessThan on Int64 x with 'x = upper bound' should fail.")]
         public void IsInt64LessThanTest02()
         {
             Int64 a = Two;
-            Condition.Requires(a).IsLessThan(Two);
+            Action action = () => Condition.Requires(a).IsLessThan(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsLessThan on Int64 x with 'x > upper bound' should fail.")]
         public void IsInt64LessThanTest03()
         {
             Int64 a = Three;
-            Condition.Requires(a).IsLessThan(Two);
+            Action action = () => Condition.Requires(a).IsLessThan(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessThan on Int64 x with conditionDescription should pass.")]
         public void IsInt64LessThanTest04()
         {
@@ -479,7 +493,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessThan(Three, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsLessThan on Int64 should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsInt64LessThanTest05()
         {
@@ -487,15 +501,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsLessThan(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessThan on Int64 x with 'x = upper bound' should succeed when exceptions are suppressed.")]
         public void IsInt64LessThanTest06()
         {
@@ -507,16 +521,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsInt64NotLessThan
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotLessThan on Int64 x with 'lower bound > x' should fail.")]
         public void IsInt64NotLessThanTest01()
         {
             Int64 a = One;
-            Condition.Requires(a).IsNotLessThan(Two);
+            Action action = () => Condition.Requires(a).IsNotLessThan(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessThan on Int64 x with 'lower bound = x' should pass.")]
         public void IsInt64NotLessThanTest02()
         {
@@ -524,7 +539,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessThan(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessThan on Int64 x with 'lower bound < x' should pass.")]
         public void IsInt64NotLessThanTest03()
         {
@@ -532,7 +547,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessThan(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessThan on Int64 x with conditionDescription should pass.")]
         public void IsInt64NotLessThanTest04()
         {
@@ -540,7 +555,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessThan(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotLessThan on Int64 should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsInt64NotLessThanTest05()
         {
@@ -548,15 +563,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotLessThan(Three, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessThan on Int64 x with 'lower bound > x' should succeed when exceptions are suppressed.")]
         public void IsInt64NotLessThanTest06()
         {
@@ -568,7 +583,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsInt64LessOrEqual
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessOrEqual on Int64 x with 'x < upper bound' should pass.")]
         public void IsInt64LessOrEqualTest01()
         {
@@ -576,7 +591,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessOrEqual(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessOrEqual on Int64 x with 'x = upper bound' should pass.")]
         public void IsInt64LessOrEqualTest02()
         {
@@ -584,16 +599,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessOrEqual(Two);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsLessOrEqual on Int64 x with 'x > upper bound' should fail.")]
         public void IsInt64LessOrEqualTest03()
         {
             Int64 a = Three;
-            Condition.Requires(a).IsLessOrEqual(Two);
+            Action action = () => Condition.Requires(a).IsLessOrEqual(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessOrEqual on Int64 x with conditionDescription should pass.")]
         public void IsInt64LessOrEqualTest04()
         {
@@ -601,7 +617,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsLessOrEqual(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsLessOrEqual on Int64 should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsInt64LessOrEqualTest05()
         {
@@ -609,15 +625,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsLessOrEqual(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsLessOrEqual on Int64 x with 'x > upper bound' should succeed when exceptions are suppressed.")]
         public void IsInt64LessOrEqualTest06()
         {
@@ -629,25 +645,27 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsInt64NotLessOrEqual
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotLessOrEqual on Int64 x with 'lower bound > x' should fail.")]
         public void IsInt64NotLessOrEqualTest01()
         {
             Int64 a = One;
-            Condition.Requires(a).IsNotLessOrEqual(Two);
+            Action action = () => Condition.Requires(a).IsNotLessOrEqual(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
+        
         [Description("Calling IsNotLessOrEqual on Int64 x with 'lower bound = x' should fail.")]
         public void IsInt64NotLessOrEqualTest02()
         {
             Int64 a = Two;
-            Condition.Requires(a).IsNotLessOrEqual(Two);
+            Action action = () => Condition.Requires(a).IsNotLessOrEqual(Two);
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessOrEqual on Int64 x with 'lower bound < x' should pass.")]
         public void IsInt64NotLessOrEqualTest03()
         {
@@ -655,7 +673,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessOrEqual(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessOrEqual on Int64 x with conditionDescription should pass.")]
         public void IsInt64NotLessOrEqualTest04()
         {
@@ -663,7 +681,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotLessOrEqual(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotLessOrEqual on Int64 should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsInt64NotLessOrEqualTest05()
         {
@@ -671,15 +689,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotLessOrEqual(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotLessOrEqual on Int64 x with 'lower bound > x' should succeed when exceptions are suppressed.")]
         public void IsInt64NotLessOrEqualTest06()
         {
@@ -691,16 +709,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsInt64EqualTo
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsEqualTo on Int64 x with 'x < other' should fail.")]
         public void IsInt64EqualToTest01()
         {
             Int64 a = One;
-            Condition.Requires(a).IsEqualTo(Two);
+            Action action = () => Condition.Requires(a).IsEqualTo(Two);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsEqualTo on Int64 x with 'x = other' should pass.")]
         public void IsInt64EqualToTest02()
         {
@@ -708,16 +727,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsEqualTo(Two);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsEqualTo on Int64 x with 'x > other' should fail.")]
         public void IsInt64EqualToTest03()
         {
             Int64 a = Three;
-            Condition.Requires(a).IsEqualTo(Two);
+            Action action = () => Condition.Requires(a).IsEqualTo(Two);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsEqualTo on Int64 x with conditionDescription should pass.")]
         public void IsInt64EqualToTest04()
         {
@@ -725,7 +745,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsEqualTo(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsEqualTo on Int64 should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsInt64EqualToTest05()
         {
@@ -733,15 +753,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsEqualTo(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsEqualTo on Int64 x with 'x < other' should succeed when exceptions are suppressed.")]
         public void IsInt64EqualToTest06()
         {
@@ -753,7 +773,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
 
         #region IsInt64NotEqualTo
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEqualTo on Int64 x with 'x < other' should pass.")]
         public void IsInt64NotEqualToTest01()
         {
@@ -761,16 +781,17 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotEqualTo(Two);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
+        
         [Description("Calling IsNotEqualTo on Int64 x with 'x = other' should fail.")]
         public void IsInt64NotEqualToTest02()
         {
             Int64 a = Two;
-            Condition.Requires(a).IsNotEqualTo(Two);
+            Action action = () => Condition.Requires(a).IsNotEqualTo(Two);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEqualTo on Int64 x with 'x > other' should pass.")]
         public void IsInt64NotEqualToTest03()
         {
@@ -778,7 +799,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotEqualTo(Two);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEqualTo on Int64 x with conditionDescription should pass.")]
         public void IsInt64NotEqualToTest04()
         {
@@ -786,7 +807,7 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             Condition.Requires(a).IsNotEqualTo(Two, string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing IsNotEqualTo on Int64 should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsInt64NotEqualToTest05()
         {
@@ -794,15 +815,15 @@ namespace CuttingEdge.Conditions.UnitTests.CompareTests
             try
             {
                 Condition.Requires(a, "a").IsNotEqualTo(Two, "abc {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("abc a xyz"));
+                Assert.True(ex.Message.Contains("abc a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling IsNotEqualTo on Int64 x with 'x = other' should succeed when exceptions are suppressed.")]
         public void IsInt64NotEqualToTest06()
         {

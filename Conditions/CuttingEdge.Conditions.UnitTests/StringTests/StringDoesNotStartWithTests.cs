@@ -27,35 +27,36 @@ using System;
 using System.Globalization;
 using System.Threading;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit; using System.ComponentModel;
+using FluentAssertions;
 
 namespace CuttingEdge.Conditions.UnitTests.StringTests
 {
     /// <summary>
     /// Tests the ValidatorExtensions.DoesNotStartWith method.
     /// </summary>
-    [TestClass]
+    
     public class StringDoesNotStartWithTests
     {
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         [Description("Calling DoesNotStartWith on string x with 'x DoesNotStartWith x' should fail.")]
         public void DoesNotStartWithTest01()
         {
             string a = "test";
-            Condition.Requires(a).DoesNotStartWith(a);
+            Action action = () => Condition.Requires(a).DoesNotStartWith(a);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         [Description("Calling DoesNotStartWith on string x (\"test\") with 'x DoesNotStartWith \"tes\"' should fail.")]
         public void DoesNotStartWithTest02()
         {
             string a = "test";
-            Condition.Requires(a).DoesNotStartWith("tes");
+            Action action = () => Condition.Requires(a).DoesNotStartWith("tes");
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling DoesNotStartWith on string x (\"test\") with 'x DoesNotStartWith null' should pass.")]
         public void DoesNotStartWithTest03()
         {
@@ -64,17 +65,17 @@ namespace CuttingEdge.Conditions.UnitTests.StringTests
             Condition.Requires(a).DoesNotStartWith(null);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         [Description("Calling DoesNotStartWith on string x (\"test\") with 'x DoesNotStartWith \"\"' should fail.")]
         public void DoesNotStartWithTest04()
         {
             string a = "test";
             // An empty string will always be found
-            Condition.Requires(a).DoesNotStartWith(String.Empty);
+            Action action = () => Condition.Requires(a).DoesNotStartWith(String.Empty);
+            action.Should().Throw<ArgumentException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling DoesNotStartWith on string x (null) with 'x DoesNotStartWith \"\"' should pass.")]
         public void DoesNotStartWithTest05()
         {
@@ -83,16 +84,16 @@ namespace CuttingEdge.Conditions.UnitTests.StringTests
             Condition.Requires(a).DoesNotStartWith(String.Empty);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         [Description("Calling DoesNotStartWith on string x (null) with 'x DoesNotStartWith null' should fail.")]
         public void DoesNotStartWithTest06()
         {
             string a = null;
-            Condition.Requires(a).DoesNotStartWith(null);
+            Action action = () => Condition.Requires(a).DoesNotStartWith(null);
+            action.Should().Throw<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling DoesNotStartWith on string x (\"test\") with 'x DoesNotStartWith \"test me\"' should pass.")]
         public void DoesNotStartWithTest07()
         {
@@ -100,7 +101,7 @@ namespace CuttingEdge.Conditions.UnitTests.StringTests
             Condition.Requires(a).DoesNotStartWith("test me");
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling DoesNotStartWith on string x (\"test\") with 'x DoesNotStartWith \"test\"' should fail with a correct exception message.")]
         public void DoesNotStartWithTest08()
         {
@@ -115,11 +116,11 @@ namespace CuttingEdge.Conditions.UnitTests.StringTests
             }
             catch (Exception ex)
             {
-                Assert.AreEqual(expectedMessage, ex.Message);
+                Assert.Equal(expectedMessage, ex.Message);
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling DoesNotStartWith with conditionDescription parameter should pass.")]
         public void DoesNotStartWithTest09()
         {
@@ -127,7 +128,7 @@ namespace CuttingEdge.Conditions.UnitTests.StringTests
             Condition.Requires(a).DoesNotStartWith("test me", string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling a failing DoesNotStartWith should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void DoesNotStartWithTest10()
         {
@@ -135,15 +136,15 @@ namespace CuttingEdge.Conditions.UnitTests.StringTests
             try
             {
                 Condition.Requires(a, "a").DoesNotStartWith("test", "qwe {0} xyz");
-                Assert.Fail();
+                Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("qwe a xyz"));
+                Assert.True(ex.Message.Contains("qwe a xyz"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling DoesNotStartWith should be language dependent.")]
         public void DoesNotStartWithTest11()
         {
@@ -167,7 +168,7 @@ namespace CuttingEdge.Conditions.UnitTests.StringTests
             }
         }
 
-        [TestMethod]
+        [Fact]
         [Description("Calling DoesNotStartWith on string x with 'x DoesNotStartWith x' should succeed when exceptions are suppressed.")]
         public void DoesNotStartWithTest12()
         {
